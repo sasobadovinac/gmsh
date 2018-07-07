@@ -938,8 +938,8 @@ void PViewDataList::setOrder2(int type)
   case TYPE_PRI: typeMSH = MSH_PRI_18; break;
   case TYPE_PYR: typeMSH = MSH_PYR_14; break;
   }
-  const polynomialBasis *fs =
-    dynamic_cast<polynomialBasis *>(BasisFactory::getNodalBasis(typeMSH));
+  polynomialBasis const* const fs =
+    dynamic_cast<polynomialBasis const*>(BasisFactory::getNodalBasis(typeMSH));
   if(!fs){
     Msg::Error("Could not find polynomial function space for element type %d",
                typeMSH);
@@ -1019,4 +1019,3 @@ std::vector<double> *PViewDataList::incrementList(int numComp, int type, int num
   }
   return 0;
 }
-

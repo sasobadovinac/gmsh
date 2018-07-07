@@ -255,7 +255,7 @@ bool signChange (RecurElement *re, const DI_Element *e, const std::vector<gLevel
   return cS;
 }
 
-// Set isCrossed to true if a sub RecurElement is crossed. 
+// Set isCrossed to true if a sub RecurElement is crossed.
 // If it has no sub RecurElement, set isCrossed to true if the element is crossed or run along by the levelset
 //(the levelset is computed with the values at the nodes of the triangle e)
 bool computeIsCrossed (RecurElement *re, const DI_Element *e, const std::vector<gLevelset *> &RPN,
@@ -336,11 +336,11 @@ void recurClearLs(RecurElement *re) {
 RecurElement::RecurElement(const DI_Element *e) : visible(false), isCrossed(false)
 {
   switch(e->type()) {
-  case DI_LIN: el = new DI_Line(*(dynamic_cast<DI_Line *>(e))); break;
-  case DI_TRI: el = new DI_Triangle(*(dynamic_cast<DI_Triangle *>(e))); break;
-  case DI_QUA: el = new DI_Quad(*(dynamic_cast<DI_Quad *>(e))); break;
-  case DI_TET: el = new DI_Tetra(*(dynamic_cast<DI_Tetra *>(e))); break;
-  case DI_HEX: el = new DI_Hexa(*(dynamic_cast<DI_Hexa *>(e))); break;
+  case DI_LIN: el = new DI_Line(*(dynamic_cast<DI_Line const*>(e))); break;
+  case DI_TRI: el = new DI_Triangle(*(dynamic_cast<DI_Triangle const*>(e))); break;
+  case DI_QUA: el = new DI_Quad(*(dynamic_cast<DI_Quad const*>(e))); break;
+  case DI_TET: el = new DI_Tetra(*(dynamic_cast<DI_Tetra const*>(e))); break;
+  case DI_HEX: el = new DI_Hexa(*(dynamic_cast<DI_Hexa const*>(e))); break;
   default: el = NULL;
   }
   super = NULL;

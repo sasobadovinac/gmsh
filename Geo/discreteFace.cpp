@@ -109,12 +109,12 @@ int discreteFace::trianglePosition(double par1, double par2, double &u,
 #ifdef HAVE_HXT
   double xy[3] = {par1, par2, 0};
   double uv[3];
-  MElement *const element =
+  MElement const* const element =
     _parametrizations[_current_parametrization].oct->find(par1, par2, 0.0);
   if(!element) return -1;
   element->xyz2uvw(xy, uv);
   int position =
-    static_cast<int>(dynamic_cast<MTriangle *>(element) -
+    static_cast<int>(dynamic_cast<MTriangle const*>(element) -
                      &_parametrizations[_current_parametrization].t2d[0]);
   u = uv[0];
   v = uv[1];
@@ -129,7 +129,7 @@ GPoint discreteFace::point(double par1, double par2) const
 #ifdef HAVE_HXT
   double xy[3] = {par1, par2, 0};
   double uv[3];
-  MElement *const element =
+  MElement const *const element =
     _parametrizations[_current_parametrization].oct->find(par1, par2, 0.0);
   if(!element) {
     GPoint gp = GPoint(1.e21, 1.e21, 1.e21, this, xy);
@@ -138,7 +138,7 @@ GPoint discreteFace::point(double par1, double par2) const
   }
   element->xyz2uvw(xy, uv);
   int position =
-    static_cast<int>(dynamic_cast<MTriangle *>(element) -
+    static_cast<int>(dynamic_cast<MTriangle const*>(element) -
                      &_parametrizations[_current_parametrization].t2d[0]);
   const MTriangle &t3d =
     _parametrizations[_current_parametrization].t3d[position];
