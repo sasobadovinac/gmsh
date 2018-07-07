@@ -264,48 +264,38 @@ bool GModel::empty() const
   return vertices.empty() && edges.empty() && faces.empty() && regions.empty();
 }
 
-GRegion *GModel::getRegionByTag(int n) const
+GRegion *GModel::getRegionByTag(int const n) const
 {
   GEntity tmp((GModel*)this, n);
   std::set<GRegion *, GEntityLessThan>::const_iterator it =
-    regions.find(dynamic_cast<GRegion *>(&tmp));
-  if(it != regions.end())
-    return *it;
-  else
-    return 0;
+    regions.find(static_cast<GRegion *>(&tmp));
+
+  return it != regions.end() ? *it : NULL;
+
 }
 
 GFace *GModel::getFaceByTag(int n) const
 {
   GEntity tmp((GModel*)this, n);
   std::set<GFace *, GEntityLessThan>::const_iterator it =
-    faces.find(dynamic_cast<GFace *>(&tmp));
-  if(it != faces.end())
-    return *it;
-  else
-    return 0;
+    faces.find(static_cast<GFace *>(&tmp));
+  return it != faces.end() ? *it : NULL;
 }
 
 GEdge *GModel::getEdgeByTag(int n) const
 {
   GEntity tmp((GModel*)this, n);
   std::set<GEdge *, GEntityLessThan>::const_iterator it =
-    edges.find(dynamic_cast<GEdge *>(&tmp));
-  if(it != edges.end())
-    return *it;
-  else
-    return 0;
+    edges.find(static_cast<GEdge *>(&tmp));
+  return it != edges.end() ? *it : NULL;
 }
 
 GVertex *GModel::getVertexByTag(int n) const
 {
   GEntity tmp((GModel*)this, n);
   std::set<GVertex *, GEntityLessThan>::const_iterator it =
-    vertices.find(dynamic_cast<GVertex *>(&tmp));
-  if(it != vertices.end())
-    return *it;
-  else
-    return 0;
+    vertices.find(static_cast<GVertex *>(&tmp));
+  return it != vertices.end() ? *it : NULL;
 }
 
 GEntity *GModel::getEntityByTag(int dim, int n) const
