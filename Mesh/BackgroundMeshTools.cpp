@@ -51,23 +51,23 @@ static double LC_MVertex_CURV(GEntity *ge, double U, double V)
   double Crv = 0;
   switch(ge->dim()){
   case 0:
-    Crv = max_edge_curvature((const GVertex *)ge);
+    Crv = max_edge_curvature(dynamic_cast<const GVertex *>(ge));
     // Crv = std::max(max_surf_curvature_vertex((const GVertex *)ge), Crv);
     // Crv = max_surf_curvature((const GVertex *)ge);
     break;
   case 1:
     {
-      GEdge *ged = (GEdge *)ge;
-      Crv = ged->curvature(U);
-      Crv = std::max(Crv, max_surf_curvature(ged, U));
-      // printf("%g %d\n",Crv, CTX::instance()->mesh.minCircPoints);
-      // Crv = max_surf_curvature(ged, U);
+    GEdge *ged = dynamic_cast<GEdge *>(ge);
+    Crv = ged->curvature(U);
+    Crv = std::max(Crv, max_surf_curvature(ged, U));
+    // printf("%g %d\n",Crv, CTX::instance()->mesh.minCircPoints);
+    // Crv = max_surf_curvature(ged, U);
     }
     break;
   case 2:
     {
-      GFace *gf = (GFace *)ge;
-      Crv = gf->curvature(SPoint2(U, V));
+    GFace *gf = dynamic_cast<GFace *>(ge);
+    Crv = gf->curvature(SPoint2(U, V));
     }
     break;
   }
@@ -113,9 +113,15 @@ SMetric3 LC_MVertex_CURV_ANISO(GEntity *ge, double U, double V)
   bool iso_surf = CTX::instance()->mesh.lcFromCurvature == 2;
 
   switch(ge->dim()){
-  case 0: return metric_based_on_surface_curvature((const GVertex *)ge, iso_surf);
-  case 1: return metric_based_on_surface_curvature((const GEdge *)ge, U, iso_surf);
-  case 2: return metric_based_on_surface_curvature((const GFace *)ge, U, V, iso_surf);
+  case 0:
+    return metric_based_on_surface_curvature(dynamic_cast<const GVertex *>(ge),
+                                             iso_surf);
+  case 1:
+    return metric_based_on_surface_curvature(dynamic_cast<const GEdge *>(ge), U,
+                                             iso_surf);
+  case 2:
+    return metric_based_on_surface_curvature(dynamic_cast<const GFace *>(ge), U,
+                                             V, iso_surf);
   }
   Msg::Error("Curvature control impossible to compute for a volume!");
   return SMetric3();
@@ -128,25 +134,26 @@ static double LC_MVertex_PNTS(GEntity *ge, double U, double V)
   switch(ge->dim()){
   case 0:
     {
-      GVertex *gv = (GVertex *)ge;
-      double lc = gv->prescribedMeshSizeAtVertex();
-      // FIXME we might want to remove this to make all lc treatment consistent
-      if(lc >= MAX_LC) return CTX::instance()->lc / 10.;
-      return lc;
+    GVertex *gv = dynamic_cast<GVertex *>(ge);
+    double lc = gv->prescribedMeshSizeAtVertex();
+    // FIXME we might want to remove this to make all lc treatment consistent
+    if(lc >= MAX_LC) return CTX::instance()->lc / 10.;
+    return lc;
     }
   case 1:
     {
-      GEdge *ged = (GEdge *)ge;
-      GVertex *v1 = ged->getBeginVertex();
-      GVertex *v2 = ged->getEndVertex();
-      if (v1 && v2){
-        double lc1 = v1->prescribedMeshSizeAtVertex();
-        double lc2 = v2->prescribedMeshSizeAtVertex();
-        if (lc1 >= MAX_LC && lc2 >= MAX_LC){
-          // FIXME we might want to remove this to make all lc treatment consistent
-          return CTX::instance()->lc / 10.;
-        }
-        else{
+    GEdge *ged = dynamic_cast<GEdge *>(ge);
+    GVertex *v1 = ged->getBeginVertex();
+    GVertex *v2 = ged->getEndVertex();
+    if(v1 && v2) {
+      double lc1 = v1->prescribedMeshSizeAtVertex();
+      double lc2 = v2->prescribedMeshSizeAtVertex();
+      if(lc1 >= MAX_LC && lc2 >= MAX_LC) {
+        // FIXME we might want to remove this to make all lc treatment
+        // consistent
+        return CTX::instance()->lc / 10.;
+      }
+      else {
         Range<double> range = ged->parBounds(0);
         double a = (U - range.low()) / (range.high() - range.low());
           return (1 - a) * lc1 + (a)* lc2;

@@ -472,7 +472,7 @@ static void getAllParameters(MVertex *v, GFace *gf,
 #endif
 
   if(v->onWhat()->dim() == 0) {
-    GVertex *gv = (GVertex *)v->onWhat();
+    GVertex *gv = dynamic_cast<GVertex *>(v->onWhat());
     std::vector<GEdge *> const &ed = gv->edges();
     bool seam = false;
     for(std::vector<GEdge *>::const_iterator it = ed.begin(); it != ed.end();
@@ -496,7 +496,7 @@ static void getAllParameters(MVertex *v, GFace *gf,
     if(!seam) params.push_back(gv->reparamOnFace(gf, 1));
   }
   else if(v->onWhat()->dim() == 1) {
-    GEdge *ge = (GEdge *)v->onWhat();
+    GEdge *ge = dynamic_cast<GEdge *>(v->onWhat());
     if(!ge->haveParametrization()) return;
     double UU;
     v->getParameter(0, UU);
@@ -581,7 +581,7 @@ bool reparamMeshVertexOnFace(MVertex const *v, const GFace *gf, SPoint2 &param,
       return true;
     }
 
-    GVertex *gv = (GVertex *)v->onWhat();
+    GVertex *gv = dynamic_cast<GVertex *>(v->onWhat());
     // hack for bug in periodic curves
     if(gv->getNativeType() == GEntity::GmshModel &&
        gf->geomType() == GEntity::Plane)
@@ -600,7 +600,7 @@ bool reparamMeshVertexOnFace(MVertex const *v, const GFace *gf, SPoint2 &param,
       return true;
     }
 
-    GEdge *ge = (GEdge *)v->onWhat();
+    GEdge *ge = dynamic_cast<GEdge *>(v->onWhat());
     double t;
     v->getParameter(0, t);
     param = ge->reparamOnFace(gf, t, 1);

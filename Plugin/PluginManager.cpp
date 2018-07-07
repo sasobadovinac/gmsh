@@ -107,7 +107,7 @@ GMSH_SolverPlugin *PluginManager::findSolverPlugin()
   for (; it != ite; ++it) {
     GMSH_Plugin *p = it->second;
     if(p->getType() == GMSH_Plugin::GMSH_SOLVER_PLUGIN) {
-      return (GMSH_SolverPlugin*)(p);
+      return dynamic_cast<GMSH_SolverPlugin *>(p);
     }
   }
   return 0;

@@ -732,7 +732,7 @@ static void _getAdditionalNodesOnBoundary(GEntity *entity,
       coord.push_back(v->z());
       if(entity->dim() == 2 && parametric){
         SPoint2 param;
-        if(!reparamMeshVertexOnFace(v, (GFace*)entity, param))
+        if(!reparamMeshVertexOnFace(v, dynamic_cast<GFace *>(entity), param))
           Msg::Warning("Failed to compute parameters of node %d on surface %d",
                        v->getNum(), entity->tag());
         parametricCoord.push_back(param.x());
@@ -750,7 +750,7 @@ static void _getAdditionalNodesOnBoundary(GEntity *entity,
       coord.push_back(v->z());
       if(entity->dim() == 2 && parametric){
         SPoint2 param;
-        if(!reparamMeshVertexOnFace(v, (GFace*)entity, param))
+        if(!reparamMeshVertexOnFace(v, dynamic_cast<GFace *>(entity), param))
           Msg::Warning("Failed to compute parameters of node %d on surface %d",
                        v->getNum(), entity->tag());
         parametricCoord.push_back(param.x());
@@ -758,7 +758,7 @@ static void _getAdditionalNodesOnBoundary(GEntity *entity,
       }
       else if(entity->dim() == 1 && parametric){
         double param;
-        if(!reparamMeshVertexOnEdge(v, (GEdge*)entity, param))
+        if(!reparamMeshVertexOnEdge(v, dynamic_cast<GEdge *>(entity), param))
           Msg::Warning("Failed to compute parameters of node %d on edge %d",
                        v->getNum(), entity->tag());
         parametricCoord.push_back(param);

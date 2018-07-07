@@ -195,7 +195,7 @@ static void delete_edge_cb(Fl_Widget *w, void *data)
         MElement *me = FlGui::instance()->selectedElements[i];
         if(me->getType() == TYPE_LIN && me->getVisibility() != 2){
           me->setVisibility(2);
-          ele.push_back((MLine*)me);
+          ele.push_back(dynamic_cast<MLine *>(me));
         }
       }
     }

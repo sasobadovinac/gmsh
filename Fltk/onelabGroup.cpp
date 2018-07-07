@@ -252,7 +252,7 @@ void onelab_option_cb(Fl_Widget *w, void *data)
 {
   if(!data) return;
   std::string what((const char*)data);
-  double val = ((Fl_Menu_*)w)->mvalue()->value() ? 1. : 0.;
+  double val = (dynamic_cast<Fl_Menu_ *>(w))->mvalue()->value() ? 1. : 0.;
   if(what == "save")
     CTX::instance()->solver.autoSaveDatabase = val;
   else if(what == "load")
@@ -405,7 +405,7 @@ static void setOpenedClosed(Fl_Tree_Item *item, int reason)
 
 static void onelab_tree_cb(Fl_Widget *w, void *data)
 {
-  Fl_Tree *tree = (Fl_Tree*)w;
+  Fl_Tree *tree = dynamic_cast<Fl_Tree *>(w);
   Fl_Tree_Item *item = (Fl_Tree_Item*)tree->callback_item();
   setOpenedClosed(item, tree->callback_reason());
 }
@@ -669,8 +669,8 @@ viewButton *onelabGroup::getViewButton(int num)
   if(path.empty()) return 0;
   Fl_Tree_Item *n = _tree->find_item(path.c_str());
   if(n){
-    Fl_Group *grp = (Fl_Group*)n->widget();
-    return (viewButton*)grp->child(0);
+    Fl_Group *grp = dynamic_cast<Fl_Group *>(n->widget());
+    return dynamic_cast<viewButton *>(grp->child(0));
   }
   return 0;
 }
@@ -745,7 +745,7 @@ static void onelab_number_check_button_cb(Fl_Widget *w, void *data)
   std::vector<onelab::number> numbers;
   onelab::server::instance()->get(numbers, name);
   if(numbers.size()){
-    Fl_Check_Button *o = (Fl_Check_Button*)w;
+    Fl_Check_Button *o = dynamic_cast<Fl_Check_Button *>(w);
     onelab::number old = numbers[0];
     numbers[0].setValue(o->value());
     setGmshOption(numbers[0]);
@@ -762,7 +762,7 @@ static void onelab_number_choice_cb(Fl_Widget *w, void *data)
   std::vector<onelab::number> numbers;
   onelab::server::instance()->get(numbers, name);
   if(numbers.size()){
-    Fl_Choice *o = (Fl_Choice*)w;
+    Fl_Choice *o = dynamic_cast<Fl_Choice *>(w);
     std::vector<double> choices = numbers[0].getChoices();
     onelab::number old = numbers[0];
     if(o->value() < (int)choices.size()) numbers[0].setValue(choices[o->value()]);
@@ -780,7 +780,7 @@ static void onelab_number_input_range_cb(Fl_Widget *w, void *data)
   std::vector<onelab::number> numbers;
   onelab::server::instance()->get(numbers, name);
   if(numbers.size()){
-    inputRange *o = (inputRange*)w;
+    inputRange *o = dynamic_cast<inputRange *>(w);
     onelab::number old = numbers[0];
     if(o->doCallbackOnValues()){
       numbers[0].setValue(o->value());
@@ -807,7 +807,7 @@ static void onelab_number_output_range_cb(Fl_Widget *w, void *data)
   std::vector<onelab::number> numbers;
   onelab::server::instance()->get(numbers, name);
   if(numbers.size()){
-    outputRange *o = (outputRange*)w;
+    outputRange *o = dynamic_cast<outputRange *>(w);
     numbers[0].setAttribute("Graph", o->graph());
     onelab::server::instance()->set(numbers[0]);
     onelabUtils::updateGraphs();
@@ -926,7 +926,7 @@ static void onelab_string_input_cb(Fl_Widget *w, void *data)
   std::vector<onelab::string> strings;
   onelab::server::instance()->get(strings, name);
   if(strings.size()){
-    Fl_Input *o = (Fl_Input*)w;
+    Fl_Input *o = dynamic_cast<Fl_Input *>(w);
     onelab::string old = strings[0];
     strings[0].setValue(o->value());
     setGmshOption(strings[0]);
@@ -943,7 +943,7 @@ static void onelab_string_input_choice_cb(Fl_Widget *w, void *data)
   std::vector<onelab::string> strings;
   onelab::server::instance()->get(strings, name);
   if(strings.size()){
-    Fl_Input_Choice *o = (Fl_Input_Choice*)w;
+    Fl_Input_Choice *o = dynamic_cast<Fl_Input_Choice *>(w);
     onelab::string old = strings[0];
     strings[0].setValue(o->value());
     std::string choices;
@@ -966,7 +966,7 @@ static void onelab_string_input_choice_cb(Fl_Widget *w, void *data)
 
 static void onelab_input_choice_file_chooser_cb(Fl_Widget *w, void *data)
 {
-  Fl_Input_Choice *but = (Fl_Input_Choice*)w->parent();
+  Fl_Input_Choice *but = dynamic_cast<Fl_Input_Choice *>(w->parent());
   if(fileChooser(FILE_CHOOSER_SINGLE, "Choose", "", but->value())){
     but->value(fileChooserGetName(1).c_str());
     but->do_callback(but, data);
@@ -975,7 +975,7 @@ static void onelab_input_choice_file_chooser_cb(Fl_Widget *w, void *data)
 
 static void onelab_input_choice_file_edit_cb(Fl_Widget *w, void *data)
 {
-  Fl_Input_Choice *but = (Fl_Input_Choice*)w->parent();
+  Fl_Input_Choice *but = dynamic_cast<Fl_Input_Choice *>(w->parent());
   std::string prog = FixWindowsPath(CTX::instance()->editor);
   std::string file = FixWindowsPath(but->value());
   SystemCall(ReplaceSubString("%s", file, prog));
@@ -983,7 +983,7 @@ static void onelab_input_choice_file_edit_cb(Fl_Widget *w, void *data)
 
 static void onelab_input_choice_file_merge_cb(Fl_Widget *w, void *data)
 {
-  Fl_Input_Choice *but = (Fl_Input_Choice*)w->parent();
+  Fl_Input_Choice *but = dynamic_cast<Fl_Input_Choice *>(w->parent());
   std::string file = FixWindowsPath(but->value());
   MergeFile(file);
   drawContext::global()->draw();
@@ -991,7 +991,7 @@ static void onelab_input_choice_file_merge_cb(Fl_Widget *w, void *data)
 
 static void multiple_selection_menu_cb(Fl_Widget *w, void *data)
 {
-  Fl_Menu_Button *menu = (Fl_Menu_Button*)w;
+  Fl_Menu_Button *menu = dynamic_cast<Fl_Menu_Button *>(w);
   std::string val;
   for (int i = 0; i < menu->size() - 1; i++) {
     const Fl_Menu_Item &item = menu->menu()[i];

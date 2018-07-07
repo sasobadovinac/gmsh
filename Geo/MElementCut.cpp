@@ -956,7 +956,7 @@ static void elementCutMesh(MElement *e, std::vector<gLevelset *> &RPN,
       }
       else if(eType == TYPE_POLYH){
         for(int i = 0; i < e->getNumChildren(); i++) {
-          MTetrahedron *t = (MTetrahedron*) e->getChild(i);
+          MTetrahedron *t = dynamic_cast<MTetrahedron *>(e->getChild(i));
           DI_Tetra Tet(t->getVertex(0)->x(), t->getVertex(0)->y(), t->getVertex(0)->z(),
                        t->getVertex(1)->x(), t->getVertex(1)->y(), t->getVertex(1)->z(),
                        t->getVertex(2)->x(), t->getVertex(2)->y(), t->getVertex(2)->z(),
@@ -1461,7 +1461,7 @@ GModel *buildCutMesh(GModel *gm, gLevelset *ls,
     }
     for(int k = 0; k < primS; k++){
       if (primitives[k]->type() == LSPOINTS){
-        ((gLevelsetPoints*)primitives[k])->computeLS(vert);
+        (dynamic_cast<gLevelsetPoints *>(primitives[k]))->computeLS(vert);
       }
     }
   }

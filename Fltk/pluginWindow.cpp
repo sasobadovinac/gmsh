@@ -49,14 +49,14 @@ void plugin_cb(Fl_Widget *w, void *data)
 static void plugin_input_value_cb(Fl_Widget *w, void *data)
 {
   double (*f)(int, int, double) = (double (*)(int, int, double)) data;
-  Fl_Value_Input *input = (Fl_Value_Input*) w;
+  Fl_Value_Input *input = dynamic_cast<Fl_Value_Input *>(w);
   f(-1, 0, input->value());
 }
 
 static void plugin_input_cb(Fl_Widget *w, void *data)
 {
   std::string (*f)(int, int, std::string) = (std::string (*)(int, int, std::string)) data;
-  Fl_Input *input = (Fl_Input*) w;
+  Fl_Input *input = dynamic_cast<Fl_Input *>(w);
   f(-1, 0, input->value());
 }
 
@@ -170,7 +170,7 @@ static void plugin_run_cb(Fl_Widget *w, void *data)
   }
 
   if(p->getType() == GMSH_Plugin::GMSH_POST_PLUGIN){
-    GMSH_PostPlugin *pp = (GMSH_PostPlugin*)p;
+    GMSH_PostPlugin *pp = dynamic_cast<GMSH_PostPlugin *>(p);
     // run on all selected views
     bool no_view_selected = true;
     for(int i = 1; i <= FlGui::instance()->plugins->view_browser->size(); i++) {

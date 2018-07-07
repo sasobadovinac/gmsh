@@ -1111,7 +1111,7 @@ void Recombinator::delete_quad_triangles_in_boundary() const {
     }
     gf->triangles.clear();
     for (unsigned int i = 0; i < triangles_to_keep.size(); i++) {
-      gf->triangles.push_back((MTriangle*)triangles_to_keep[i]);
+      gf->triangles.push_back(dynamic_cast<MTriangle *>(triangles_to_keep[i]));
     }
   }
 }
@@ -1966,7 +1966,7 @@ void Supplementary::create_quads_on_boundary(GRegion* gr) {
     gf->triangles.clear();
 
     for (i = 0; i < opt.size(); i++) {
-      gf->triangles.push_back((MTriangle*)opt[i]);
+      gf->triangles.push_back(dynamic_cast<MTriangle *>(opt[i]));
     }
   }
 }
@@ -4490,7 +4490,7 @@ void PostOp::create_quads_on_boundary(GRegion* gr) {
     gf->triangles.clear();
 
     for (i = 0; i < opt.size(); i++) {
-      gf->triangles.push_back((MTriangle*)opt[i]);
+      gf->triangles.push_back(dynamic_cast<MTriangle *>(opt[i]));
     }
   }
 }
@@ -6430,9 +6430,9 @@ bool Recombinator_Graph::merge_hex(GRegion *gr, Hex *hex) {
   std::set<MElement*>::iterator it_tet_to_remove = hex_to_tet[hex].begin();
   std::vector<MTetrahedron*>::iterator itfind_tet_region;
   for (; it_tet_to_remove != hex_to_tet[hex].end(); it_tet_to_remove++) {
-    itfind_tet_region = std::find(gr->tetrahedra.begin(),
-      gr->tetrahedra.end(),
-      (MTetrahedron*)(*it_tet_to_remove));
+    itfind_tet_region =
+      std::find(gr->tetrahedra.begin(), gr->tetrahedra.end(),
+                dynamic_cast<MTetrahedron *>(*it_tet_to_remove));
 
     if (itfind_tet_region != gr->tetrahedra.end()) {
       gr->tetrahedra.erase(itfind_tet_region);

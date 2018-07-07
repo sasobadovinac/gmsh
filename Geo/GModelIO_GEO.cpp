@@ -1099,7 +1099,7 @@ void GEO_Internals::synchronize(GModel *model)
       }
       else{
         if(v->getNativeType() == GEntity::GmshModel)
-          ((gmshVertex*)v)->resetNativePtr(p);
+          (dynamic_cast<gmshVertex *>(v))->resetNativePtr(p);
         v->resetMeshAttributes();
       }
     }
@@ -1126,10 +1126,11 @@ void GEO_Internals::synchronize(GModel *model)
         else{
           if(e->getNativeType() == GEntity::GmshModel){
             if(c->beg && c->end)
-              ((gmshEdge*)e)->resetNativePtr(c, model->getVertexByTag(c->beg->Num),
-                                             model->getVertexByTag(c->end->Num));
+              (dynamic_cast<gmshEdge *>(e))
+                ->resetNativePtr(c, model->getVertexByTag(c->beg->Num),
+                                 model->getVertexByTag(c->end->Num));
             else
-              ((gmshEdge*)e)->resetNativePtr(c, 0, 0);
+              (dynamic_cast<gmshEdge *>(e))->resetNativePtr(c, 0, 0);
           }
           e->resetMeshAttributes();
         }
@@ -1151,7 +1152,7 @@ void GEO_Internals::synchronize(GModel *model)
       }
       else{
         if(f->getNativeType() == GEntity::GmshModel)
-          ((gmshFace*)f)->resetNativePtr(s);
+          (dynamic_cast<gmshFace *>(f))->resetNativePtr(s);
         f->resetMeshAttributes();
       }
     }
@@ -1170,7 +1171,7 @@ void GEO_Internals::synchronize(GModel *model)
       }
       else{
         if(r->getNativeType() == GEntity::GmshModel)
-          ((gmshRegion*)r)->resetNativePtr(v);
+          (dynamic_cast<gmshRegion *>(r))->resetNativePtr(v);
         r->resetMeshAttributes();
       }
     }

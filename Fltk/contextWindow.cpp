@@ -1010,7 +1010,7 @@ static Fl_Menu_Item menu_selection_mode[] = {
 
 static void selection_mode_cb(Fl_Widget *w, void *data)
 {
-  Fl_Choice *c = (Fl_Choice*)w;
+  Fl_Choice *c = dynamic_cast<Fl_Choice *>(w);
   int mode = ENT_ALL;
   switch(c->value()){
   case 1:

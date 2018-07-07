@@ -52,7 +52,7 @@ struct opt_data{
 static void interactive_cb(Fl_Widget* w, void* data)
 {
   if(!data) return;
-  inputValueFloat *v = (inputValueFloat*)w;
+  inputValueFloat *v = dynamic_cast<inputValueFloat *>(w);
   opt_data *d = (opt_data*)data;
   double val = v->value();
   NumberOption(GMSH_SET|GMSH_GUI, d->category.c_str(), d->index,

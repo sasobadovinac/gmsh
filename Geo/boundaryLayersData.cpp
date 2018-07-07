@@ -374,7 +374,7 @@ void getLocalInfoAtNode(MVertex *v, BoundaryLayerField *blf, double &hwall)
     hwall= blf->hwall(v->onWhat()->tag());
   }
   else if(v->onWhat()->dim() == 1){
-    GEdge *ge = (GEdge*)v->onWhat();
+    GEdge *ge = dynamic_cast<GEdge *>(v->onWhat());
     Range<double> bounds = ge->parBounds(0);
     double t_begin = bounds.low();
     double t_end = bounds.high();

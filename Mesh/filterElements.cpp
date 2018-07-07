@@ -265,8 +265,10 @@ void filterOverlappingElements (std::vector<MLine*> &bdry,
   blTris.clear();
   blQuads.clear();
   for (unsigned int i=0;i<vvv.size();i++){
-    if (vvv[i]->getType() == TYPE_TRI)blTris.push_back((MTriangle*)vvv[i]);
-    else if (vvv[i]->getType() == TYPE_QUA)blQuads.push_back((MQuadrangle*)vvv[i]);
+    if (vvv[i]->getType() == TYPE_TRI)
+      blTris.push_back(dynamic_cast<MTriangle *>(vvv[i]));
+    else if (vvv[i]->getType() == TYPE_QUA)
+      blQuads.push_back(dynamic_cast<MQuadrangle *>(vvv[i]));
   }
 
   

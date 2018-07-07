@@ -713,7 +713,7 @@ static void meshCompound(GEdge* ge)
 {
   std::vector<MLine*> lines;
   for (unsigned int i = 0; i < ge->_compound.size(); i++){
-    GEdge *c = (GEdge*)ge->_compound[i];
+    GEdge *c = dynamic_cast<GEdge *>(ge->_compound[i]);
     for (unsigned int j = 0; j<c->lines.size(); j++){
       lines.push_back(new MLine(c->lines[j]->getVertex(0),
                                 c->lines[j]->getVertex(1)));
@@ -737,7 +737,7 @@ void GEdge::mesh(bool verbose)
     if(_compound[0] == this) { // I'm the one that makes the compound job
       bool ok = true;
       for(unsigned int i = 0; i < _compound.size(); i++) {
-        GEdge *ge = (GEdge *)_compound[i];
+        GEdge *ge = dynamic_cast<GEdge *>(_compound[i]);
         ok &= (ge->meshStatistics.status == GEdge::DONE);
       }
       if(!ok) { meshStatistics.status = GEdge::PENDING; }

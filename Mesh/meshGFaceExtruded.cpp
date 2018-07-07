@@ -86,7 +86,7 @@ static void extrudeMesh(GEdge *from, GFace *to, MVertexRTree &pos,
     for(unsigned int i = 0; i < from->mesh_vertices.size(); i++){
       std::vector<MVertex*> extruded_vertices;
       MVertex *v = from->mesh_vertices[i];
-      MEdgeVertex *mv = (MEdgeVertex*) v;
+      MEdgeVertex *mv = dynamic_cast<MEdgeVertex *>(v);
       mv->bl_data = new MVertexBoundaryLayerData();
       for(int j = 0; j < ep->mesh.NbLayer; j++) {
         for(int k = 0; k < ep->mesh.NbElmLayer[j]; k++) {

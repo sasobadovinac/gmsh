@@ -1429,7 +1429,7 @@ static void meshCompound(GFace* gf, bool verbose)
   std::vector< SPoint2 > triangles_uv;
 
   for (unsigned int i = 0; i < gf->_compound.size(); i++){
-    GFace *c = (GFace*)gf->_compound[i];
+    GFace *c = dynamic_cast<GFace *>(gf->_compound[i]);
     df->triangles.insert(df->triangles.end(), c->triangles.begin(),
 			 c->triangles.end());
     df->mesh_vertices.insert(df->mesh_vertices.end(), c->mesh_vertices.begin(),
@@ -1480,11 +1480,14 @@ static void meshCompound(GFace* gf, bool verbose)
   for (GFace::size_type i = 0; i < df->triangles.size(); i++){
     MTriangle *t = df->triangles[i];
     if (t->getVertex(0)->onWhat()->dim() == 2)
-      ((GFace*)t->getVertex(0)->onWhat())->triangles.push_back(t);
+      (dynamic_cast<GFace *>(t->getVertex(0)->onWhat()))
+        ->triangles.push_back(t);
     else if (t->getVertex(1)->onWhat()->dim() == 2)
-      ((GFace*)t->getVertex(1)->onWhat())->triangles.push_back(t);
+      (dynamic_cast<GFace *>(t->getVertex(1)->onWhat()))
+        ->triangles.push_back(t);
     else if (t->getVertex(2)->onWhat()->dim() == 2)
-      ((GFace*)t->getVertex(2)->onWhat())->triangles.push_back(t);
+      (dynamic_cast<GFace *>(t->getVertex(2)->onWhat()))
+        ->triangles.push_back(t);
     else gf->triangles.push_back(t); // FIXME could be better!
   }
   // gf->triangles = df->triangles;
@@ -1503,8 +1506,8 @@ void GFace::mesh(bool verbose)
     if(_compound[0] == this){ // I'm the one that makes the compound job
       bool ok = true;
       for(unsigned int i = 0; i < _compound.size(); i++){
-	GFace *gf = (GFace*)_compound[i];
-	ok &= (gf->meshStatistics.status == GFace::DONE);
+        GFace *gf = dynamic_cast<GFace *>(_compound[i]);
+        ok &= (gf->meshStatistics.status == GFace::DONE);
       }
       if(!ok){
         meshStatistics.status = GFace::PENDING;

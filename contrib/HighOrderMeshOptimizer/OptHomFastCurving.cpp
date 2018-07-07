@@ -1311,7 +1311,7 @@ void HighOrderMeshFastCurving(GModel *gm, FastCurvingParameters &p,
 
     if (p.thickness && p.dim == 3 && bndEnts.size()) {
       Msg::Info("Curving elements in volume %d...", gEnt->tag());
-      curve3DBoundaryLayer(bndEl2column, (GFace *)bndEnts[0]);
+      curve3DBoundaryLayer(bndEl2column, dynamic_cast<GFace *>(bndEnts[0]));
     }
   }
 

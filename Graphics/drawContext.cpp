@@ -423,7 +423,7 @@ bool drawContext::generateTextureForImage(const std::string &name, int page,
         Msg::Error("Could not load background image '%s'", name.c_str());
         return false;
       }
-      Fl_RGB_Image *img2 = (Fl_RGB_Image*)img->copy(2048, 2048);
+      Fl_RGB_Image *img2 = dynamic_cast<Fl_RGB_Image *>(img->copy(2048, 2048));
       glPixelStorei(GL_UNPACK_ROW_LENGTH, img2->w());
       glGenTextures(1, &imageTexture);
       glBindTexture(GL_TEXTURE_2D, imageTexture);

@@ -938,7 +938,8 @@ void PViewDataList::setOrder2(int type)
   case TYPE_PRI: typeMSH = MSH_PRI_18; break;
   case TYPE_PYR: typeMSH = MSH_PYR_14; break;
   }
-  const polynomialBasis *fs = (polynomialBasis*)BasisFactory::getNodalBasis(typeMSH);
+  const polynomialBasis *fs =
+    dynamic_cast<polynomialBasis *>(BasisFactory::getNodalBasis(typeMSH));
   if(!fs){
     Msg::Error("Could not find polynomial function space for element type %d",
                typeMSH);

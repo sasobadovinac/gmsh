@@ -113,8 +113,10 @@ void assignFace (GFace *gf, std::set<MElement*> &_f)
   gf->triangles.clear();
   gf->quadrangles.clear();
   for (std::set<MElement*> :: iterator it = _f.begin() ; it != _f.end() ; ++it) {
-    if ((*it)->getNumVertices () == 3) gf->triangles.push_back ((MTriangle*) *it);
-    else if ((*it)->getNumVertices () == 4) gf->quadrangles.push_back ((MQuadrangle*) *it);
+    if ((*it)->getNumVertices () == 3)
+      gf->triangles.push_back(dynamic_cast<MTriangle *>(*it));
+    else if ((*it)->getNumVertices () == 4)
+      gf->quadrangles.push_back(dynamic_cast<MQuadrangle *>(*it));
   }
 }
 
@@ -670,8 +672,10 @@ void createTopologyFromMesh3D(GModel *gm, int &num)
       MElement* face = eltFactory.create(tag,vtcs);
 
       if (parent->getType() != TYPE_PYR) {
-        if (type == TYPE_TRI) gf->triangles  .push_back((MTriangle*)   face);
-        if (type == TYPE_QUA) gf->quadrangles.push_back((MQuadrangle*) face);
+        if (type == TYPE_TRI)
+          gf->triangles.push_back(dynamic_cast<MTriangle *>(face));
+        if (type == TYPE_QUA)
+          gf->quadrangles.push_back(dynamic_cast<MQuadrangle *>(face));
       }
     }
   }

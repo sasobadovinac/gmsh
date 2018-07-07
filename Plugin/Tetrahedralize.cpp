@@ -100,10 +100,10 @@ PView *GMSH_TetrahedralizePlugin::execute(PView *v)
   PViewDataList *data2 = getDataList(v2);
   for(unsigned int i = 0; i < tets.size(); i++){
     PointData *p[4];
-    p[0] = (PointData*)tets[i]->getVertex(0);
-    p[1] = (PointData*)tets[i]->getVertex(1);
-    p[2] = (PointData*)tets[i]->getVertex(2);
-    p[3] = (PointData*)tets[i]->getVertex(3);
+    p[0] = dynamic_cast<PointData *>(tets[i]->getVertex(0));
+    p[1] = dynamic_cast<PointData *>(tets[i]->getVertex(1));
+    p[2] = dynamic_cast<PointData *>(tets[i]->getVertex(2));
+    p[3] = dynamic_cast<PointData *>(tets[i]->getVertex(3));
     int numComp = 0;
     std::vector<double> *vec = 0;
     if((int)p[0]->val.size() == 9 * numSteps &&

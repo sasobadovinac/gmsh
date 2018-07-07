@@ -101,8 +101,7 @@ GeomMeshMatcher::matchVertices(GModel* m1, GModel *m2, bool& ok)
     double best_score = DBL_MAX;
 
     for(GModel::viter vit2 = m2->firstVertex(); vit2 != m2->lastVertex(); vit2++) {
-
-      discreteVertex* v2 = (discreteVertex*) *vit2;
+      discreteVertex *v2 = dynamic_cast<discreteVertex *>(*vit2);
 
       // We match the vertices if their coordinates are the same under the
       // specified tolerance.
@@ -334,7 +333,8 @@ GeomMeshMatcher::matchRegions(GModel* m1, GModel* m2,
       num_total_regions++;
 
       //std::vector<list<GRegion*> > lists;
-      std::vector<GFace*> boundary_faces = ((GFace*)(*entity1))->faces();
+      std::vector<GFace *> boundary_faces =
+        (dynamic_cast<GFace *>(*entity1))->faces();
       std::vector<GFace*> coresp_bound_faces;
       std::vector<GRegion*> common_regions;
 
@@ -349,18 +349,19 @@ GeomMeshMatcher::matchRegions(GModel* m1, GModel* m2,
           if((*entity2)->dim() != 3) continue;
           std::vector<std::vector<GFace*> > lists;
           lists.push_back(coresp_bound_faces);
-          lists.push_back(((GRegion*)*entity2)->faces());
+          lists.push_back((dynamic_cast<GRegion *>(*entity2))->faces());
           std::vector<GFace*> common_faces;
           getIntersection<GFace*>(common_faces, lists);
           if (common_faces.size() == coresp_bound_faces.size()) {
-            common_regions.push_back((GRegion*)*entity2);
+            common_regions.push_back(dynamic_cast<GRegion *>(*entity2));
           }
 
         }
 
       if (common_regions.size() == 1) {
-        coresp_r->push_back(Pair<GRegion*,GRegion*> ((GRegion*) *entity1, common_regions[0]));
-        common_regions[0]->setTag(((GRegion*) *entity1)->tag());
+        coresp_r->push_back(Pair<GRegion *, GRegion *>(
+          dynamic_cast<GRegion *>(*entity1), common_regions[0]));
+        common_regions[0]->setTag((dynamic_cast<GRegion *>(*entity1))->tag());
         num_matched_regions++;
       } else if (common_regions.size() > 1) {
 
@@ -369,10 +370,12 @@ GeomMeshMatcher::matchRegions(GModel* m1, GModel* m2,
         /*
           This is made in a backward fashion compared to the other entities...
         */
-        std::vector<GEdge*> boundaries = ((GRegion*) *entity1)->edges();
+        std::vector<GEdge *> boundaries =
+          (dynamic_cast<GRegion *>(*entity1))->edges();
 
         // Then, compute the minimal bounding box
-        SOrientedBoundingBox geo_obb = ((GRegion*) *entity1)->getOBB();
+        SOrientedBoundingBox geo_obb =
+          (dynamic_cast<GRegion *>(*entity1))->getOBB();
 
         GRegion* choice = 0;
         double best_score = DBL_MAX;
@@ -391,9 +394,9 @@ GeomMeshMatcher::matchRegions(GModel* m1, GModel* m2,
             choice = (*candidate);
           }
         }
-        coresp_r->push_back(Pair<GRegion*,GRegion*>((GRegion*) *entity1 ,
-                                                    choice));
-        choice->setTag(((GRegion*) *entity1)->tag());
+        coresp_r->push_back(Pair<GRegion *, GRegion *>(
+          dynamic_cast<GRegion *>(*entity1), choice));
+        choice->setTag((dynamic_cast<GRegion *>(*entity1))->tag());
 
         //for (unsigned int v = 0; v < ((GRegion*) choice)->getNumMeshVertices(); v++) {
         //  if ( ((GRegion*) choice)->getMeshVertex(v)->onWhat()->dim() > 2)
@@ -547,8 +550,8 @@ int GeomMeshMatcher::forceTomatch(GModel *geom, GModel *mesh, const double TOL)
       MVertex *v2 = geom->getMeshVertexByTag((*it)->lines[i]->getVertex(1)->getNum());
       if (v1 && v2){
         GEdge *ge= 0;
-        if (v1->onWhat()->dim() == 1)ge = (GEdge*)v1->onWhat();
-        if (v2->onWhat()->dim() == 1)ge = (GEdge*)v2->onWhat();
+        if(v1->onWhat()->dim() == 1) ge = dynamic_cast<GEdge *>(v1->onWhat());
+        if(v2->onWhat()->dim() == 1) ge = dynamic_cast<GEdge *>(v2->onWhat());
         if (ge){
           double u1,u2;
           reparamMeshVertexOnEdge(v1, ge, u1);
@@ -570,9 +573,15 @@ int GeomMeshMatcher::forceTomatch(GModel *geom, GModel *mesh, const double TOL)
       MVertex *v1 = geom->getMeshVertexByTag((*it)->triangles[i]->getVertex(0)->getNum());
       MVertex *v2 = geom->getMeshVertexByTag((*it)->triangles[i]->getVertex(1)->getNum());
       MVertex *v3 = geom->getMeshVertexByTag((*it)->triangles[i]->getVertex(2)->getNum());
-      if (v1->onWhat()->dim() == 2)((GFace*)v1->onWhat())->triangles.push_back(new MTriangle(v1,v2,v3));
-      else if (v2->onWhat()->dim() == 2)((GFace*)v2->onWhat())->triangles.push_back(new MTriangle(v1,v2,v3));
-      else if (v3->onWhat()->dim() == 2)((GFace*)v3->onWhat())->triangles.push_back(new MTriangle(v1,v2,v3));
+      if (v1->onWhat()->dim() == 2)
+        (dynamic_cast<GFace *>(v1->onWhat()))
+          ->triangles.push_back(new MTriangle(v1, v2, v3));
+      else if (v2->onWhat()->dim() == 2)
+        (dynamic_cast<GFace *>(v2->onWhat()))
+          ->triangles.push_back(new MTriangle(v1, v2, v3));
+      else if (v3->onWhat()->dim() == 2)
+        (dynamic_cast<GFace *>(v3->onWhat()))
+          ->triangles.push_back(new MTriangle(v1, v2, v3));
     }
     for (unsigned int i=0;i<(*it)->quadrangles.size();i++){
       MVertex *v1 = geom->getMeshVertexByTag((*it)->quadrangles[i]->getVertex(0)->getNum());
@@ -580,10 +589,18 @@ int GeomMeshMatcher::forceTomatch(GModel *geom, GModel *mesh, const double TOL)
       MVertex *v3 = geom->getMeshVertexByTag((*it)->quadrangles[i]->getVertex(2)->getNum());
       MVertex *v4 = geom->getMeshVertexByTag((*it)->quadrangles[i]->getVertex(3)->getNum());
       //      printf("quad %p %p %p %p\n",v1,v2,v3,v4);
-      if (v1->onWhat()->dim() == 2)((GFace*)v1->onWhat())->quadrangles.push_back(new MQuadrangle(v1,v2,v3,v4));
-      else if (v2->onWhat()->dim() == 2)((GFace*)v2->onWhat())->quadrangles.push_back(new MQuadrangle(v1,v2,v3,v4));
-      else if (v3->onWhat()->dim() == 2)((GFace*)v3->onWhat())->quadrangles.push_back(new MQuadrangle(v1,v2,v3,v4));
-      else if (v4->onWhat()->dim() == 2)((GFace*)v4->onWhat())->quadrangles.push_back(new MQuadrangle(v1,v2,v3,v4));
+      if (v1->onWhat()->dim() == 2)
+        (dynamic_cast<GFace *>(v1->onWhat()))
+          ->quadrangles.push_back(new MQuadrangle(v1, v2, v3, v4));
+      else if (v2->onWhat()->dim() == 2)
+        (dynamic_cast<GFace *>(v2->onWhat()))
+          ->quadrangles.push_back(new MQuadrangle(v1, v2, v3, v4));
+      else if (v3->onWhat()->dim() == 2)
+        (dynamic_cast<GFace *>(v3->onWhat()))
+          ->quadrangles.push_back(new MQuadrangle(v1, v2, v3, v4));
+      else if (v4->onWhat()->dim() == 2)
+        (dynamic_cast<GFace *>(v4->onWhat()))
+          ->quadrangles.push_back(new MQuadrangle(v1, v2, v3, v4));
     }
   }
   geom->writeMSH("hopla.msh",2.2,false,false,true);

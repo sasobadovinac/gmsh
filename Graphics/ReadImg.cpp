@@ -27,9 +27,9 @@ static PViewDataList *Img2Data(Fl_RGB_Image &img_init, int quads=1,
   // resize if necessary
   Fl_RGB_Image *img;
   if(!resizex || !resizey)
-    img = (Fl_RGB_Image*)img_init.copy();
+    img = dynamic_cast<Fl_RGB_Image *>(img_init.copy());
   else
-    img = (Fl_RGB_Image*)img_init.copy(resizex, resizey);
+    img = dynamic_cast<Fl_RGB_Image *>(img_init.copy(resizex, resizey));
 
   const unsigned char *data = img->array;
   int height = img->h();

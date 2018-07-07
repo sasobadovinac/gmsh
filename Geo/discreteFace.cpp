@@ -111,7 +111,8 @@ int discreteFace::trianglePosition(double par1, double par2, double &u, double &
   const MElement *e = _parametrizations[_current_parametrization].oct->find(par1,par2,0.0);
   if (!e)return -1;
   e->xyz2uvw(xy,uv);
-  int position = (int)((MTriangle*)e - &_parametrizations[_current_parametrization].t2d[0]);
+  int position = (int)(dynamic_cast<MTriangle *>(e) -
+                       &_parametrizations[_current_parametrization].t2d[0]);
   u = uv[0];
   v = uv[1];
   return position;
@@ -132,7 +133,8 @@ GPoint discreteFace::point(double par1, double par2) const
     return gp;
   }
   e->xyz2uvw(xy,uv);
-  int position = (int)((MTriangle*)e - &_parametrizations[_current_parametrization].t2d[0]);
+  int position = (int)(dynamic_cast<MTriangle *>(e) -
+                       &_parametrizations[_current_parametrization].t2d[0]);
   const MTriangle &t3d = _parametrizations[_current_parametrization].t3d[position];
 
   double X=0,Y=0,Z=0;
@@ -282,7 +284,8 @@ SVector3 discreteFace::normal(const SPoint2 &param) const
     Msg::Warning("discreteFace::normal << triangle not found %g %g",param[0],param[1]);
     return SVector3(0,0,0);
   }
-  int position = (int)((MTriangle*)e - &_parametrizations[_current_parametrization].t2d[0]);
+  int position = (int)(dynamic_cast<MTriangle *>(e) -
+                       &_parametrizations[_current_parametrization].t2d[0]);
   const MTriangle &t3d = _parametrizations[_current_parametrization].t3d[position];
   return _NORMAL_ (t3d);
 #else
@@ -313,7 +316,8 @@ Pair<SVector3, SVector3> discreteFace::firstDer(const SPoint2 &param) const
     return Pair<SVector3, SVector3>(SVector3(1,0,0), SVector3(0,1,0));
   }
 
-  int position = (int)((MTriangle*)e - &_parametrizations[_current_parametrization].t2d[0]);
+  int position = (int)(dynamic_cast<MTriangle *>(e) -
+                       &_parametrizations[_current_parametrization].t2d[0]);
 
   const MTriangle &t3d = _parametrizations[_current_parametrization].t3d[position];
   const MVertex *v1 = t3d.getVertex(0);
@@ -656,8 +660,8 @@ GPoint discreteFace::intersectionWithCircle(const SVector3 &n1, const SVector3 &
 					    double uv[2])
 {
 #ifdef HAVE_HXT
-  MTriangle *t2d = (MTriangle*)_parametrizations[_current_parametrization].oct->find
-    (uv[0], uv[1], 0.0);
+  MTriangle *t2d = dynamic_cast<MTriangle *>(
+    _parametrizations[_current_parametrization].oct->find(uv[0], uv[1], 0.0));
   MTriangle *t3d = NULL;
   if (t2d) {
     int position = (int)(t2d - &_parametrizations[_current_parametrization].t2d[0]);
@@ -1000,9 +1004,10 @@ bool discreteFace::compute_topology_of_partition(int nbColors,
 	  }
 	}
 	if (it->first.first != -1){
-	  discreteEdge *de = new discreteEdge
-            (gm, ++TAG, (GVertex*)ends[0]->onWhat(), (GVertex*)ends[1]->onWhat());
-	  e_internals.push_back(de);
+      discreteEdge *de =
+        new discreteEdge(gm, ++TAG, dynamic_cast<GVertex *>(ends[0]->onWhat()),
+                         dynamic_cast<GVertex *>(ends[1]->onWhat()));
+      e_internals.push_back(de);
 	  Msg::Info("Creation of one internal discrete edge %d (%d %d) to discrete "
                     "face %d", de->tag(), ends[0]->onWhat()->tag(),
                     ends[1]->onWhat()->tag(), tag());
@@ -1142,8 +1147,9 @@ HXTStatus discreteFace::reparametrize_through_hxt()
 	  if(!de) Msg::Error("Reparametrization only works for discrete geometries");
 	  if(des.find(de) == des.end()){
 	    if(de->_compound.size()){
-	      if(de->compound_edge)des.insert((discreteEdge*)de->compound_edge);
-	    }
+	      if(de->compound_edge)
+            des.insert(dynamic_cast<discreteEdge *>(de->compound_edge));
+        }
 	    else{
 	      des.insert(de);
 	    }

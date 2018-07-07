@@ -267,7 +267,8 @@ bool GModel::empty() const
 GRegion *GModel::getRegionByTag(int n) const
 {
   GEntity tmp((GModel*)this, n);
-  std::set<GRegion*, GEntityLessThan>::const_iterator it = regions.find((GRegion*)&tmp);
+  std::set<GRegion *, GEntityLessThan>::const_iterator it =
+    regions.find(dynamic_cast<GRegion *>(&tmp));
   if(it != regions.end())
     return *it;
   else
@@ -277,7 +278,8 @@ GRegion *GModel::getRegionByTag(int n) const
 GFace *GModel::getFaceByTag(int n) const
 {
   GEntity tmp((GModel*)this, n);
-  std::set<GFace*, GEntityLessThan>::const_iterator it = faces.find((GFace*)&tmp);
+  std::set<GFace *, GEntityLessThan>::const_iterator it =
+    faces.find(dynamic_cast<GFace *>(&tmp));
   if(it != faces.end())
     return *it;
   else
@@ -287,7 +289,8 @@ GFace *GModel::getFaceByTag(int n) const
 GEdge *GModel::getEdgeByTag(int n) const
 {
   GEntity tmp((GModel*)this, n);
-  std::set<GEdge*, GEntityLessThan>::const_iterator it = edges.find((GEdge*)&tmp);
+  std::set<GEdge *, GEntityLessThan>::const_iterator it =
+    edges.find(dynamic_cast<GEdge *>(&tmp));
   if(it != edges.end())
     return *it;
   else
@@ -297,7 +300,8 @@ GEdge *GModel::getEdgeByTag(int n) const
 GVertex *GModel::getVertexByTag(int n) const
 {
   GEntity tmp((GModel*)this, n);
-  std::set<GVertex*, GEntityLessThan>::const_iterator it = vertices.find((GVertex*)&tmp);
+  std::set<GVertex *, GEntityLessThan>::const_iterator it =
+    vertices.find(dynamic_cast<GVertex *>(&tmp));
   if(it != vertices.end())
     return *it;
   else
@@ -1352,7 +1356,7 @@ void GModel::getMeshVerticesForPhysicalGroup(int dim, int num, std::vector<MVert
   std::set<MVertex*> sv;
   for(unsigned int i = 0; i < entities.size(); i++){
     if(dim == 0){
-      GVertex *g = (GVertex*)entities[i];
+      GVertex *g = dynamic_cast<GVertex *>(entities[i]);
       sv.insert(g->mesh_vertices[0]);
     }
     else{
@@ -2479,7 +2483,7 @@ void GModel::makeDiscreteRegionsSimplyConnected()
   std::vector<discreteRegion*> discRegions;
   for(riter it = firstRegion(); it != lastRegion(); it++)
     if((*it)->geomType() == GEntity::DiscreteVolume)
-      discRegions.push_back((discreteRegion*) *it);
+      discRegions.push_back(dynamic_cast<discreteRegion *>(*it));
 
   std::set<MVertex*> touched;
 
@@ -2517,11 +2521,19 @@ void GModel::makeDiscreteRegionsSimplyConnected()
         MElement *e2 = factory.create(e->getTypeForMSH(), verts, e->getNum(),
                                       e->getPartition());
         switch(e2->getType()){
-        case TYPE_TET: r->tetrahedra.push_back((MTetrahedron*)e2); break;
-        case TYPE_HEX: r->hexahedra.push_back((MHexahedron*)e2); break;
-        case TYPE_PRI: r->prisms.push_back((MPrism*)e2); break;
-        case TYPE_PYR: r->pyramids.push_back((MPyramid*)e2); break;
-        case TYPE_TRIH: r->trihedra.push_back((MTrihedron*)e2); break;
+        case TYPE_TET:
+          r->tetrahedra.push_back(dynamic_cast<MTetrahedron *>(e2));
+          break;
+        case TYPE_HEX:
+          r->hexahedra.push_back(dynamic_cast<MHexahedron *>(e2));
+          break;
+        case TYPE_PRI: r->prisms.push_back(dynamic_cast<MPrism *>(e2)); break;
+        case TYPE_PYR:
+          r->pyramids.push_back(dynamic_cast<MPyramid *>(e2));
+          break;
+        case TYPE_TRIH:
+          r->trihedra.push_back(dynamic_cast<MTrihedron *>(e2));
+          break;
         }
       }
       r->mesh_vertices.insert
@@ -2539,7 +2551,7 @@ void GModel::makeDiscreteFacesSimplyConnected()
   std::vector<discreteFace*> discFaces;
   for(fiter it = firstFace(); it != lastFace(); it++)
     if((*it)->geomType() == GEntity::DiscreteSurface)
-      discFaces.push_back((discreteFace*) *it);
+      discFaces.push_back(dynamic_cast<discreteFace *>(*it));
 
   std::set<MVertex*> touched;
 
@@ -2577,9 +2589,9 @@ void GModel::makeDiscreteFacesSimplyConnected()
         MElement *e2 = factory.create(e->getTypeForMSH(), verts, e->getNum(),
                                       e->getPartition());
         if(e2->getType() == TYPE_TRI)
-          f->triangles.push_back((MTriangle*)e2);
+          f->triangles.push_back(dynamic_cast<MTriangle *>(e2));
         else
-          f->quadrangles.push_back((MQuadrangle*)e2);
+          f->quadrangles.push_back(dynamic_cast<MQuadrangle *>(e2));
       }
       f->mesh_vertices.insert
         (f->mesh_vertices.begin(), myVertices.begin(), myVertices.end());

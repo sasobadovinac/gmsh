@@ -537,28 +537,28 @@ static void _add_physical_group(int dim, int num, std::vector<GEntity *> &ge,
     n = tree->add(group.str().c_str());
     if(n) n->close();
     for(unsigned int i = 0; i < ge.size(); i++)
-      _add_region((GRegion*)ge[i], tree, group.str());
+      _add_region(dynamic_cast<GRegion *>(ge[i]), tree, group.str());
     break;
   case 2:
     group << "Physical Surface " << num << name << "/";
     n = tree->add(group.str().c_str());
     if(n) n->close();
     for(unsigned int i = 0; i < ge.size(); i++)
-      _add_face((GFace*)ge[i], tree, group.str());
+      _add_face(dynamic_cast<GFace *>(ge[i]), tree, group.str());
     break;
   case 1:
     group << "Physical Curve " << num << name << "/";
     n = tree->add(group.str().c_str());
     if(n) n->close();
     for(unsigned int i = 0; i < ge.size(); i++)
-      _add_edge((GEdge*)ge[i], tree, group.str());
+      _add_edge(dynamic_cast<GEdge *>(ge[i]), tree, group.str());
     break;
   case 0:
     group << "Physical Point " << num << name << "/";
     n = tree->add(group.str().c_str());
     if(n) n->close();
     for(unsigned int i = 0; i < ge.size(); i++)
-      _add_vertex((GVertex*)ge[i], tree, group.str());
+      _add_vertex(dynamic_cast<GVertex *>(ge[i]), tree, group.str());
     break;
   default:
     break;

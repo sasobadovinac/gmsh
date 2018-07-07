@@ -148,12 +148,14 @@ bool PViewDataGModel::finalize(bool computeMinMax, const std::string &interpolat
           MElement *e = _getOneElementOfGivenType(model, it->first);
           if(e && e->getPolynomialOrder() > 1 && e->getFunctionSpace()){
             if (it->first == TYPE_PYR) { // nasty fix since pyramids /= polynomial
-              const pyramidalBasis  *fs = (pyramidalBasis*) e->getFunctionSpace();
+              const pyramidalBasis *fs =
+                dynamic_cast<pyramidalBasis *>(e->getFunctionSpace());
               setInterpolationMatrices(it->first, *(it->second[0]), *(it->second[1]),
                                        fs->coefficients, fs->monomials);
             }
             else {
-              const polynomialBasis *fs = (polynomialBasis*) e->getFunctionSpace();
+              const polynomialBasis *fs =
+                dynamic_cast<polynomialBasis *>(e->getFunctionSpace());
               setInterpolationMatrices(it->first, *(it->second[0]), *(it->second[1]),
                                        fs->coefficients, fs->monomials);
             }

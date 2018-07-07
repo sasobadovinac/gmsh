@@ -655,7 +655,8 @@ static void view_options_timestep_cb(Fl_Widget *w, void *data)
     if(i == FlGui::instance()->options->view.index ||
        FlGui::instance()->options->browser->selected(i + 6)) {
       if(str == "=")
-        opt_view_timestep(i, GMSH_SET, ((Fl_Value_Input *) w)->value());
+        opt_view_timestep(i, GMSH_SET,
+                          (dynamic_cast<Fl_Value_Input *>(w))->value());
       else if(str == "-")
         opt_view_timestep(i, GMSH_SET | GMSH_GUI,
                           opt_view_timestep(i, GMSH_GET, 0) - 1);

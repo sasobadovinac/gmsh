@@ -344,13 +344,14 @@ void MElement::scaledJacRange(double &jmin, double &jmax, GEntity *ge) const
         double u, v;
         vert->getParameter(0,u);
         vert->getParameter(1,v);
-        geoNorm += ((GFace*)ge)->normal(SPoint2(u,v));
+        geoNorm += (dynamic_cast<GFace *>(ge))->normal(SPoint2(u, v));
       }
     }
     if (geoNorm.normSq() == 0.) {
       // If no vertex on surface or average is zero, take normal at barycenter
-      SPoint2 param = ((GFace*)ge)->parFromPoint(barycenter(true),false);
-      geoNorm = ((GFace*)ge)->normal(param);
+      SPoint2 param =
+        (dynamic_cast<GFace *>(ge))->parFromPoint(barycenter(true), false);
+      geoNorm = (dynamic_cast<GFace *>(ge))->normal(param);
     }
     fullMatrix<double> elNorm(1,3);
     jac->getPrimNormal2D(nodesXYZ,elNorm);
@@ -396,13 +397,14 @@ void MElement::idealJacRange(double &jmin, double &jmax, GEntity *ge)
         double u, v;
         vert->getParameter(0,u);
         vert->getParameter(1,v);
-        geoNorm += ((GFace*)ge)->normal(SPoint2(u,v));
+        geoNorm += (dynamic_cast<GFace *>(ge))->normal(SPoint2(u, v));
       }
     }
     if (geoNorm.normSq() == 0.) {
       // If no vertex on surface or average is zero, take normal at barycenter
-      SPoint2 param = ((GFace*)ge)->parFromPoint(barycenter(true),false);
-      geoNorm = ((GFace*)ge)->normal(param);
+      SPoint2 param =
+        (dynamic_cast<GFace *>(ge))->parFromPoint(barycenter(true), false);
+      geoNorm = (dynamic_cast<GFace *>(ge))->normal(param);
     }
     fullMatrix<double> elNorm(1,3);
     jac->getPrimNormal2D(nodesXYZ, elNorm, true);
@@ -440,13 +442,14 @@ void MElement::signedInvCondNumRange(double &iCNMin, double &iCNMax, GEntity *ge
         double u, v;
         vert->getParameter(0, u);
         vert->getParameter(1, v);
-        geoNorm += ((GFace*)ge)->normal(SPoint2(u, v));
+        geoNorm += (dynamic_cast<GFace *>(ge))->normal(SPoint2(u, v));
       }
     }
     if (geoNorm.normSq() == 0.) {
       // If no vertex on surface or average is zero, take normal at barycenter
-      SPoint2 param = ((GFace*)ge)->parFromPoint(barycenter(true), false);
-      geoNorm = ((GFace*)ge)->normal(param);
+      SPoint2 param =
+        (dynamic_cast<GFace *>(ge))->parFromPoint(barycenter(true), false);
+      geoNorm = (dynamic_cast<GFace *>(ge))->normal(param);
     }
     const double dp = geoNorm(0) * normals(0, 0) + geoNorm(1) * normals(0, 1)
                     + geoNorm(2) * normals(0, 2);

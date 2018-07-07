@@ -255,11 +255,11 @@ PView *GMSH_CrackPlugin::execute(PView *view)
     MElementFactory f;
     MElement *newe = f.create(e->getTypeForMSH(), verts, 0, e->getPartition());
     if(crackEdge && newe->getType() == TYPE_LIN)
-      crackEdge->lines.push_back((MLine*)newe);
+      crackEdge->lines.push_back(dynamic_cast<MLine *>(newe));
     else if(crackFace && newe->getType() == TYPE_TRI)
-      crackFace->triangles.push_back((MTriangle*)newe);
+      crackFace->triangles.push_back(dynamic_cast<MTriangle *>(newe));
     else if(crackFace && newe->getType() == TYPE_QUA)
-      crackFace->quadrangles.push_back((MQuadrangle*)newe);
+      crackFace->quadrangles.push_back(dynamic_cast<MQuadrangle *>(newe));
   }
 
   // replace vertices in elements on one side of the crack

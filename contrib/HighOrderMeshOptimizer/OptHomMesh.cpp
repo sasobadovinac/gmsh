@@ -138,12 +138,13 @@ void Mesh::calcScaledNormalEl2D(const std::map<MElement*,GEntity*> &element2enti
       double u, v;
       _vert[iV]->getParameter(0,u);
       _vert[iV]->getParameter(1,v);
-      geoNorm += ((GFace*)ge)->normal(SPoint2(u,v));
+      geoNorm += (dynamic_cast<GFace *>(ge))->normal(SPoint2(u, v));
     }
   }
   if (hasGeoNorm && (geoNorm.normSq() == 0.)) {
-    SPoint2 param = ((GFace*)ge)->parFromPoint(_el[iEl]->barycenter(true),false);
-    geoNorm = ((GFace*)ge)->normal(param);
+    SPoint2 param = (dynamic_cast<GFace *>(ge))
+                      ->parFromPoint(_el[iEl]->barycenter(true), false);
+    geoNorm = (dynamic_cast<GFace *>(ge))->normal(param);
   }
   if (!hasGeoNorm && ge && ge->geomType() == GEntity::DiscreteSurface) {
     SBoundingBox3d bb = ge->bounds();
@@ -382,8 +383,8 @@ void Mesh::approximationErrorAndGradients(int iEl, double &f, std::vector<double
       // vertex classified on a model edge
       if (_nPCFV[_el2FV[iEl][i]] == 1){
 	double t = _uvw[_el2FV[iEl][i]].x();
-	GEdge *ge = (GEdge*)v->onWhat();
-	SPoint3 p (v->x(),v->y(),v->z());
+    GEdge *ge = dynamic_cast<GEdge *>(v->onWhat());
+    SPoint3 p (v->x(),v->y(),v->z());
 	GPoint d = ge->point(t+eps);
 	v->setXYZ(d.x(),d.y(),d.z());
 	double f_d = approximationError (fct, element);
@@ -394,8 +395,8 @@ void Mesh::approximationErrorAndGradients(int iEl, double &f, std::vector<double
       else if (_nPCFV[_el2FV[iEl][i]] == 2){
 	double uu = _uvw[_el2FV[iEl][i]].x();
 	double vv = _uvw[_el2FV[iEl][i]].y();
-	GFace *gf = (GFace*)v->onWhat();
-	SPoint3 p (v->x(),v->y(),v->z());
+    GFace *gf = dynamic_cast<GFace *>(v->onWhat());
+    SPoint3 p (v->x(),v->y(),v->z());
 	GPoint  d = gf->point(uu+eps,vv);
 	v->setXYZ(d.x(),d.y(),d.z());
 	double f_u = approximationError (fct, element);

@@ -451,7 +451,7 @@ static void remeshUnrecoveredEdges(std::map<MVertex*, BDS_Point*> &recoverMapInv
           if(v1->onWhat() == g1) t1 = bb.low();
           else if(v1->onWhat() == g2) t1 = bb.high();
           else {
-            MEdgeVertex *ev1 = (MEdgeVertex*)v1;
+            MEdgeVertex *ev1 = dynamic_cast<MEdgeVertex *>(v1);
             lc1 = ev1->getLc();
             v1->getParameter(0, t1);
           }
@@ -460,7 +460,7 @@ static void remeshUnrecoveredEdges(std::map<MVertex*, BDS_Point*> &recoverMapInv
           if(v2->onWhat() == g1) t2 = bb.low();
           else if(v2->onWhat() == g2) t2 = bb.high();
           else {
-            MEdgeVertex *ev2 = (MEdgeVertex*)v2;
+            MEdgeVertex *ev2 = dynamic_cast<MEdgeVertex *>(v2);
             lc2 = ev2->getLc();
             v2->getParameter(0, t2);
           }
@@ -2351,8 +2351,8 @@ static bool meshGeneratorPeriodic(GFace *gf, bool debug = true)
         if(mv1->onWhat()->dim() == 1) {
           double t;
           mv1->getParameter(0,t);
-          mv2 = new MEdgeVertex(mv1->x(),mv1->y(),mv1->z(),mv1->onWhat(), t, 0,
-                                ((MEdgeVertex*)mv1)->getLc());
+          mv2 = new MEdgeVertex(mv1->x(), mv1->y(), mv1->z(), mv1->onWhat(), t,
+                                0, (dynamic_cast<MEdgeVertex *>(mv1))->getLc());
         }
         else if(mv1->onWhat()->dim() == 0) {
           mv2 = new MVertex(mv1->x(),mv1->y(),mv1->z(),mv1->onWhat());

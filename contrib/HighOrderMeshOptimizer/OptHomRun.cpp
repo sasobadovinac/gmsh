@@ -60,8 +60,10 @@ typedef std::pair<elSet, vertSet> elSetVertSetPair;
 
 double distMaxStraight(MElement *el)
 {
-  const polynomialBasis *lagrange = (polynomialBasis*)el->getFunctionSpace();
-  const polynomialBasis *lagrange1 = (polynomialBasis*)el->getFunctionSpace(1);
+  const polynomialBasis *lagrange =
+    dynamic_cast<polynomialBasis *>(el->getFunctionSpace());
+  const polynomialBasis *lagrange1 =
+    dynamic_cast<polynomialBasis *>(el->getFunctionSpace(1));
   int nV = lagrange->points.size1();
   int nV1 = lagrange1->points.size1();
   int dim = lagrange1->dimension;

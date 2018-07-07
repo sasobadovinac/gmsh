@@ -207,9 +207,9 @@ PView *GMSH_TriangulatePlugin::execute(PView *v)
     data2 = getDataList(v2);
     for(unsigned int i = 0; i < tris.size(); i++){
       PointData *p[3];
-      p[0] = (PointData*)tris[i]->getVertex(0);
-      p[1] = (PointData*)tris[i]->getVertex(1);
-      p[2] = (PointData*)tris[i]->getVertex(2);
+      p[0] = dynamic_cast<PointData *>(tris[i]->getVertex(0));
+      p[1] = dynamic_cast<PointData *>(tris[i]->getVertex(1));
+      p[2] = dynamic_cast<PointData *>(tris[i]->getVertex(2));
       int numComp = 0;
       std::vector<double> *vec = 0;
       if((int)p[0]->v.size() == 3 + 9 * numSteps &&

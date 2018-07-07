@@ -336,23 +336,12 @@ void recurClearLs(RecurElement *re) {
 RecurElement::RecurElement(const DI_Element *e) : visible(false), isCrossed(false)
 {
   switch(e->type()) {
-    case DI_LIN :
-      el = new DI_Line(*((DI_Line*)e));
-      break;
-    case DI_TRI :
-      el = new DI_Triangle(*((DI_Triangle*)e));
-      break;
-    case DI_QUA :
-      el = new DI_Quad(*((DI_Quad*)e));
-      break;
-    case DI_TET :
-      el = new DI_Tetra(*((DI_Tetra*)e));
-      break;
-    case DI_HEX :
-      el = new DI_Hexa(*((DI_Hexa*)e));
-      break;
-    default :
-      el = NULL;
+  case DI_LIN: el = new DI_Line(*(dynamic_cast<DI_Line *>(e))); break;
+  case DI_TRI: el = new DI_Triangle(*(dynamic_cast<DI_Triangle *>(e))); break;
+  case DI_QUA: el = new DI_Quad(*(dynamic_cast<DI_Quad *>(e))); break;
+  case DI_TET: el = new DI_Tetra(*(dynamic_cast<DI_Tetra *>(e))); break;
+  case DI_HEX: el = new DI_Hexa(*(dynamic_cast<DI_Hexa *>(e))); break;
+  default: el = NULL;
   }
   super = NULL;
   sub = new RecurElement*[nbSub()];

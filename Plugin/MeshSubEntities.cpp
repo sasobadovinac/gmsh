@@ -93,7 +93,7 @@ PView *GMSH_MeshSubEntitiesPlugin::execute(PView *view)
       MVertex *v = *it;
       GVertex *gv = 0;
       if(v->onWhat() && v->onWhat()->dim() == 0){
-        gv = (GVertex*)v->onWhat();
+        gv = dynamic_cast<GVertex *>(v->onWhat());
       }
       else{
         gv = new discreteVertex(m, m->getMaxElementaryNumber(0) + 1);
@@ -123,11 +123,11 @@ PView *GMSH_MeshSubEntitiesPlugin::execute(PView *view)
         if(v0->onWhat()->dim() == 1 &&
            ((v1->onWhat()->dim() == 1 && v0->onWhat() == v1->onWhat()) ||
              v1->onWhat()->dim() == 0))
-          ge = (GEdge*)v0->onWhat();
+          ge = dynamic_cast<GEdge *>(v0->onWhat());
         else if(v1->onWhat()->dim() == 1 &&
                 ((v0->onWhat()->dim() == 1 && v0->onWhat() == v1->onWhat()) ||
                   v0->onWhat()->dim() == 0))
-          ge = (GEdge*)v1->onWhat();
+          ge = dynamic_cast<GEdge *>(v1->onWhat());
       }
       if(!ge){
         ge = new discreteEdge(m, m->getMaxElementaryNumber(1) + 1, 0, 0);

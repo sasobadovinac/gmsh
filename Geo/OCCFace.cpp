@@ -80,7 +80,7 @@ void OCCFace::setup()
       else if(edge.Orientation() == TopAbs_INTERNAL){
         Msg::Debug("Adding embedded edge %d in face %d", e->tag(), tag());
         embedded_edges.push_back(e);
-        OCCEdge *occe = (OCCEdge*)e;
+        OCCEdge *occe = dynamic_cast<OCCEdge *>(e);
         occe->setTrimmed(this);
       }
       else{
@@ -90,7 +90,7 @@ void OCCFace::setup()
                    edge.Orientation());
         e->addFace(this);
         if(!e->is3D()){
-          OCCEdge *occe = (OCCEdge*)e;
+          OCCEdge *occe = dynamic_cast<OCCEdge *>(e);
           occe->setTrimmed(this);
         }
       }

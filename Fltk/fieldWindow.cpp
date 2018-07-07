@@ -45,7 +45,7 @@ static void field_delete_cb(Fl_Widget *w, void *data)
 
 static void field_new_cb(Fl_Widget *w, void *data)
 {
-  Fl_Menu_Button* mb = ((Fl_Menu_Button*)w);
+  Fl_Menu_Button *mb = (dynamic_cast<Fl_Menu_Button *>(w));
   FieldManager *fields = GModel::current()->getFields();
   int id = fields->newId();
   add_field(id, mb->text(), GModel::current()->getFileName());
@@ -70,7 +70,7 @@ static void field_browser_cb(Fl_Widget *w, void *data)
 
 static void field_put_on_view_cb(Fl_Widget *w, void *data)
 {
-  Fl_Menu_Button* mb = ((Fl_Menu_Button*)w);
+  Fl_Menu_Button *mb = (dynamic_cast<Fl_Menu_Button *>(w));
   Field *field = (Field*)FlGui::instance()->fields->editor_group->user_data();
   if(mb->value() == 0)
     field->putOnNewView();
@@ -245,21 +245,21 @@ void fieldWindow::saveFieldOptions()
     switch(option->getType()){
     case FIELD_OPTION_STRING:
     case FIELD_OPTION_PATH:
-      sstream << "\"" << ((Fl_Input*)*input)->value() << "\"";
+      sstream << "\"" << (dynamic_cast<Fl_Input *>(*input))->value() << "\"";
       break;
     case FIELD_OPTION_INT:
-      sstream << (int)((Fl_Value_Input*)*input)->value();
+      sstream << (int)(dynamic_cast<Fl_Value_Input *>(*input))->value();
       break;
     case FIELD_OPTION_DOUBLE:
-      sstream << ((Fl_Value_Input*)*input)->value();
+      sstream << (dynamic_cast<Fl_Value_Input *>(*input))->value();
       break;
     case FIELD_OPTION_BOOL:
-      sstream << (bool)((Fl_Check_Button*)*input)->value();
+      sstream << (bool)(dynamic_cast<Fl_Check_Button *>(*input))->value();
       break;
     case FIELD_OPTION_LIST:
       {
         sstream << "{";
-        std::istringstream istream(((Fl_Input*)*input)->value());
+        std::istringstream istream((dynamic_cast<Fl_Input *>(*input))->value());
         while(istream >> i){
           sstream << i;
           if(istream >> a){
@@ -275,7 +275,7 @@ void fieldWindow::saveFieldOptions()
     case FIELD_OPTION_LIST_DOUBLE:
       {
         sstream << "{";
-        std::istringstream istream(((Fl_Input*)*input)->value());
+        std::istringstream istream((dynamic_cast<Fl_Input *>(*input))->value());
         while(istream >> d){
           sstream << d;
           if(istream >> a){
@@ -321,14 +321,15 @@ void fieldWindow::loadFieldOptions()
     switch(option->getType()){
     case FIELD_OPTION_STRING:
     case FIELD_OPTION_PATH:
-      ((Fl_Input*)(*input))->value(option->string().c_str());
+      (dynamic_cast<Fl_Input *>(*input))->value(option->string().c_str());
       break;
     case FIELD_OPTION_INT:
     case FIELD_OPTION_DOUBLE:
-      ((Fl_Value_Input*)(*input))->value(option->numericalValue());
+      (dynamic_cast<Fl_Value_Input *>(*input))->value(option->numericalValue());
       break;
     case FIELD_OPTION_BOOL:
-      ((Fl_Check_Button*)(*input))->value((int)option->numericalValue());
+      (dynamic_cast<Fl_Check_Button *>(*input))
+        ->value((int)option->numericalValue());
       break;
     case FIELD_OPTION_LIST:
       vstr.str("");
@@ -338,7 +339,7 @@ void fieldWindow::loadFieldOptions()
           vstr << ", ";
         vstr << *list_it;
       }
-      ((Fl_Input*)(*input))->value(vstr.str().c_str());
+      (dynamic_cast<Fl_Input *>(*input))->value(vstr.str().c_str());
       break;
     case FIELD_OPTION_LIST_DOUBLE:
       vstr.str("");
@@ -349,7 +350,7 @@ void fieldWindow::loadFieldOptions()
           vstr << ", ";
         vstr << *listdouble_it;
       }
-      ((Fl_Input*)(*input))->value(vstr.str().c_str());
+      (dynamic_cast<Fl_Input *>(*input))->value(vstr.str().c_str());
       break;
     }
     (*input)->clear_changed();
