@@ -445,7 +445,7 @@ static HXTStatus hxtCheckConnectivity(HXTEdges *e,HXTVector *partitions)
     }
     count++;
     goOn = 0;
-    for(uint64_t i=0; i<m->triangles.num; i++)
+    for(uint64_t i=0; i<m->triangles.num; i++){
       if (flag[i]== -1){
         goOn=1;
         iq=last;
@@ -454,6 +454,7 @@ static HXTStatus hxtCheckConnectivity(HXTEdges *e,HXTVector *partitions)
         flag[i] = count;        
         break;
       }
+    }
   }
 
   printf("HXT_INFO \t There is/are %d connected part(s).\n",count);
@@ -475,7 +476,7 @@ static HXTStatus hxtCheckConnectivity(HXTEdges *e,HXTVector *partitions)
           break;
       }//end for ii
       if(cond==0){      
-        printf("Unconsistent orientation \t %lu (%u %u %u) ; (%u %u)-(%u %u)-(%u %u) [%d] ~ %lu (%u %u %u) ; (%u %u)-(%u %u)-(%u %u) [%d].\n",queue[i],refVert[0],refVert[1],refVert[2],e->node[2*e->tri2edg[3*queue[i]+0]+0],e->node[2*e->tri2edg[3*queue[i]+0]+1],e->node[2*e->tri2edg[3*queue[i]+1]+0],e->node[2*e->tri2edg[3*queue[i]+1]+1],e->node[2*e->tri2edg[3*queue[i]+2]+0],e->node[2*e->tri2edg[3*queue[i]+2]+1],flag[queue[i]],queue[j],checkVert[0],checkVert[1],checkVert[2],e->node[2*e->tri2edg[3*queue[j]+0]+0],e->node[2*e->tri2edg[3*queue[j]+0]+1],e->node[2*e->tri2edg[3*queue[j]+1]+0],e->node[2*e->tri2edg[3*queue[j]+1]+1],e->node[2*e->tri2edg[3*queue[j]+2]+0],e->node[2*e->tri2edg[3*queue[j]+2]+1],flag[queue[j]]);
+        //printf("Unconsistent orientation \t %lu (%u %u %u) ; (%u %u)-(%u %u)-(%u %u) [%d] ~ %lu (%u %u %u) ; (%u %u)-(%u %u)-(%u %u) [%d].\n",queue[i],refVert[0],refVert[1],refVert[2],e->node[2*e->tri2edg[3*queue[i]+0]+0],e->node[2*e->tri2edg[3*queue[i]+0]+1],e->node[2*e->tri2edg[3*queue[i]+1]+0],e->node[2*e->tri2edg[3*queue[i]+1]+1],e->node[2*e->tri2edg[3*queue[i]+2]+0],e->node[2*e->tri2edg[3*queue[i]+2]+1],flag[queue[i]],queue[j],checkVert[0],checkVert[1],checkVert[2],e->node[2*e->tri2edg[3*queue[j]+0]+0],e->node[2*e->tri2edg[3*queue[j]+0]+1],e->node[2*e->tri2edg[3*queue[j]+1]+0],e->node[2*e->tri2edg[3*queue[j]+1]+1],e->node[2*e->tri2edg[3*queue[j]+2]+0],e->node[2*e->tri2edg[3*queue[j]+2]+1],flag[queue[j]]);
         uint64_t temp = m->triangles.node[3*queue[j]+0];
         m->triangles.node[3*queue[j]+0] = m->triangles.node[3*queue[j]+1];
         m->triangles.node[3*queue[j]+1] = temp;
@@ -655,7 +656,10 @@ HXTStatus hxtParametrizationCreate(HXTMesh *mesh, int nrefinements, HXTParametri
     HXT_CHECK(hxtMeanValuesCompute(param));        
     int ar;
     HXT_CHECK(hxtMeanValueAspectRatio(param,&ar));
-    
+    char fn[42];
+    sprintf(fn,"disk-%d.msh",i);
+    printf("%d \n",i);
+    HXT_CHECK(hxtMeanValuesWriteParamMesh(param,fn));
     if (ar==0)
       HXT_CHECK(hxtCuttingProcess(current,ar,toparam->last,toparam));
     else
@@ -685,23 +689,32 @@ HXTStatus hxtParametrizationCompute(HXTParametrization *parametrization, int **_
 
   int *colors=NULL, *nNodes=NULL, *nodes=NULL;
   double *uv=NULL;
-  
+  double *quality=NULL;
   *m = parametrization->edges->edg2mesh;
   int Ncolors = parametrization->n;
   *nc=Ncolors;
+  HXTMesh *mesh = parametrization->edges->edg2mesh;
+  
   int totalNtriangles = (int) parametrization->edges->edg2mesh->triangles.num;
   HXT_CHECK(hxtMalloc(&colors,totalNtriangles*sizeof(int)));
+  HXT_CHECK(hxtMalloc(&quality,totalNtriangles*sizeof(double)));
   HXT_CHECK(hxtMalloc(&nNodes,(Ncolors+1)*sizeof(int)));
   nNodes[0] = 0;
   for(int c=0; c<Ncolors; c++){
 
     uint64_t *global=NULL;
+    double *qp = NULL;
     int nv, ne;    
-    HXT_CHECK(hxtMeanValuesGetData(parametrization->maps[c],&global, NULL, NULL, &nv,&ne));
+    HXT_CHECK(hxtMeanValuesGetData(parametrization->maps[c],&global,&qp, NULL, NULL, &nv,&ne));
     nNodes[c+1] = nNodes[c]+nv;
 
-    for(int ie=0; ie<ne; ie++)
+
+   
+    
+    for(int ie=0; ie<ne; ie++){
       colors[global[ie]] = c;
+      quality[global[ie]] = qp[ie];
+    }
     
     HXT_CHECK(hxtFree(&global));
     
@@ -718,8 +731,9 @@ HXTStatus hxtParametrizationCompute(HXTParametrization *parametrization, int **_
     uint64_t *global=NULL;
     uint32_t *gn=NULL;
     double *uvc=NULL;
+    double *qp = NULL;
     int nv, ne;    
-    HXT_CHECK(hxtMeanValuesGetData(parametrization->maps[c],&global, &gn, &uvc, &nv,&ne));
+    HXT_CHECK(hxtMeanValuesGetData(parametrization->maps[c],&global,&qp, &gn, &uvc, &nv,&ne));
     for(int iv=0; iv<2*nv; iv++)
       uv[2*nNodes[c]+iv] = uvc[iv];
     
@@ -736,6 +750,55 @@ HXTStatus hxtParametrizationCompute(HXTParametrization *parametrization, int **_
   }
 
   
+  FILE* file = fopen("checkmyjob.msh","w");
+  fprintf(file,"$MeshFormat\n"
+               "2.2 0 %u\n"
+               "$EndMeshFormat\n"
+               "$Nodes\n"
+               "%u\n",(unsigned) sizeof(double), mesh->vertices.num);
+  
+
+  
+    
+    for (uint32_t i=0; i<mesh->vertices.num; i++)
+      fprintf(file,"%u %f %f %f\n",i+1, mesh->vertices.coord[4*i+0], mesh->vertices.coord[4*i+1], mesh->vertices.coord[4*i+2]);
+
+  fprintf(file,"$EndNodes\n"
+          "$Elements\n"
+          "%lu\n",mesh->triangles.num);
+
+  for (uint64_t i=0; i<mesh->triangles.num; i++){
+    fprintf(file,"%lu 2 2 0 %d %u %u %u \n",i,
+              colors[i],
+              mesh->triangles.node[i*3]+1,
+              mesh->triangles.node[i*3 + 1]+1,
+              mesh->triangles.node[i*3 + 2]+1);
+  }
+
+
+  fputs("$EndElements\n",file);
+  fprintf(file,"$ElementData\n1\n\"quality\"\n1\n0\n3\n0\n1\n%lu\n",mesh->triangles.num);
+  for(int i=0; i<(int)mesh->triangles.num; i++){
+    fprintf(file,"%lu %f\n",i,quality[i]);
+  }
+  fprintf(file,"$EndElementData\n");
+  for (int c=0; c<Ncolors; c++){
+    
+    fprintf(file,"$NodeData\n1\n\"u\"\n1\n0\n3\n0\n1\n%u\n",nNodes[c+1]-nNodes[c]);
+    for(int i=nNodes[c]; i<nNodes[c+1]; i++)
+      fprintf(file,"%u %f\n",nodes[i]+1,uv[2*i+0]);
+    
+    fprintf(file,"$EndNodeData\n");
+    
+    fprintf(file,"$NodeData\n1\n\"v\"\n1\n0\n3\n0\n1\n%u\n",nNodes[c+1]-nNodes[c]);
+    for(int i=nNodes[c]; i<nNodes[c+1]; i++)
+      fprintf(file,"%u %f\n",nodes[i]+1,uv[2*i+1]);
+    fprintf(file,"$EndNodeData\n");
+    
+  }
+  
+  fclose(file);
+
   *_colors_=colors;
   *_nNodes_=nNodes;
   *_nodes_=nodes;

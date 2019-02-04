@@ -10,7 +10,7 @@ typedef struct HXTParametrizationStruct HXTParametrization;
 
 HXTStatus hxtParametrizationCreate(HXTMesh *mesh, int nrefinements, HXTParametrization **parametrization);
 HXTStatus hxtParametrizationDelete(HXTParametrization **parametrization);
-HXTStatus hxtParametrizationCompute(HXTParametrization *parametrization, int **colors, int **nNodes, int **nodes, double **uv, int*nc, HXTMesh **m);
+HXTStatus hxtParametrizationCompute(HXTParametrization *parametrization, int **colors,int **nNodes, int **nodes, double **uv, int*nc, HXTMesh **m);
 HXTStatus hxtParametrizationWrite(HXTParametrization *parametrization, const char *filename);
 
 
