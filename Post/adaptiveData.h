@@ -526,7 +526,7 @@ public:
   int vtkCountCellOffset; // used only for ascii output
   int vtkCountCellType; // used only for ascii output
 
-  std::vector<vectInt> vtkLocalConnectivity; // conectivity (vector of vector)
+  std::vector<vectInt> vtkLocalConnectivity; // connectivity (vector of vector)
   std::vector<int> vtkLocalCellType; // topology
   std::vector<PCoords> vtkLocalCoords; // coordinates
   std::vector<PValues> vtkLocalValues; // nodal values (either scalar or vector)
