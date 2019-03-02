@@ -567,9 +567,7 @@ void adaptiveTetrahedron::recurError(adaptiveTetrahedron *t, double AVG,
       double vri[8];
       for(int k = 0; k < 8; k++) {
         vri[k] = 0.0;
-        for(int l = 0; l < 8; l++) {
-          vri[k] += vi[k][l];
-        }
+        for(int l = 0; l < 8; l++) { vri[k] += vi[k][l]; }
         vri[k] /= 8.0;
       }
       if(fabs(t->e[0]->V() - vri[0]) > AVG * tol ||
@@ -766,9 +764,7 @@ void adaptiveHexahedron::recurError(adaptiveHexahedron *h, double AVG,
       double vri[8];
       for(int k = 0; k < 8; k++) {
         vri[k] = 0.0;
-        for(int l = 0; l < 8; l++) {
-          vri[k] += vii[k][l];
-        }
+        for(int l = 0; l < 8; l++) { vri[k] += vii[k][l]; }
         vri[k] /= 8.0;
       }
       if(fabs(h->e[0]->V() - vri[0]) > AVG * tol ||
@@ -1272,9 +1268,7 @@ bool adaptiveElements<T>::adapt(double tol, int numComp,
     fullMatrix<double> valxyz(numVals, numComp);
     resxyz = new fullMatrix<double>(numVertices, numComp);
     for(int i = 0; i < numVals; i++) {
-      for(int k = 0; k < numComp; k++) {
-        valxyz(i, k) = values[i].v[k];
-      }
+      for(int k = 0; k < numComp; k++) { valxyz(i, k) = values[i].v[k]; }
     }
     _interpolVal->mult(valxyz, *resxyz);
   }
@@ -1488,7 +1482,7 @@ void adaptiveElements<T>::addInView(double tol, int step, PViewData *in,
         break;
       }
       }
-      if(adapt(tol, numComp, coords, values, out->Min, out->Max, plug)){
+      if(adapt(tol, numComp, coords, values, out->Min, out->Max, plug)) {
         *outNb += coords.size() / T::numNodes;
         for(std::size_t i = 0; i < coords.size() / T::numNodes; i++) {
           for(int k = 0; k < T::numNodes; ++k)
@@ -1674,9 +1668,7 @@ void VTKData::writeVTKElmData()
       darray = new double[vtkNumComp * vtkLocalValues.size()];
       for(std::vector<PValues>::iterator it = vtkLocalValues.begin();
           it != vtkLocalValues.end(); ++it) {
-        for(int i = 0; i < vtkNumComp; i++) {
-          darray[counter + i] = it->v[i];
-        }
+        for(int i = 0; i < vtkNumComp; i++) { darray[counter + i] = it->v[i]; }
         counter += vtkNumComp;
         vtkCountTotVal += vtkNumComp;
       }
@@ -1691,9 +1683,7 @@ void VTKData::writeVTKElmData()
       counter = 0;
       for(std::vector<PCoords>::iterator it = vtkLocalCoords.begin();
           it != vtkLocalCoords.end(); ++it) {
-        for(int i = 0; i < 3; i++) {
-          darray[counter + i] = (*it).c[i];
-        }
+        for(int i = 0; i < 3; i++) { darray[counter + i] = (*it).c[i]; }
         counter += 3;
         vtkCountCoord += 3;
       }
@@ -1803,9 +1793,7 @@ void VTKData::writeVTKElmData()
 
     // finalize and close current vtu file
     if(vtkCountTotElmLev0 <= numPartMinElm * minElmPerPart) {
-      if(vtkCountTotElmLev0 % minElmPerPart == 0) {
-        finalizeVTKFile();
-      }
+      if(vtkCountTotElmLev0 % minElmPerPart == 0) { finalizeVTKFile(); }
     }
     else {
       if((vtkCountTotElmLev0 - numPartMinElm * minElmPerPart) % maxElmPerPart ==
@@ -2315,9 +2303,7 @@ void adaptiveElements<T>::adaptForVTK(double tol, int numComp,
     fullMatrix<double> valxyz(numVals, numComp);
     resxyz = new fullMatrix<double>(numVertices, numComp);
     for(int i = 0; i < numVals; i++) {
-      for(int k = 0; k < numComp; k++) {
-        valxyz(i, k) = values[i].v[k];
-      }
+      for(int k = 0; k < numComp; k++) { valxyz(i, k) = values[i].v[k]; }
     }
     _interpolVal->mult(valxyz, *resxyz);
   }
@@ -2448,18 +2434,15 @@ void adaptiveElements<T>::buildMapping(nodMap<T> &myNodMap, double tol,
       } // if
     } // for
 
-    if (myNodMap.mapping.empty()) {
+    if(myNodMap.mapping.empty()) {
       Msg::Error("Node mapping in buildMapping has zero size");
     }
 
     // Count number of unique nodes from the mapping
     // Use an ordered set for efficiency
-    // This set is also used in case of partiel refinement
-    std::set<int> uniqueNod;
-    for(std::vector<int>::iterator it = myNodMap.mapping.begin();
-        it != myNodMap.mapping.end(); it++) {
-      uniqueNod.insert(*it);
-    }
+    // This set is also used in case of partial refinement
+    std::set<int> uniqueNod(myNodMap.mapping.begin(), myNodMap.mapping.end());
+
     numNodInsert = (int)uniqueNod.size();
 
     // Renumber the elm in the mapping in case of partial refinement (when vis
@@ -2467,11 +2450,10 @@ void adaptiveElements<T>::buildMapping(nodMap<T> &myNodMap, double tol,
     // with no missing node id in the connectivity This require a new local and
     // temporary mapping, based on uniqueNod already generated above
     if(tol > 0.0) {
-      std::set<int>::iterator jt;
+      // TODO C++11 clean up
       for(std::vector<int>::iterator it = myNodMap.mapping.begin();
           it != myNodMap.mapping.end(); ++it) {
-        jt = uniqueNod.find(*it);
-        *it = std::distance(uniqueNod.begin(), jt);
+        *it = std::distance(uniqueNod.begin(), uniqueNod.find(*it));
       }
     }
   }
@@ -2630,9 +2612,7 @@ void adaptiveElements<T>::addInViewForVTK(int step, PViewData *in,
 
       // Write the VTK data structure of the consider element to vtu file
 
-      if(writeVTK == true) {
-        myVTKData.writeVTKElmData();
-      }
+      if(writeVTK == true) { myVTKData.writeVTKElmData(); }
 
       if(buildStaticData == true) {
         for(int i = 0; i < numNodInsert; i++) {
