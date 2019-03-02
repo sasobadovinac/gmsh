@@ -93,11 +93,10 @@ namespace onelab {
     void setHelp(const std::string &help) { _help = help; }
     void setChanged(int changed, const std::string &client = "")
     {
-      if(client.size()) {
+      if (!client.empty()) {
         std::map<std::string, int>::iterator it = _clients.find(client);
         if(it != _clients.end()) it->second = changed;
-      }
-      else {
+      } else {
         for(std::map<std::string, int>::iterator it = _clients.begin();
             it != _clients.end(); it++)
           it->second = changed;
@@ -147,7 +146,7 @@ namespace onelab {
     std::string getShortName() const
     {
       std::string units = getAttribute("Units");
-      if(_label.size()) {
+      if (!_label.empty()) {
         if(units.empty())
           return _label;
         else
@@ -158,13 +157,16 @@ namespace onelab {
       std::string::size_type last = _name.find_last_of('/');
       if(last != std::string::npos) s = _name.substr(last + 1);
       // remove starting white space
-      while(s.size() && s[0] == ' ') s = s.substr(1);
+      while (!s.empty() && s[0] == ' ')
+        s = s.substr(1);
       // remove starting braces: can be used to order parameters 'from the end',
       // as the ASCII code is after numbers and letters
-      while(s.size() && (s[0] == '}' || s[0] == '{')) s = s.substr(1);
+      while (!s.empty() && (s[0] == '}' || s[0] == '{'))
+        s = s.substr(1);
       // remove starting numbers: can be used to order parameters 'from the
       // start'
-      while(s.size() && s[0] >= '0' && s[0] <= '9') s = s.substr(1);
+      while (!s.empty() && s[0] >= '0' && s[0] <= '9')
+        s = s.substr(1);
       if(units.empty())
         return s;
       else
@@ -172,14 +174,13 @@ namespace onelab {
     }
     int getChanged(const std::string &client = "") const
     {
-      if(client.size()) {
+      if (!client.empty()) {
         std::map<std::string, int>::const_iterator it = _clients.find(client);
         if(it != _clients.end())
           return it->second;
         else
           return 0;
-      }
-      else {
+      } else {
         int changed = 0;
         for(std::map<std::string, int>::const_iterator it = _clients.begin();
             it != _clients.end(); it++) {
@@ -346,14 +347,14 @@ namespace onelab {
       std::ostringstream sstream;
       sstream << "\"type\":\"" << getType() << "\""
               << ", \"name\":\"" << sanitizeJSON(getName()) << "\"";
-      if(getLabel().size())
+      if (!getLabel().empty())
         sstream << ", \"label\":\"" << sanitizeJSON(getLabel()) << "\"";
-      if(getHelp().size())
+      if (!getHelp().empty())
         sstream << ", \"help\":\"" << sanitizeJSON(getHelp()) << "\"";
       sstream << ", \"changedValue\":" << getChangedValue()
               << ", \"visible\":" << (getVisible() ? "true" : "false")
               << ", \"readOnly\":" << (getReadOnly() ? "true" : "false");
-      if(_attributes.size()) {
+      if (!_attributes.empty()) {
         sstream << ", \"attributes\":{ ";
         for(std::map<std::string, std::string>::const_iterator it =
               _attributes.begin();
@@ -364,7 +365,7 @@ namespace onelab {
         }
         sstream << " }";
       }
-      if(getClients().size()) {
+      if (!getClients().empty()) {
         sstream << ", \"clients\":{ ";
         for(std::map<std::string, int>::const_iterator it =
               getClients().begin();
@@ -479,7 +480,8 @@ namespace onelab {
     void setChoiceLabels(const std::vector<std::string> &labels)
     {
       if(labels.size() != _choices.size()) return;
-      if(_valueLabels.size()) _valueLabels.clear();
+      if (!_valueLabels.empty())
+        _valueLabels.clear();
       for(std::size_t i = 0; i < _choices.size(); i++)
         _valueLabels[_choices[i]] = labels[i];
     }
@@ -594,7 +596,7 @@ namespace onelab {
       sstream << " ]"
               << ", \"min\":" << _min << ", \"max\":" << _max
               << ", \"step\":" << _step << ", \"index\":" << _index;
-      if(_choices.size()) {
+      if (!_choices.empty()) {
         sstream << ", \"choices\":[ ";
         for(std::size_t i = 0; i < _choices.size(); i++) {
           if(i) sstream << ", ";
@@ -602,7 +604,7 @@ namespace onelab {
         }
         sstream << " ]";
       }
-      if(_valueLabels.size()) {
+      if (!_valueLabels.empty()) {
         sstream << ", \"valueLabels\":{ ";
         for(std::map<double, std::string>::const_iterator it =
               _valueLabels.begin();
@@ -620,7 +622,8 @@ namespace onelab {
 #if defined(HAVE_PICOJSON)
       picojson::value v;
       std::string err = picojson::parse(v, json);
-      if(err.size()) return false;
+      if (!err.empty())
+        return false;
       if(!v.is<picojson::object>()) return false;
       const picojson::value::object &par = v.get<picojson::object>();
       picojson::value::object::const_iterator it = par.find("type");
@@ -788,9 +791,9 @@ namespace onelab {
         sstream << "\"" << sanitizeJSON(_values[i]) << "\"";
       }
       sstream << " ] ";
-      if(_kind.size())
+      if (!_kind.empty())
         sstream << ", \"kind\":\"" << sanitizeJSON(_kind) << "\"";
-      if(_choices.size()) {
+      if (!_choices.empty()) {
         sstream << ", \"choices\":[ ";
         for(std::size_t i = 0; i < _choices.size(); i++) {
           if(i) sstream << ", ";
@@ -806,7 +809,8 @@ namespace onelab {
 #if defined(HAVE_PICOJSON)
       picojson::value v;
       std::string err = picojson::parse(v, json);
-      if(err.size()) return false;
+      if (!err.empty())
+        return false;
       if(!v.is<picojson::object>()) return false;
       const picojson::value::object &par = v.get<picojson::object>();
       picojson::value::object::const_iterator it = par.find("type");
@@ -867,7 +871,7 @@ namespace onelab {
     bool _clear(const std::string &name, const std::string &client,
                 std::set<T *, parameterLessThan> &ps)
     {
-      if(name.empty() && client.size()) {
+      if (name.empty() && !client.empty()) {
         std::vector<T *> toDelete;
         for(typename std::set<T *, parameterLessThan>::iterator it = ps.begin();
             it != ps.end();) {
@@ -880,8 +884,7 @@ namespace onelab {
             it++;
           }
         }
-      }
-      else {
+      } else {
         T tmp(name);
         typename std::set<T *, parameterLessThan>::iterator it = ps.find(&tmp);
         if(it != ps.end()) {
@@ -909,12 +912,12 @@ namespace onelab {
       typename std::set<T *, parameterLessThan>::iterator it = ps.find((T *)&p);
       if(it != ps.end()) {
         (*it)->update(p);
-        if(client.size())
+        if (!client.empty())
           (*it)->addClient(client, parameter::defaultChangedValue());
       }
       else {
         T *newp = new T(p);
-        if(client.size())
+        if (!client.empty())
           newp->addClient(client, parameter::defaultChangedValue());
         ps.insert(newp);
       }
@@ -941,7 +944,7 @@ namespace onelab {
         T tmp(name);
         typename std::set<T *, parameterLessThan>::iterator it = ps.find(&tmp);
         if(it != ps.end()) {
-          if(client.size()){
+          if (!client.empty()) {
 #if __cplusplus >= 201103L
             _mutex.lock();
 #endif
@@ -962,7 +965,7 @@ namespace onelab {
       T tmp(name);
       typename std::set<T *, parameterLessThan>::iterator it = ps.find(&tmp);
       if(it != ps.end()) {
-        if(client.size()){
+        if (!client.empty()) {
 #if __cplusplus >= 201103L
           _mutex.lock();
 #endif
@@ -1147,7 +1150,8 @@ namespace onelab {
 #if defined(HAVE_PICOJSON)
       picojson::value v;
       std::string err = picojson::parse(v, json);
-      if(err.size()) return false;
+      if (!err.empty())
+        return false;
       if(v.is<picojson::object>()){ // onelab database or single parameter
         const picojson::value::object &obj = v.get<picojson::object>();
         picojson::value::object::const_iterator it = obj.find("onelab");
@@ -1447,7 +1451,8 @@ namespace onelab {
       std::vector<number> ps;
       _get(ps, _name);
       std::vector<double> choices;
-      if(ps.size()) choices = ps[0].getChoices();
+      if (!ps.empty())
+        choices = ps[0].getChoices();
       choices.insert(choices.end(), p.getChoices().begin(),
                      p.getChoices().end());
       number p2(p);
@@ -1459,7 +1464,8 @@ namespace onelab {
       std::vector<string> ps;
       _get(ps, _name);
       std::vector<std::string> choices;
-      if(ps.size()) choices = ps[0].getChoices();
+      if (!ps.empty())
+        choices = ps[0].getChoices();
       choices.insert(choices.end(), p.getChoices().begin(),
                      p.getChoices().end());
       string p2(p);
@@ -1559,7 +1565,7 @@ namespace onelab {
       if(!_gmshClient) return false;
       T p(name);
       std::string msg = p.toChar();
-      if(name.size())
+      if (!name.empty())
         _gmshClient->SendMessage(
           withChoices ? GmshSocket::GMSH_PARAMETER_QUERY :
                         GmshSocket::GMSH_PARAMETER_QUERY_WITHOUT_CHOICES,

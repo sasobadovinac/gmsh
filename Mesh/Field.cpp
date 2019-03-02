@@ -2044,7 +2044,7 @@ public:
           ++it) {
         GFace *f = GModel::current()->getFaceByTag(*it);
         if(f) {
-          if(f->mesh_vertices.size()) {
+          if (!f->mesh_vertices.empty()) {
             for(std::size_t i = 0; i < f->mesh_vertices.size(); i++) {
               MVertex *v = f->mesh_vertices[i];
               double uu, vv;
@@ -2053,8 +2053,7 @@ public:
               points.push_back(SPoint3(v->x(), v->y(), v->z()));
               uvpoints.push_back(SPoint2(uu, vv));
             }
-          }
-          else {
+          } else {
             SBoundingBox3d bb = f->bounds();
             SVector3 dd = bb.max() - bb.min();
             double maxDist = dd.norm() / n_nodes_by_edge;
@@ -2082,7 +2081,7 @@ public:
           ++it) {
         GEdge *e = GModel::current()->getEdgeByTag(*it);
         if(e) {
-          if(e->mesh_vertices.size()) {
+          if (!e->mesh_vertices.empty()) {
             for(std::size_t i = 0; i < e->mesh_vertices.size(); i++) {
               double u;
               e->mesh_vertices[i]->getParameter(0, u);
@@ -2115,7 +2114,7 @@ public:
           ++it) {
         GFace *f = GModel::current()->getFaceByTag(*it);
         if(f) {
-          if(points.size()) {
+          if (!points.empty()) {
             for(int j = offset[count]; j < offset[count + 1]; j++) {
               px.push_back(points[j].x());
               py.push_back(points[j].y());
@@ -2491,7 +2490,7 @@ public:
           ++it) {
         GFace *f = GModel::current()->getFaceByTag(*it);
         if(f) {
-          if(f->mesh_vertices.size()) {
+          if (!f->mesh_vertices.empty()) {
             for(std::size_t i = 0; i < f->mesh_vertices.size(); i++) {
               MVertex *v = f->mesh_vertices[i];
               points.push_back(SPoint3(v->x(), v->y(), v->z()));
@@ -2500,8 +2499,7 @@ public:
               v->getParameter(1, vv);
               _infos.push_back(AttractorInfo(*it, 2, uu, vv));
             }
-          }
-          else {
+          } else {
             SBoundingBox3d bb = f->bounds();
             SVector3 dd = bb.max() - bb.min();
             double maxDist = dd.norm() / n_nodes_by_edge;
@@ -2527,7 +2525,7 @@ public:
           ++it) {
         GEdge *e = GModel::current()->getEdgeByTag(*it);
         if(e) {
-          if(e->mesh_vertices.size()) {
+          if (!e->mesh_vertices.empty()) {
             for(std::size_t i = 0; i < e->mesh_vertices.size(); i++){
               points.push_back(SPoint3(e->mesh_vertices[i]->x(),
                                        e->mesh_vertices[i]->y(),

@@ -96,7 +96,7 @@ static int vsnprintf(char *str, size_t size, const char *fmt, va_list ap)
 static void addGmshPathToEnvironmentVar(const std::string &name)
 {
   std::string gmshPath = SplitFileName(CTX::instance()->exeFileName)[0];
-  if(gmshPath.size()){
+  if (!gmshPath.empty()) {
     std::string path;
     char *tmp = getenv(name.c_str());
     if(tmp){
@@ -207,7 +207,7 @@ void Msg::SetLogFile(const std::string &name)
 {
   _logFileName = name;
   if(_logFile) fclose(_logFile);
-  if(name.size())
+  if (!name.empty())
     _logFile = Fopen(name.c_str(), "w");
   else
     _logFile = 0;
@@ -448,7 +448,7 @@ std::string Msg::PrintResources(bool printDate, bool printWallTime,
   }
 
   std::string str;
-  if(pdate.size() || pwall.size() || pcpu.size() || pmem.size())
+  if (!pdate.empty() || !pwall.empty() || !pcpu.empty() || !pmem.empty())
     str += " (" + pdate +  pwall +  pcpu +  pmem + ")";
   return str;
 }
@@ -813,7 +813,8 @@ void Msg::PrintTimers()
     sprintf(tmp, "%s = %gs ", it->first.c_str(), it->second);
     str += std::string(tmp);
   }
-  if(!str.size()) return;
+  if (str.empty())
+    return;
 
   if(CTX::instance()->terminal){
     if(_commSize > 1)
@@ -1013,7 +1014,8 @@ void Msg::SetOnelabString(const std::string &name, const std::string &val,
     if(persistent) strings[0].setAttribute("Persistent", "1");
     strings[0].setReadOnly(readOnly);
     strings[0].setChangedValue(changedValue);
-    if(kind.size()) strings[0].setKind(kind);
+    if (!kind.empty())
+      strings[0].setKind(kind);
     _onelabClient->set(strings[0]);
   }
 #endif
@@ -1029,14 +1031,13 @@ void Msg::AddOnelabStringChoice(const std::string &name,
     std::vector<std::string> choices;
     std::vector<onelab::string> ps;
     _onelabClient->get(ps, name);
-    if(ps.size()){
+    if (!ps.empty()) {
       choices = ps[0].getChoices();
       if(std::find(choices.begin(), choices.end(), value) == choices.end())
         choices.push_back(value);
       if(updateValue)
         ps[0].setValue(value);
-    }
-    else{
+    } else {
       ps.resize(1);
       ps[0].setName(name);
       ps[0].setKind(kind);
@@ -1157,7 +1158,7 @@ void Msg::InitializeOnelab(const std::string &name, const std::string &sockname)
 
     std::vector<onelab::string> ps;
     _onelabClient->get(ps, name + "/Action");
-    if(ps.size()){
+    if (!ps.empty()) {
       //removed message, as terminal is set to 1 when we get here
       //Info("Performing ONELAB '%s'", ps[0].getValue().c_str());
       if(ps[0].getValue() == "initialize") Exit(0);
@@ -1187,7 +1188,8 @@ std::string Msg::GetOnelabAction()
   if(_onelabClient){
     std::vector<onelab::string> ps;
     _onelabClient->get(ps, _onelabClient->getName() + "/Action");
-    if(ps.size()) return ps[0].getValue();
+    if (!ps.empty())
+      return ps[0].getValue();
   }
 #endif
   return "";
@@ -1202,22 +1204,21 @@ void Msg::LoadOnelabClient(const std::string &clientName, const std::string &soc
     std::string action, cmd;
     std::vector<onelab::string> ps;
     client->get(ps, clientName + "/Action");
-    if(ps.size() && ps[0].getValue().size())
+    if (!ps.empty() && !ps[0].getValue().empty())
       action.assign(ps[0].getValue());
     //cmd.assign("");
     if(!action.compare("compute")){
       std::vector<onelab::string> ps;
       client->get(ps,clientName+"/FullCmdLine");
-      if(ps.size() && ps[0].getValue().size())
+      if (!ps.empty() && !ps[0].getValue().empty())
         cmd.assign(ps[0].getValue());
 
-      if(cmd.size()){
+      if (!cmd.empty()) {
         Msg::Info("Loader calls <%s>", cmd.c_str());
         //client->sendInfo(strcat("Loader calls",cmd.c_str()));
         std::cout << "Loader calls " << cmd << std::endl;
         SystemCall(cmd.c_str(), true); //true->blocking
-      }
-      else
+      } else
         Msg::Info("No full command line found for <%s>",
                   clientName.c_str());
     }
@@ -1277,9 +1278,10 @@ static std::string _getParameterName(const std::string &key,
   if(copt.count("Path")){
     std::string path = copt["Path"][0];
     // if path ends with a number, assume it's for ordering purposes
-    if(path.size() && path[path.size() - 1] >= '0' && path[path.size() - 1] <= '9')
+    if (!path.empty() && path[path.size() - 1] >= '0' &&
+        path[path.size() - 1] <= '9')
       name = path + name;
-    else if(path.size() && path[path.size() - 1] == '/')
+    else if (!path.empty() && path[path.size() - 1] == '/')
       name = path + name;
     else
       name = path + "/" + name;
@@ -1301,7 +1303,7 @@ void Msg::ExchangeOnelabParameter(const std::string &key,
     name = copt["Name"][0];
 
   if(name.empty()){
-    if(copt.size() || fopt.size())
+    if (!copt.empty() || !fopt.empty())
       Msg::Error("From now on you need to use the `Name' attribute to create a "
                  "ONELAB parameter: `Name \"%s\"'",
                  _getParameterName(key, copt).c_str());
@@ -1312,7 +1314,7 @@ void Msg::ExchangeOnelabParameter(const std::string &key,
   _onelabClient->get(ps, name);
   bool noRange = true, noChoices = true, noLoop = true;
   bool noGraph = true, noClosed = true;
-  if(ps.size()){
+  if (!ps.empty()) {
     bool useLocalValue = ps[0].getReadOnly();
     if(fopt.count("ReadOnly")) useLocalValue = fopt["ReadOnly"][0];
     if(useLocalValue)
@@ -1327,14 +1329,17 @@ void Msg::ExchangeOnelabParameter(const std::string &key,
         if(ps[0].getMin() != -onelab::parameter::maxNumber() ||
            ps[0].getMax() != onelab::parameter::maxNumber() ||
            ps[0].getStep() != 0.) noRange = false;
-        if(ps[0].getChoices().size()) noChoices = false;
+        if (!ps[0].getChoices().empty())
+          noChoices = false;
       }
-      if(ps[0].getAttribute("Loop").size()) noLoop = false;
-      if(ps[0].getAttribute("Graph").size()) noGraph = false;
-      if(ps[0].getAttribute("Closed").size()) noClosed = false;
+      if (!ps[0].getAttribute("Loop").empty())
+        noLoop = false;
+      if (!ps[0].getAttribute("Graph").empty())
+        noGraph = false;
+      if (!ps[0].getAttribute("Closed").empty())
+        noClosed = false;
     }
-  }
-  else{
+  } else {
     ps.resize(1);
     ps[0].setName(name);
     ps[0].setValues(val);
@@ -1355,8 +1360,8 @@ void Msg::ExchangeOnelabParameter(const std::string &key,
   if(noRange && fopt.count("Step")) ps[0].setStep(fopt["Step"][0]);
   // if no range/min/max/step info is provided, try to compute a reasonnable
   // range and step (this makes the gui much nicer to use)
-  if(val.size() && noRange && !fopt.count("Range") && !fopt.count("Step") &&
-     !fopt.count("Min") && !fopt.count("Max")){
+  if (!val.empty() && noRange && !fopt.count("Range") && !fopt.count("Step") &&
+      !fopt.count("Min") && !fopt.count("Max")) {
     bool isInteger = (floor(val[0]) == val[0]);
     double fact = isInteger ? 5. : 20.;
     if(val[0] > 0){
@@ -1408,7 +1413,7 @@ void Msg::ExchangeOnelabParameter(const std::string &key,
     name = copt["Name"][0];
 
   if(name.empty()){
-    if(copt.size() || fopt.size())
+    if (!copt.empty() || !fopt.empty())
       Msg::Error("From now on you need to use the `Name' attribute to create a "
                  "ONELAB parameter: `Name \"%s\"'",
                  _getParameterName(key, copt).c_str());
@@ -1418,7 +1423,7 @@ void Msg::ExchangeOnelabParameter(const std::string &key,
   std::vector<onelab::string> ps;
   _onelabClient->get(ps, name);
   bool noChoices = true, noClosed = true, noMultipleSelection = true;
-  if(ps.size()){
+  if (!ps.empty()) {
     bool useLocalValue = ps[0].getReadOnly();
     if(fopt.count("ReadOnly")) useLocalValue = fopt["ReadOnly"][0];
     if(useLocalValue)
@@ -1428,12 +1433,14 @@ void Msg::ExchangeOnelabParameter(const std::string &key,
     // keep track of these attributes, which can be changed server-side (unless
     // they are not visible)
     if(ps[0].getVisible()){
-      if(ps[0].getChoices().size()) noChoices = false;
-      if(ps[0].getAttribute("Closed").size()) noClosed = false;
-      if(ps[0].getAttribute("MultipleSelection").size()) noMultipleSelection = false;
+      if (!ps[0].getChoices().empty())
+        noChoices = false;
+      if (!ps[0].getAttribute("Closed").empty())
+        noClosed = false;
+      if (!ps[0].getAttribute("MultipleSelection").empty())
+        noMultipleSelection = false;
     }
-  }
-  else{
+  } else {
     ps.resize(1);
     ps[0].setName(name);
     ps[0].setValue(val);
@@ -1466,7 +1473,8 @@ void Msg::ImportPhysicalGroupsInOnelab()
     std::vector<onelab::number> oldn;
     _onelabClient->get(oldn, "Gmsh/Number of physical groups");
     int oldsize = 0;
-    if(oldn.size()) oldsize = (int)oldn[0].getValue();
+    if (!oldn.empty())
+      oldsize = (int)oldn[0].getValue();
 
     std::map<int, std::vector<GEntity*> > groups[4];
     GModel::current()->getPhysicalGroups(groups);

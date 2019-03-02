@@ -203,10 +203,9 @@ static void extrudeMesh(GFace *from, GRegion *to, MVertexRTree &pos)
     }
   }
 
-  if(from->quadrangles.size() && !ep->mesh.Recombine) {
+  if (!from->quadrangles.empty() && !ep->mesh.Recombine) {
     Msg::Error("Cannot extrude quadrangles without Recombine");
-  }
-  else {
+  } else {
     for(std::size_t i = 0; i < from->quadrangles.size(); i++) {
       for(int j = 0; j < ep->mesh.NbLayer; j++) {
         for(int k = 0; k < ep->mesh.NbElmLayer[j]; k++) {
@@ -274,7 +273,7 @@ void meshGRegionExtruded::operator()(GRegion *gr)
 
   // carve holes if any (only do it now if the mesh is final, i.e., if
   // the mesh is recombined)
-  if(ep->mesh.Holes.size() && ep->mesh.Recombine) {
+  if (!ep->mesh.Holes.empty() && ep->mesh.Recombine) {
     std::map<int, std::pair<double, std::vector<int> > >::iterator it;
     for(it = ep->mesh.Holes.begin(); it != ep->mesh.Holes.end(); it++)
       carveHole(gr, it->first, it->second.first, it->second.second);
@@ -577,7 +576,7 @@ int SubdivideExtrudedMesh(GModel *m)
   for(std::size_t i = 0; i < regions.size(); i++) {
     GRegion *gr = regions[i];
     ExtrudeParams *ep = gr->meshAttributes.extrude;
-    if(ep->mesh.Holes.size()) {
+    if (!ep->mesh.Holes.empty()) {
       std::map<int, std::pair<double, std::vector<int> > >::iterator it;
       for(it = ep->mesh.Holes.begin(); it != ep->mesh.Holes.end(); it++)
         carveHole(gr, it->first, it->second.first, it->second.second);
@@ -588,7 +587,7 @@ int SubdivideExtrudedMesh(GModel *m)
   for(std::size_t i = 0; i < regions_quadToTri.size(); i++) {
     GRegion *gr = regions_quadToTri[i];
     ExtrudeParams *ep = gr->meshAttributes.extrude;
-    if(ep->mesh.Holes.size()) {
+    if (!ep->mesh.Holes.empty()) {
       std::map<int, std::pair<double, std::vector<int> > >::iterator it;
       for(it = ep->mesh.Holes.begin(); it != ep->mesh.Holes.end(); it++)
         carveHole(gr, it->first, it->second.first, it->second.second);

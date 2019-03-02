@@ -264,7 +264,8 @@ int GModel::_readMSH3(const std::string &name)
           return 0;
         }
         std::string name = ExtractDoubleQuotedString(str, 256);
-        if(name.size()) setPhysicalName(name, dim, num);
+        if (!name.empty())
+          setPhysicalName(name, dim, num);
       }
     }
 
@@ -543,7 +544,7 @@ int GModel::_readMSH3(const std::string &name)
   _associateEntityWithMeshVertices();
 
   // store the vertices in their associated geometrical entity
-  if(_vertexVectorCache.size())
+  if (!_vertexVectorCache.empty())
     _storeVerticesInEntities(_vertexVectorCache);
   else
     _storeVerticesInEntities(_vertexMapCache);
@@ -630,7 +631,7 @@ void writeMSHEntities(FILE *fp, GModel *gm) // also used in MSH2
 static int getNumElementsMSH(GEntity *ge, bool saveAll, int saveSinglePartition)
 {
   int n = 0;
-  if(saveAll || ge->physicals.size()) {
+  if (saveAll || !ge->physicals.empty()) {
     if(saveSinglePartition <= 0)
       n = ge->getNumMeshElements();
     else
@@ -643,7 +644,7 @@ static int getNumElementsMSH(GEntity *ge, bool saveAll, int saveSinglePartition)
 static void writeElementMSH(FILE *fp, GModel *model, MElement *ele, bool binary,
                             int elementary)
 {
-  if(model->getGhostCells().size()) {
+  if (!model->getGhostCells().empty()) {
     std::vector<short> ghosts;
     std::pair<std::multimap<MElement *, short>::iterator,
               std::multimap<MElement *, short>::iterator>
@@ -652,8 +653,7 @@ static void writeElementMSH(FILE *fp, GModel *model, MElement *ele, bool binary,
         it != itp.second; it++)
       ghosts.push_back(it->second);
     ele->writeMSH3(fp, binary, elementary, &ghosts);
-  }
-  else
+  } else
     ele->writeMSH3(fp, binary, elementary);
 }
 
@@ -662,7 +662,7 @@ static void writeElementsMSH(FILE *fp, GModel *model, GEntity *ge,
                              std::vector<T *> &ele, bool saveAll,
                              int saveSinglePartition, bool binary)
 {
-  if(saveAll || ge->physicals.size()) {
+  if (saveAll || !ge->physicals.empty()) {
     for(std::size_t i = 0; i < ele.size(); i++) {
       if(saveSinglePartition && ele[i]->getPartition() != saveSinglePartition)
         continue;

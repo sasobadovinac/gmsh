@@ -502,7 +502,7 @@ static void addBoundaryLayerPoints(GEdge *ge, double &t_begin, double &t_end,
                    gvb->tag());
         return;
       }
-      if(_addBegin.size()) {
+      if (!_addBegin.empty()) {
         Msg::Error("Different boundary layers cannot touch each other");
         return;
       }
@@ -516,7 +516,7 @@ static void addBoundaryLayerPoints(GEdge *ge, double &t_begin, double &t_end,
                    gve->tag());
         return;
       }
-      if(_addEnd.size()) {
+      if (!_addEnd.empty()) {
         Msg::Error("Different boundary layers cannot touch each other");
         return;
       }
@@ -662,11 +662,10 @@ void meshGEdge::operator()(GEdge *ge)
       CTX::instance()->mesh.flexibleTransfinite) &&
      CTX::instance()->mesh.algoRecombine != 0) {
     std::vector<GFace *> const &faces = ge->faces();
-    if(CTX::instance()->mesh.recombineAll && faces.size()) {
+    if (CTX::instance()->mesh.recombineAll && !faces.empty()) {
       if(N % 2 == 0) N++;
       if(CTX::instance()->mesh.algoRecombine == 2) N = increaseN(N);
-    }
-    else {
+    } else {
       for(std::vector<GFace *>::const_iterator it = faces.begin();
           it != faces.end(); it++) {
         if((*it)->meshAttributes.recombine) {

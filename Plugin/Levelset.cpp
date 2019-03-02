@@ -886,27 +886,27 @@ static bool recur_sign_change(adaptivePyramid *t,
 
 void GMSH_LevelsetPlugin::assignSpecificVisibility() const
 {
-  if(adaptiveTriangle::all.size()) {
+  if (!adaptiveTriangle::all.empty()) {
     adaptiveTriangle *t = *adaptiveTriangle::all.begin();
     if(!t->visible) t->visible = !recur_sign_change(t, this);
   }
-  if(adaptiveQuadrangle::all.size()) {
+  if (!adaptiveQuadrangle::all.empty()) {
     adaptiveQuadrangle *q = *adaptiveQuadrangle::all.begin();
     if(!q->visible) q->visible = !recur_sign_change(q, this);
   }
-  if(adaptiveTetrahedron::all.size()) {
+  if (!adaptiveTetrahedron::all.empty()) {
     adaptiveTetrahedron *t = *adaptiveTetrahedron::all.begin();
     if(!t->visible) t->visible = !recur_sign_change(t, this);
   }
-  if(adaptiveHexahedron::all.size()) {
+  if (!adaptiveHexahedron::all.empty()) {
     adaptiveHexahedron *h = *adaptiveHexahedron::all.begin();
     if(!h->visible) h->visible = !recur_sign_change(h, this);
   }
-  if(adaptivePrism::all.size()) {
+  if (!adaptivePrism::all.empty()) {
     adaptivePrism *p = *adaptivePrism::all.begin();
     if(!p->visible) p->visible = !recur_sign_change(p, this);
   }
-  if(adaptivePyramid::all.size()) {
+  if (!adaptivePyramid::all.empty()) {
     adaptivePyramid *p = *adaptivePyramid::all.begin();
     if(!p->visible) p->visible = !recur_sign_change(p, this);
   }

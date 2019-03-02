@@ -644,10 +644,10 @@ void drawContext::initProjection(int xpick, int ypick, int wpick, int hpick)
                     (GLdouble)wpick, (GLdouble)hpick, (GLint *)viewport);
 
     // draw background if not in selection mode
-    if(render_mode != GMSH_SELECT &&
-       (CTX::instance()->bgGradient ||
-        CTX::instance()->bgImageFileName.size()) &&
-       (!CTX::instance()->printing || CTX::instance()->print.background)) {
+    if (render_mode != GMSH_SELECT &&
+        (CTX::instance()->bgGradient ||
+         !CTX::instance()->bgImageFileName.empty()) &&
+        (!CTX::instance()->printing || CTX::instance()->print.background)) {
       glDisable(GL_DEPTH_TEST);
       glPushMatrix();
       glLoadIdentity();
@@ -1023,7 +1023,7 @@ bool drawContext::select(int type, bool multiple, bool mesh, bool post, int x,
 
   delete[] selectionBuffer;
 
-  if(!hits.size()) { // no entities
+  if (hits.empty()) { // no entities
     return false;
   }
 
@@ -1108,8 +1108,9 @@ bool drawContext::select(int type, bool multiple, bool mesh, bool post, int x,
     }
   }
 
-  if(vertices.size() || edges.size() || faces.size() || regions.size() ||
-     elements.size() || points.size() || views.size())
+  if (!vertices.empty() || !edges.empty() || !faces.empty() ||
+      !regions.empty() || !elements.empty() || !points.empty() ||
+      !views.empty())
     return true;
   return false;
 }

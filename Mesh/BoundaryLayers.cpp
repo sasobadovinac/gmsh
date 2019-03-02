@@ -222,7 +222,7 @@ static void addExtrudeNormals(std::set<T *> &entities,
         }
       }
 #if defined(HAVE_POST)
-      if(octrees.size()) { // scale normals by scalar views
+      if (!octrees.empty()) { // scale normals by scalar views
         for(smooth_data::iter it = ExtrudeParams::normals[i]->begin();
             it != ExtrudeParams::normals[i]->end(); it++) {
           for(std::size_t j = 0; j < octrees.size(); j++) {

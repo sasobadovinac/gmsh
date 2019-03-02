@@ -38,7 +38,7 @@ void gmshVertex::setPosition(GPoint &p)
   v->Pos.X = p.x();
   v->Pos.Y = p.y();
   v->Pos.Z = p.z();
-  if(mesh_vertices.size()) {
+  if (!mesh_vertices.empty()) {
     mesh_vertices[0]->x() = p.x();
     mesh_vertices[0]->y() = p.y();
     mesh_vertices[0]->z() = p.z();

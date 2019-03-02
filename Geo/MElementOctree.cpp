@@ -108,7 +108,7 @@ MElementOctree::MElementOctree(GModel *m) : _gm(m)
     for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++) {
       if(entities[i]->dim() == 0) {
         GVertex *gv = dynamic_cast<GVertex *>(entities[i]);
-        if(gv && gv->edges().size() > 0) {
+        if (gv && !gv->edges().empty()) {
           Octree_Insert(entities[i]->getMeshElement(j), _octree);
         }
       }

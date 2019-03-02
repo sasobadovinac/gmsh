@@ -24,7 +24,8 @@
 
 void MPolyhedron::_init()
 {
-  if(_parts.size() == 0) return;
+  if (_parts.empty())
+    return;
 
   for(std::size_t i = 0; i < _parts.size(); i++) {
     if(_parts[i]->getVolume() * _parts[0]->getVolume() < 0.)
@@ -151,7 +152,8 @@ void MPolyhedron::getIntegrationPoints(int pOrder, int *npts, IntPt **pts)
 
 void MPolygon::_initVertices()
 {
-  if(_parts.size() == 0) return;
+  if (_parts.empty())
+    return;
 
   // reorient the parts
   SVector3 n;
@@ -219,7 +221,7 @@ void MPolygon::_initVertices()
   // organize edges to get vertices in rotating order
   _edges.push_back(edg[0]);
   edg.erase(edg.begin());
-  while(edg.size()) {
+  while (!edg.empty()) {
     MVertex *v = _edges[_edges.size() - 1].getVertex(1);
     for(std::size_t i = 0; i < edg.size(); i++) {
       if(edg[i].getVertex(0) == v) {
@@ -502,7 +504,7 @@ assignPhysicals(GModel *GM, std::vector<int> &gePhysicals, int reg, int dim,
       if(phys2 &&
          (!physicals[dim].count(reg) || !physicals[dim][reg].count(phys2))) {
         std::string name = GM->getPhysicalName(dim, phys);
-        if(name != "" && newPhysTags.count(-phys)) {
+        if (!name.empty() && newPhysTags.count(-phys)) {
           std::map<int, std::map<int, std::string> >::iterator it =
             physicals[dim].begin();
           for(; it != physicals[dim].end(); it++) {
@@ -521,7 +523,7 @@ assignPhysicals(GModel *GM, std::vector<int> &gePhysicals, int reg, int dim,
       if(phys2 &&
          (!physicals[dim].count(reg) || !physicals[dim][reg].count(phys2))) {
         std::string name = GM->getPhysicalName(dim, phys);
-        if(name != "" && newPhysTags.count(phys)) {
+        if (!name.empty() && newPhysTags.count(phys)) {
           std::map<int, std::map<int, std::string> >::iterator it =
             physicals[dim].begin();
           for(; it != physicals[dim].end(); it++) {
@@ -717,9 +719,9 @@ static void elementSplitMesh(
         int c = elements[1].count(gLsTag);
         int reg = getBorderTag(gLsTag, c, newElemTags[1][0], borderElemTags[0]);
         int physTag =
-          (!gePhysicals.size()) ?
-            0 :
-            getBorderTag(gLsTag, c, newPhysTags[1][0], borderPhysTags[0]);
+            (gePhysicals.empty())
+                ? 0
+                : getBorderTag(gLsTag, c, newPhysTags[1][0], borderPhysTags[0]);
         int i;
         for(i = elements[1][reg].size() - 1; i >= 0; i--) {
           MElement *el = elements[1][reg][i];
@@ -760,9 +762,9 @@ static void elementSplitMesh(
                 elements[8].count(gLsTag);
         int reg = getBorderTag(gLsTag, c, newElemTags[2][0], borderElemTags[1]);
         int physTag =
-          (!gePhysicals.size()) ?
-            0 :
-            getBorderTag(gLsTag, c, newPhysTags[2][0], borderPhysTags[1]);
+            (gePhysicals.empty())
+                ? 0
+                : getBorderTag(gLsTag, c, newPhysTags[2][0], borderPhysTags[1]);
         if(mf.getNumVertices() == 3) {
           MFace f1 = MFace(vertexMap[mf.getVertex(0)->getNum()],
                            vertexMap[mf.getVertex(1)->getNum()],
@@ -1013,7 +1015,7 @@ static void elementCutMesh(
           poly[1].push_back(mt);
       }
       bool own = (eParent && !e->ownsParent()) ? false : true;
-      if(poly[0].size()) {
+      if (!poly[0].empty()) {
         int n = (e->getParent()) ? e->getNum() : ++numEle;
         p1 = new MPolyhedron(poly[0], n, ePart, own, parent);
         own = false;
@@ -1022,9 +1024,8 @@ static void elementCutMesh(
         elements[9][reg].push_back(p1);
         assignPhysicals(GM, gePhysicals, reg, 3, physicals, newPhysTags[3], -1);
       }
-      if(poly[1].size()) {
-        int n =
-          (e->getParent() && poly[0].size() == 0) ? e->getNum() : ++numEle;
+      if (!poly[1].empty()) {
+        int n = (e->getParent() && poly[0].empty()) ? e->getNum() : ++numEle;
         p2 = new MPolyhedron(poly[1], n, ePart, own, parent);
         getPhysicalTag(1, gePhysicals, newPhysTags[3]);
         elements[9][elementary].push_back(p2);
@@ -1131,9 +1132,9 @@ static void elementCutMesh(
       // the surfaces are cut before the volumes!
       int reg = getBorderTag(lsTag, cR, newElemTags[2][0], borderElemTags[1]);
       int physTag =
-        (!gePhysicals.size()) ?
-          0 :
-          getBorderTag(lsTag, cP, newPhysTags[2][0], borderPhysTags[1]);
+          (gePhysicals.empty())
+              ? 0
+              : getBorderTag(lsTag, cP, newPhysTags[2][0], borderPhysTags[1]);
       elements[2][reg].push_back(tri);
       if(physTag) assignLsPhysical(GM, reg, 2, physicals, physTag, lsTag);
       for(int i = 0; i < 2; i++)
@@ -1254,7 +1255,7 @@ static void elementCutMesh(
       }
 
       bool own = (eParent && !e->ownsParent()) ? false : true;
-      if(poly[0].size()) {
+      if (!poly[0].empty()) {
         int n = (e->getParent()) ? e->getNum() : ++numEle;
         if(eType == MSH_TRI_B || eType == MSH_POLYG_B)
           p1 = new MPolygonBorder(poly[0], n, ePart, own, parent,
@@ -1271,9 +1272,8 @@ static void elementCutMesh(
             borders[1].insert(
               std::pair<MElement *, MElement *>(p1->getDomain(i), p1));
       }
-      if(poly[1].size()) {
-        int n =
-          (e->getParent() && poly[0].size() == 0) ? e->getNum() : ++numEle;
+      if (!poly[1].empty()) {
+        int n = (e->getParent() && poly[0].empty()) ? e->getNum() : ++numEle;
         if(eType == MSH_TRI_B || eType == MSH_POLYG_B)
           p2 = new MPolygonBorder(poly[1], n, ePart, own, parent,
                                   copy->getDomain(0), copy->getDomain(1));
@@ -1384,9 +1384,9 @@ static void elementCutMesh(
       // the lines are cut before the surfaces!
       int reg = getBorderTag(lsTag, cR, newElemTags[1][0], borderElemTags[0]);
       int physTag =
-        (!gePhysicals.size()) ?
-          0 :
-          getBorderTag(lsTag, cP, newPhysTags[1][0], borderPhysTags[0]);
+          (gePhysicals.empty())
+              ? 0
+              : getBorderTag(lsTag, cP, newPhysTags[1][0], borderPhysTags[0]);
       elements[1][reg].push_back(lin);
       if(physTag) assignLsPhysical(GM, reg, 1, physicals, physTag, lsTag);
       for(int i = 0; i < 2; i++)
@@ -1627,14 +1627,14 @@ GModel *buildCutMesh(GModel *gm, gLevelset *ls,
       for(std::map<int, std::vector<MElement *> >::iterator it =
             elements[1].begin();
           it != elements[1].end(); it++) {
-        if(oldLineRegs.size() && it->first == oldLineRegs[k])
+        if (!oldLineRegs.empty() && it->first == oldLineRegs[k])
           k++;
         else
           lsLineRegs.push_back(it->first);
       }
       for(std::size_t j = 0; j < lsLineRegs.size(); j++) {
         int nLR = lsLineRegs[j];
-        bool havePhys = physicals[1][nLR].size();
+        bool havePhys = !physicals[1][nLR].empty();
         while(1) {
           std::vector<MElement *> conLines;
           conLines.push_back(elements[1][nLR][0]);

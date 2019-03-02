@@ -2448,7 +2448,7 @@ void adaptiveElements<T>::buildMapping(nodMap<T> &myNodMap, double tol,
       } // if
     } // for
 
-    if(myNodMap.mapping.size() == 0) {
+    if (myNodMap.mapping.empty()) {
       Msg::Error("Node mapping in buildMapping has zero size");
     }
 

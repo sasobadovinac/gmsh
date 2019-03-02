@@ -948,7 +948,7 @@ gLevelsetDistMesh::gLevelsetDistMesh(GModel *gm, const std::string &physical,
       _entities = groups[it->first.first][it->first.second];
     }
   }
-  if(_entities.size() == 0) {
+  if (_entities.empty()) {
     Msg::Error(
       "distanceToMesh: the physical name '%s' does not exist in the GModel",
       physical.c_str());
@@ -1215,7 +1215,7 @@ gLevelsetYarn::gLevelsetYarn(int dim, int phys, double minA, double majA,
   std::map<int, std::vector<GEntity *> > groups;
   GModel::current()->getPhysicalGroups(dim, groups);
   entities = groups[phys];
-  if(!entities.size())
+  if (entities.empty())
     printf("No physical %d found for levelset yarn!\n", phys);
 }
 

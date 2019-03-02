@@ -88,7 +88,7 @@ public:
 
     if(CTX::instance()->geom.highlightOrphans) {
       std::vector<GEdge *> const &edges = v->edges();
-      if(edges.size() == 0)
+      if (edges.empty())
         glColor4ubv((GLubyte *)&CTX::instance()->color.geom.highlight[0]);
       else if(edges.size() == 1)
         glColor4ubv((GLubyte *)&CTX::instance()->color.geom.highlight[1]);
@@ -363,7 +363,7 @@ public:
       }
     }
 
-    if(f->cross[0].size() && f->cross[0][0].size() >= 2) {
+    if (!f->cross[0].empty() && f->cross[0][0].size() >= 2) {
       int idx = f->cross[0][0].size() / 2;
       if(CTX::instance()->geom.surfacesNum || f->getSelection() > 1) {
         double offset = 0.1 * CTX::instance()->glFontSize * _ctx->pixel_equiv_x;

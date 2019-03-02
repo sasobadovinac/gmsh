@@ -152,7 +152,8 @@ void PViewData::setInterpolationMatrices(int type,
                                          const fullMatrix<double> &coefVal,
                                          const fullMatrix<double> &expVal)
 {
-  if(!type || _interpolation[type].size()) return;
+  if (!type || !_interpolation[type].empty())
+    return;
   _interpolation[type].push_back(new fullMatrix<double>(coefVal));
   _interpolation[type].push_back(new fullMatrix<double>(expVal));
 }
@@ -163,7 +164,8 @@ void PViewData::setInterpolationMatrices(int type,
                                          const fullMatrix<double> &coefGeo,
                                          const fullMatrix<double> &expGeo)
 {
-  if(!type || _interpolation[type].size()) return;
+  if (!type || !_interpolation[type].empty())
+    return;
   _interpolation[type].push_back(new fullMatrix<double>(coefVal));
   _interpolation[type].push_back(new fullMatrix<double>(expVal));
   _interpolation[type].push_back(new fullMatrix<double>(coefGeo));

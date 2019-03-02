@@ -28,8 +28,7 @@ StringXNumber DistanceOptions_Number[] = {
   {GMSH_FULLRC, "PhysicalSurface", NULL, 0.},
   {GMSH_FULLRC, "DistanceType", NULL, 0},
   {GMSH_FULLRC, "MinScale", NULL, 0},
-  {GMSH_FULLRC, "MaxScale", NULL, 0}
-};
+  {GMSH_FULLRC, "MaxScale", NULL, 0}};
 
 extern "C" {
 GMSH_Plugin *GMSH_RegisterDistancePlugin() { return new GMSH_DistancePlugin(); }
@@ -47,7 +46,8 @@ std::string GMSH_DistancePlugin::getHelp() const
          "If `PhysicalPoint', `PhysicalLine' and `PhysicalSurface' are 0, the "
          "distance is computed to all the boundaries. Otherwise the distance "
          "is computed to the given physical group.\n\n"
-         "If `DistanceType' is 0, the plugin computes the geometrical Euclidean "
+         "If `DistanceType' is 0, the plugin computes the geometrical "
+         "Euclidean "
          "distance using the naive O(N^2) algorithm. If `DistanceType' > 0, "
          "the plugin computes an approximate distance by solving a PDE with "
          "a diffusion constant equal to `DistanceType' time the maximum size "
@@ -90,7 +90,8 @@ void GMSH_DistancePlugin::printView(std::vector<GEntity *> &entities,
         if(e->getNumChildren())
           numNodes = e->getNumChildren() * e->getChild(0)->getNumVertices();
         std::vector<double> x(numNodes), y(numNodes), z(numNodes);
-        std::vector<double> *out = _data->incrementList(1, e->getType(), numNodes);
+        std::vector<double> *out =
+          _data->incrementList(1, e->getType(), numNodes);
         std::vector<MVertex *> nods;
 
         if(!e->getNumChildren())
@@ -117,7 +118,7 @@ void GMSH_DistancePlugin::printView(std::vector<GEntity *> &entities,
         for(std::size_t i = 0; i < dist.size(); i++) {
           if(minScale > 0 && maxScale > 0 && maxDist != minDist)
             dist[i] = minScale + ((dist[i] - minDist) / (maxDist - minDist)) *
-              (maxScale - minScale);
+                                   (maxScale - minScale);
           else if(minScale > 0)
             dist[i] = minScale + dist[i];
           out->push_back(dist[i]);
@@ -172,15 +173,15 @@ PView *GMSH_DistancePlugin::execute(PView *v)
       GEntity *g2 = entities[i];
       int gDim = g2->dim();
       bool computeForEntity = false;
-      if(!id_point && !id_line && !id_face && gDim == _maxDim - 1){
+      if(!id_point && !id_line && !id_face && gDim == _maxDim - 1) {
         computeForEntity = true;
       }
-      else{
+      else {
         std::vector<int> phys = g2->getPhysicalEntities();
         for(std::size_t k = 0; k < phys.size(); k++) {
           if((phys[k] == id_point && gDim == 0) ||
              (phys[k] == id_line && gDim == 1) ||
-             (phys[k] == id_face && gDim == 2)){
+             (phys[k] == id_face && gDim == 2)) {
             computeForEntity = true;
             break;
           }
@@ -203,7 +204,8 @@ PView *GMSH_DistancePlugin::execute(PView *v)
           else if(e->getType() == TYPE_TRI) {
             MVertex *v3 = e->getVertex(2);
             SPoint3 p3(v3->x(), v3->y(), v3->z());
-            signedDistancesPointsTriangle(iDistances, iClosePts, pts, p1, p2, p3);
+            signedDistancesPointsTriangle(iDistances, iClosePts, pts, p1, p2,
+                                          p3);
           }
           for(std::size_t kk = 0; kk < pts.size(); kk++) {
             if(std::abs(iDistances[kk]) < distances[kk]) {
@@ -241,15 +243,15 @@ PView *GMSH_DistancePlugin::execute(PView *v)
       GEntity *ge = entities[i];
       int gDim = ge->dim();
       bool fixForEntity = false;
-      if(!id_point && !id_line && !id_face && gDim == _maxDim - 1){
+      if(!id_point && !id_line && !id_face && gDim == _maxDim - 1) {
         fixForEntity = true;
       }
-      else{
+      else {
         std::vector<int> phys = ge->getPhysicalEntities();
         for(std::size_t k = 0; k < phys.size(); k++) {
           if((phys[k] == id_point && gDim == 0) ||
              (phys[k] == id_line && gDim == 1) ||
-             (phys[k] == id_face && gDim == 2)){
+             (phys[k] == id_face && gDim == 2)) {
             fixForEntity = true;
             break;
           }

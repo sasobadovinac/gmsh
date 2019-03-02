@@ -178,7 +178,8 @@ GeomMeshMatcher::matchEdges(GModel *m1, GModel *m2,
     }
 
     GEdge *choice = 0;
-    if(common_edges.size() == 0) continue;
+    if (common_edges.empty())
+      continue;
     if(common_edges.size() == 1) { choice = common_edges[0]; }
     else {
       // More than one edge between the two points ? No worries, let
@@ -254,7 +255,7 @@ GeomMeshMatcher::matchFaces(GModel *m1, GModel *m2,
     getIntersection<GFace *>(common_faces, lists);
     GFace *choice = 0;
 
-    if(common_faces.size() == 0) {
+    if (common_faces.empty()) {
       Msg::Debug("Could not match face %i (geom).", f1->tag());
       continue;
     }

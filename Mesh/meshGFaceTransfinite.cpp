@@ -39,12 +39,11 @@
 
 void findTransfiniteCorners(GFace *gf, std::vector<MVertex *> &corners)
 {
-  if(gf->meshAttributes.corners.size()) {
+  if (!gf->meshAttributes.corners.empty()) {
     // corners have been specified explicitly
     for(std::size_t i = 0; i < gf->meshAttributes.corners.size(); i++)
       corners.push_back(gf->meshAttributes.corners[i]->mesh_vertices[0]);
-  }
-  else {
+  } else {
     // try to find the corners automatically
     std::vector<GEdge *> fedges = gf->edges();
     GEdgeLoop el(fedges);

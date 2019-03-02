@@ -1153,7 +1153,7 @@ public:
       it->_gedges = update_gedges;
       for(size_t i = 0; i < vplus.size(); i++)
         if(vplus[i]._v) additional_vertices.push_back(vplus[i]);
-      if(vplusf.size())
+      if (!vplusf.empty())
         additional_vertices.insert(additional_vertices.end(), vplusf.begin(),
                                    vplusf.end());
     }

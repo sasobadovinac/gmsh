@@ -314,7 +314,7 @@ int GModel::writeUNV(const std::string &name, bool saveAll,
   fprintf(fp, "%6d\n", -1);
   fprintf(fp, "%6d\n", 2412);
   for(std::size_t i = 0; i < entities.size(); i++) {
-    if(saveAll || entities[i]->physicals.size()) {
+    if (saveAll || !entities[i]->physicals.empty()) {
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++) {
         MElement *e = entities[i]->getMeshElement(j);
         e->writeUNV(fp, e->getNum(), entities[i]->tag(), 0);

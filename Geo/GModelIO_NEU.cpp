@@ -135,7 +135,7 @@ namespace {
           tet->getFaceVertices(faceNum, verts);
 
           std::vector<unsigned> current = vertmap[verts[0]->getNum()];
-          for(std::size_t j = 1; j < verts.size() && current.size() != 0; ++j) {
+          for (std::size_t j = 1; j < verts.size() && !current.empty(); ++j) {
             std::vector<unsigned> common_data;
             set_intersection(current.begin(), current.end(),
                              vertmap[verts[j]->getNum()].begin(),
@@ -154,7 +154,7 @@ namespace {
     // populate boundary conditions for tetrahedra given triangle physicals
     IDTetFaceMap boundaryConditions;
     for(GModel::fiter it = gm->firstFace(); it != gm->lastFace(); ++it) {
-      if((*it)->physicals.size()) {
+      if (!(*it)->physicals.empty()) {
         for(std::size_t i = 0; i < (*it)->physicals.size(); ++i) {
           unsigned phys = (*it)->physicals[i];
           for(std::size_t j = 0; j < (*it)->triangles.size(); ++j) {
@@ -190,7 +190,7 @@ int GModel::writeNEU(const std::string &name, bool saveAll,
   unsigned lowestId = std::numeric_limits<int>::max();
   hashMap<unsigned, std::vector<unsigned> >::_ elementGroups;
   for(riter it = firstRegion(); it != lastRegion(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       numTetrahedra += (*it)->tetrahedra.size();
 
       for(std::size_t phys = 0; phys < (*it)->physicals.size(); ++phys) {

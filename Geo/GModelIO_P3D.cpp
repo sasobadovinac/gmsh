@@ -133,17 +133,17 @@ int GModel::writeP3D(const std::string &name, bool saveAll,
 
   std::vector<GFace *> faces;
   for(fiter it = firstFace(); it != lastFace(); ++it)
-    if((*it)->transfinite_vertices.size() &&
-       (*it)->transfinite_vertices[0].size() &&
-       ((*it)->physicals.size() || saveAll))
+    if (!(*it)->transfinite_vertices.empty() &&
+        !(*it)->transfinite_vertices[0].empty() &&
+        (!(*it)->physicals.empty() || saveAll))
       faces.push_back(*it);
 
   std::vector<GRegion *> regions;
   for(riter it = firstRegion(); it != lastRegion(); ++it)
-    if((*it)->transfinite_vertices.size() &&
-       (*it)->transfinite_vertices[0].size() &&
-       (*it)->transfinite_vertices[0][0].size() &&
-       ((*it)->physicals.size() || saveAll))
+    if (!(*it)->transfinite_vertices.empty() &&
+        !(*it)->transfinite_vertices[0].empty() &&
+        !(*it)->transfinite_vertices[0][0].empty() &&
+        (!(*it)->physicals.empty() || saveAll))
       regions.push_back(*it);
 
   if(faces.empty() && regions.empty()) {

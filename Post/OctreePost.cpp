@@ -417,7 +417,8 @@ static void *getElement(double P[3], Octree *octree, int nbNod, int qn,
         if(ok) return v[i];
       }
     }
-    if(v.size()) return v[0];
+    if (!v.empty())
+      return v[0];
   }
   else {
     return Octree_Search(P, octree);
@@ -446,7 +447,8 @@ static MElement *getElement(double P[3], GModel *m, int qn, double *qx,
         if(ok) return elements[i];
       }
     }
-    if(elements.size()) return elements[0];
+    if (!elements.empty())
+      return elements[0];
   }
   else {
     return m->getMeshElementByCoord(pt);

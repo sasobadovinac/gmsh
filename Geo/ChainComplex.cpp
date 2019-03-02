@@ -629,11 +629,10 @@ bool ChainComplex::deformChain(std::map<Cell *, int, Less_Cell> &cells,
              cellsNotInChain.size() == 2 && bend)) {
       // printf("bend \n");
       return deform(cells, cellsInChain, cellsNotInChain);
-    }
-    else if((dim == 1 && cellsInChain.size() == 3 &&
-             cellsNotInChain.size() == 0) ||
-            (dim == 2 && cellsInChain.size() == 4 &&
-             cellsNotInChain.size() == 0)) {
+    } else if ((dim == 1 && cellsInChain.size() == 3 &&
+                cellsNotInChain.empty()) ||
+               (dim == 2 && cellsInChain.size() == 4 &&
+                cellsNotInChain.empty())) {
       // printf("remove boundary \n");
       return deform(cells, cellsInChain, cellsNotInChain);
     }

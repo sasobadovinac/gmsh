@@ -132,7 +132,7 @@ PView *GMSH_ModifyComponentsPlugin::execute(PView *view)
   std::vector<std::string> expressions(9), expressions0(9);
   for(int i = 0; i < 9; i++) {
     expressions[i] = ModifyComponentsOptions_String[i].def;
-    if(expressions[i].size())
+    if (!expressions[i].empty())
       expressions0[i] = expressions[i];
     else
       expressions0[i] = "0.";
@@ -213,7 +213,7 @@ PView *GMSH_ModifyComponentsPlugin::execute(PView *view)
           for(int i = 0; i < 9; i++) values[14 + i] = w[i];
           if(f.eval(values, res)) {
             for(int comp = 0; comp < numComp; comp++) {
-              if(expressions[comp].size()) {
+              if (!expressions[comp].empty()) {
                 data1->setValue(step, ent, ele, nod, comp, res[comp]);
               }
             }

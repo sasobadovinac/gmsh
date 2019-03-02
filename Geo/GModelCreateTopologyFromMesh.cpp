@@ -77,7 +77,7 @@ std::vector<GEdge *> ensureSimplyConnectedEdge(GEdge *ge)
       _stack.pop();
       _lines.erase(l);
       // avoid adding twice the last one
-      if(!_part.size() || _part[_part.size() - 1] != l) {
+      if (_part.empty() || _part[_part.size() - 1] != l) {
         _part.push_back(l);
       }
       for(int j = 0; j < 2; j++) {
@@ -221,7 +221,7 @@ void createTopologyFromMesh1D(GModel *gm, int &num)
 
   for(GModel::viter it = gm->firstVertex(); it != gm->lastVertex(); it++) {
     GVertex *gv = *it;
-    if(gv->mesh_vertices.size()) {
+    if (!gv->mesh_vertices.empty()) {
       MVertex *mv = gv->mesh_vertices[0];
       mVertexToGVertex[mv] = gv;
       Msg::Info(

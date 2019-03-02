@@ -23,7 +23,7 @@ int GModel::writeMAIL(const std::string &name, bool saveAll,
 
   int numVertices = indexMeshVertices(saveAll), numTriangles = 0;
   for(fiter it = firstFace(); it != lastFace(); ++it)
-    if(saveAll || (*it)->physicals.size())
+    if (saveAll || !(*it)->physicals.empty())
       numTriangles += (*it)->triangles.size();
 
   fprintf(fp, " %d %d\n", numVertices, numTriangles);
@@ -39,7 +39,7 @@ int GModel::writeMAIL(const std::string &name, bool saveAll,
   }
 
   for(fiter it = firstFace(); it != lastFace(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       for(std::size_t i = 0; i < (*it)->triangles.size(); i++) {
         MTriangle *t = (*it)->triangles[i];
         fprintf(fp, " %ld %ld %ld\n", t->getVertex(0)->getIndex(),
@@ -50,7 +50,7 @@ int GModel::writeMAIL(const std::string &name, bool saveAll,
 
   // TODO write edges (with signs)
   for(fiter it = firstFace(); it != lastFace(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       for(std::size_t i = 0; i < (*it)->triangles.size(); i++) {
         // MTriangle *t = (*it)->triangles[i];
         fprintf(fp, " %d %d %d\n", 0, 0, 0);

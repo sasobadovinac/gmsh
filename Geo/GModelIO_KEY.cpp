@@ -36,7 +36,7 @@ template <class T>
 static void writeElementsKEY(FILE *fp, GEntity *ge, std::vector<T *> &elements,
                              bool saveAll)
 {
-  if(elements.size() && (saveAll || ge->physicals.size())) {
+  if (!elements.empty() && (saveAll || !ge->physicals.empty())) {
     const char *typ = elements[0]->getStringForKEY();
     int pid = partID(ge->dim(), ge->tag());
     if(typ) {

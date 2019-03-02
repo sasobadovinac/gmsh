@@ -77,7 +77,7 @@ void meshMetric::addMetric(int technique, simpleFunction<double> *fct,
 
 void meshMetric::updateMetrics()
 {
-  if(!setOfMetrics.size()) {
+  if (setOfMetrics.empty()) {
     Msg::Error("Can't intersect metrics, no metric registered");
     return;
   }
@@ -795,7 +795,7 @@ void meshMetric::computeMetric(int metricNumber)
 double meshMetric::operator()(double x, double y, double z, GEntity *ge)
 {
   if(needMetricUpdate) updateMetrics();
-  if(!setOfMetrics.size()) {
+  if (setOfMetrics.empty()) {
     std::cout << "meshMetric::operator() : No metric defined ! " << std::endl;
     throw;
   }
@@ -835,7 +835,7 @@ void meshMetric::operator()(double x, double y, double z, SMetric3 &metr,
   if(needMetricUpdate) {
     updateMetrics();
   }
-  if(!setOfMetrics.size()) {
+  if (setOfMetrics.empty()) {
     std::cout << "meshMetric::operator() : No metric defined ! " << std::endl;
     throw;
   }

@@ -645,7 +645,8 @@ namespace ClosureGen {
     for(std::size_t i = 0; i < closure.size(); i++) {
       std::vector<int> &clFull = closureFull[i];
       std::vector<int> &cl = closure[i];
-      if(cl.size() == 0) continue;
+      if (cl.empty())
+        continue;
       clFull.resize(6, -1);
       int &ref =
         cl.size() == 3 ? ref3 : (cl[0] / 3 + cl[1] / 3) % 2 ? ref4b : ref4a;

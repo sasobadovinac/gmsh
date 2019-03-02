@@ -241,7 +241,8 @@ int GmshFinalize()
 {
 #if defined(HAVE_POST)
   // Delete all PViewData stored in static list of PView class
-  while(PView::list.size() > 0) delete PView::list[PView::list.size() - 1];
+  while (!PView::list.empty())
+    delete PView::list[PView::list.size() - 1];
   std::vector<PView *>().swap(PView::list);
 
   // Delete static _interpolationSchemes of PViewData class
@@ -252,7 +253,8 @@ int GmshFinalize()
   BasisFactory::clearAll();
 
   // Delete all Gmodels
-  while(GModel::list.size() > 0) delete GModel::list[GModel::list.size() - 1];
+  while (!GModel::list.empty())
+    delete GModel::list[GModel::list.size() - 1];
   std::vector<GModel *>().swap(GModel::list);
 
   return 1;
@@ -299,7 +301,7 @@ int GmshBatch()
 #if defined(HAVE_POST) && defined(HAVE_MESH)
   if(!CTX::instance()->bgmFileName.empty()) {
     MergePostProcessingFile(CTX::instance()->bgmFileName);
-    if(PView::list.size())
+    if (!PView::list.empty())
       GModel::current()->getFields()->setBackgroundMesh(PView::list.size() - 1);
     else
       Msg::Error("Invalid background mesh (no view)");
@@ -372,11 +374,10 @@ int GmshFLTK(int argc, char **argv)
   // display GUI immediately for quick launch time
   FlGui::check();
 
-  if(FlGui::getOpenedThroughMacFinder().size() &&
-     CTX::instance()->files.empty()) {
+  if (!FlGui::getOpenedThroughMacFinder().empty() &&
+      CTX::instance()->files.empty()) {
     OpenProject(FlGui::getOpenedThroughMacFinder());
-  }
-  else {
+  } else {
     OpenProject(GModel::current()->getFileName());
     bool open = false;
     for(std::size_t i = 0; i < CTX::instance()->files.size(); i++) {
@@ -410,14 +411,15 @@ int GmshFLTK(int argc, char **argv)
   case 3: FlGui::instance()->openModule("Solver"); break;
   case 4: FlGui::instance()->openModule("Post-processing"); break;
   default: // automatic
-    if(PView::list.size()) FlGui::instance()->openModule("Post-processing");
+    if (!PView::list.empty())
+      FlGui::instance()->openModule("Post-processing");
     break;
   }
 
   // read background mesh if any
   if(!CTX::instance()->bgmFileName.empty()) {
     MergePostProcessingFile(CTX::instance()->bgmFileName);
-    if(PView::list.size())
+    if (!PView::list.empty())
       GModel::current()->getFields()->setBackgroundMesh(PView::list.size() - 1);
     else
       Msg::Error("Invalid background mesh (no view)");

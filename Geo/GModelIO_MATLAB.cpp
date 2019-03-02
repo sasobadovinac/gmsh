@@ -100,7 +100,7 @@ int GModel::writeMATLAB(const std::string &name, bool binary, bool saveAll,
     for(std::size_t i = 0; i < entities.size(); i++) {
       if(saveAll)
         writeElementsMATLAB(fp, entities[i], filetype, binary, 0);
-      else if(entities[i]->getPhysicalEntities().size()) {
+      else if (!entities[i]->getPhysicalEntities().empty()) {
         for(std::size_t k = 0; k < entities[i]->getPhysicalEntities().size();
             k++) {
           int physical = entities[i]->getPhysicalEntities()[k];

@@ -220,7 +220,8 @@ void Homology::findHomologyBasis(std::vector<int> dim)
     }
   }
 
-  if(_fileName != "") writeBasisMSH();
+  if (!_fileName.empty())
+    writeBasisMSH();
 
   Msg::Info("Ranks of domain (%s) homology spaces:", domain.c_str());
   Msg::Info("H_0 = %d", _betti[0]);
@@ -309,7 +310,8 @@ void Homology::findCohomologyBasis(std::vector<int> dim)
     }
   }
 
-  if(_fileName != "") writeBasisMSH();
+  if (!_fileName.empty())
+    writeBasisMSH();
 
   Msg::Info("Ranks of domain (%s) cohomology spaces:", domain.c_str());
   Msg::Info("H^0 = %d", _betti[0]);

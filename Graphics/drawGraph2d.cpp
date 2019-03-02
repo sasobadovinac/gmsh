@@ -684,7 +684,7 @@ void drawContext::drawGraph2d(bool inModelCoordinates)
       drawGraph(this, p, x, viewport[3] - y, w, h, tic,
                 overlay[opt->autoPosition]);
       if(opt->axes)
-        overlay[opt->autoPosition] += (opt->axesLabel[0].size() ? 2 : 1);
+        overlay[opt->autoPosition] += (!opt->axesLabel[0].empty() ? 2 : 1);
     }
     else if(opt->autoPosition == 12 &&
             inModelCoordinates) { // in model coordinates

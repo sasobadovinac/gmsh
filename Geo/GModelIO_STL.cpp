@@ -72,7 +72,7 @@ int GModel::readSTL(const std::string &name, double tolerance)
   // check if we could parse something
   bool empty = true;
   for(std::size_t i = 0; i < points.size(); i++) {
-    if(points[i].size()) {
+    if (!points[i].empty()) {
       empty = false;
       break;
     }
@@ -198,7 +198,7 @@ int GModel::writeSTL(const std::string &name, bool binary, bool saveAll,
   bool useGeoSTL = false;
   unsigned int nfacets = 0;
   for(fiter it = firstFace(); it != lastFace(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       nfacets += (*it)->triangles.size() + 2 * (*it)->quadrangles.size();
     }
   }
@@ -206,7 +206,7 @@ int GModel::writeSTL(const std::string &name, bool binary, bool saveAll,
     useGeoSTL = true;
     for(fiter it = firstFace(); it != lastFace(); ++it) {
       (*it)->buildSTLTriangulation();
-      if(saveAll || (*it)->physicals.size()) {
+      if (saveAll || !(*it)->physicals.empty()) {
         nfacets += (*it)->stl_triangles.size() / 3;
       }
     }
@@ -223,8 +223,8 @@ int GModel::writeSTL(const std::string &name, bool binary, bool saveAll,
   }
 
   for(fiter it = firstFace(); it != lastFace(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
-      if(useGeoSTL && (*it)->stl_vertices_uv.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
+      if (useGeoSTL && !(*it)->stl_vertices_uv.empty()) {
         for(std::size_t i = 0; i < (*it)->stl_triangles.size(); i += 3) {
           SPoint2 &p1((*it)->stl_vertices_uv[(*it)->stl_triangles[i]]);
           SPoint2 &p2((*it)->stl_vertices_uv[(*it)->stl_triangles[i + 1]]);
@@ -262,8 +262,7 @@ int GModel::writeSTL(const std::string &name, bool binary, bool saveAll,
             fwrite(data, sizeof(char), 50, fp);
           }
         }
-      }
-      else {
+      } else {
         for(std::size_t i = 0; i < (*it)->triangles.size(); i++)
           (*it)->triangles[i]->writeSTL(fp, binary, scalingFactor);
         for(std::size_t i = 0; i < (*it)->quadrangles.size(); i++)

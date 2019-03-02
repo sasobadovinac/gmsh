@@ -232,7 +232,8 @@ void connectTets_vector2_templ(std::size_t _size, ITER beg, ITER end,
       for(int j = 0; j < 4; j++) { conn.push_back(faceXtet(t, j)); }
     }
   }
-  if(!conn.size()) return;
+  if (conn.empty())
+    return;
 
   std::sort(conn.begin(), conn.end());
 
@@ -613,7 +614,7 @@ static void completeTheSetOfFaces(GModel *model, std::set<GFace *> &faces_bound)
   std::set<GFace *> toAdd;
   for(GModel::fiter it = model->firstFace(); it != model->lastFace(); ++it) {
     if(faces_bound.find(*it) != faces_bound.end()) {
-      if((*it)->_compound.size()) {
+      if (!(*it)->_compound.empty()) {
         for(std::size_t i = 0; i < (*it)->_compound.size(); ++i) {
           GFace *gf = static_cast<GFace *>((*it)->_compound[i]);
           if(gf) toAdd.insert(gf);
@@ -805,7 +806,8 @@ void adaptMeshGRegion::operator()(GRegion *gr)
       }
     }
 
-    if(!newTets.size()) break;
+    if (newTets.empty())
+      break;
 
     // add all the new tets in the container
     for(std::size_t i = 0; i < newTets.size(); i++) {
@@ -980,7 +982,9 @@ void optimizeMesh(GRegion *gr, const qmTetrahedron::Measures &qm)
       }
     }
 
-    if(!newTets.size()) { break; }
+    if (newTets.empty()) {
+      break;
+    }
 
     // add all the new tets in the container
     for(std::size_t i = 0; i < newTets.size(); i++) {
@@ -1028,11 +1032,10 @@ void optimizeMesh(GRegion *gr, const qmTetrahedron::Measures &qm)
     worstA = worst;
   }
 
-  if(illegals.size()) {
+  if (!illegals.empty()) {
     Msg::Info("%d ill-shaped tets are still in the mesh",
               illegals.size());
-  }
-  else {
+  } else {
     Msg::Info("No ill-shaped tets in the mesh :-)");
   }
 

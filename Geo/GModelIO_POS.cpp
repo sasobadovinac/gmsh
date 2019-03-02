@@ -94,7 +94,7 @@ int GModel::writePOS(const std::string &name, bool printElementary,
   std::vector<GEntity *> entities;
   getEntities(entities);
   for(std::size_t i = 0; i < entities.size(); i++)
-    if(saveAll || entities[i]->physicals.size())
+    if (saveAll || !entities[i]->physicals.empty())
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++)
         entities[i]->getMeshElement(j)->writePOS(
           fp, printElementary, printElementNumber, printSICN, printSIGE,

@@ -387,8 +387,7 @@ std::string GFace::getAdditionalInfoString(bool multline)
       sstream << "\n";
     else
       sstream << " ";
-  }
-  else if(l_edges.size()) {
+  } else if (!l_edges.empty()) {
     sstream << "Boundary curves: ";
     for(std::vector<GEdge *>::iterator it = l_edges.begin();
         it != l_edges.end(); ++it) {
@@ -401,7 +400,7 @@ std::string GFace::getAdditionalInfoString(bool multline)
       sstream << " ";
   }
 
-  if(embedded_edges.size()) {
+  if (!embedded_edges.empty()) {
     sstream << "Embedded curves: ";
     for(std::vector<GEdge *>::iterator it = embedded_edges.begin();
         it != embedded_edges.end(); ++it) {
@@ -414,7 +413,7 @@ std::string GFace::getAdditionalInfoString(bool multline)
       sstream << " ";
   }
 
-  if(embedded_vertices.size()) {
+  if (!embedded_vertices.empty()) {
     sstream << "Embedded points: ";
     for(std::set<GVertex *>::iterator it = embedded_vertices.begin();
         it != embedded_vertices.end(); ++it) {
@@ -436,7 +435,8 @@ std::string GFace::getAdditionalInfoString(bool multline)
     if(meshAttributes.reverseMesh) sstream << " reverse";
   }
   std::string str = sstream.str();
-  if(str.size() && (str[str.size() - 1] == '\n' || str[str.size() - 1] == ' '))
+  if (!str.empty() &&
+      (str[str.size() - 1] == '\n' || str[str.size() - 1] == ' '))
     str.resize(str.size() - 1);
   return str;
 }
@@ -447,7 +447,7 @@ void GFace::writeGEO(FILE *fp)
 
   std::vector<GEdge *> const &edg = edges();
   std::vector<int> const &dir = orientations();
-  if(edg.size() && dir.size() == edg.size()) {
+  if (!edg.empty() && dir.size() == edg.size()) {
     std::vector<int> num, ori;
     for(std::vector<GEdge *>::const_iterator it = edg.begin(); it != edg.end();
         it++)
@@ -484,7 +484,7 @@ void GFace::writeGEO(FILE *fp)
 
   if(meshAttributes.method == MESH_TRANSFINITE) {
     fprintf(fp, "Transfinite Surface {%d}", tag());
-    if(meshAttributes.corners.size()) {
+    if (!meshAttributes.corners.empty()) {
       fprintf(fp, " = {");
       for(std::size_t i = 0; i < meshAttributes.corners.size(); i++) {
         if(i) fprintf(fp, ",");
@@ -1221,7 +1221,7 @@ SVector3 GFace::normal(const SPoint2 &param) const
 
 bool GFace::buildRepresentationCross(bool force)
 {
-  if(cross[0].size()) {
+  if (!cross[0].empty()) {
     if(force) {
       cross[0].clear();
       cross[0].clear();
@@ -1291,7 +1291,7 @@ bool GFace::buildRepresentationCross(bool force)
         (geomType() == Plane) ? containsPoint(pt) : containsParam(uv);
       if(inside) { cross[dir].back().push_back(pt); }
       else {
-        if(cross[dir].back().size())
+        if (!cross[dir].back().empty())
           cross[dir].push_back(std::vector<SPoint3>());
       }
     }
@@ -1307,7 +1307,8 @@ bool GFace::buildRepresentationCross(bool force)
 
 bool GFace::buildSTLTriangulation(bool force)
 {
-  if(stl_triangles.size() && !force) return true;
+  if (!stl_triangles.empty() && !force)
+    return true;
   stl_vertices_uv.clear();
   stl_vertices_xyz.clear();
   stl_triangles.clear();
@@ -1359,8 +1360,8 @@ bool GFace::fillVertexArray(bool force)
   va_geom_triangles = new VertexArray(3, stl_triangles.size() / 3);
   unsigned int c = useColor() ? getColor() : CTX::instance()->color.geom.surface;
   unsigned int col[4] = {c, c, c, c};
-  if(stl_vertices_xyz.size() &&
-     (stl_vertices_xyz.size() == stl_normals.size())) {
+  if (!stl_vertices_xyz.empty() &&
+      (stl_vertices_xyz.size() == stl_normals.size())) {
     for(std::size_t i = 0; i < stl_triangles.size(); i += 3) {
       SPoint3 &p1(stl_vertices_xyz[stl_triangles[i]]);
       SPoint3 &p2(stl_vertices_xyz[stl_triangles[i + 1]]);
@@ -1373,8 +1374,7 @@ bool GFace::fillVertexArray(bool force)
                        stl_normals[stl_triangles[i + 2]]};
       va_geom_triangles->add(x, y, z, n, col);
     }
-  }
-  else if(stl_vertices_uv.size()) {
+  } else if (!stl_vertices_uv.empty()) {
     for(std::size_t i = 0; i < stl_triangles.size(); i += 3) {
       SPoint2 &p1(stl_vertices_uv[stl_triangles[i]]);
       SPoint2 &p2(stl_vertices_uv[stl_triangles[i + 1]]);
@@ -1417,7 +1417,7 @@ bool GFace::fillPointCloud(double maxDist, std::vector<SPoint3> *points,
 {
   if(!points) return false;
 
-  if(buildSTLTriangulation() && stl_vertices_uv.size()) {
+  if (buildSTLTriangulation() && !stl_vertices_uv.empty()) {
     for(std::size_t i = 0; i < stl_triangles.size(); i += 3) {
       SPoint2 &p0(stl_vertices_uv[stl_triangles[i]]);
       SPoint2 &p1(stl_vertices_uv[stl_triangles[i + 1]]);
@@ -1438,8 +1438,7 @@ bool GFace::fillPointCloud(double maxDist, std::vector<SPoint3> *points,
         }
       }
     }
-  }
-  else {
+  } else {
     int N = 1000; //(int)(maxDX / maxDist);
     Range<double> b1 = parBounds(0);
     Range<double> b2 = parBounds(1);
@@ -1546,7 +1545,7 @@ void GFace::mesh(bool verbose)
 #if defined(HAVE_MESH)
   meshGFace mesher;
   mesher(this, verbose);
-  if(_compound.size()) { // Some faces are meshed together
+  if (!_compound.empty()) {    // Some faces are meshed together
     if(_compound[0] == this) { // I'm the one that makes the compound job
       bool ok = true;
       for(std::size_t i = 0; i < _compound.size(); i++) {
@@ -2048,7 +2047,7 @@ void GFace::removeElement(int type, MElement *e)
 
 bool GFace::reorder(const int elementType, const std::vector<std::size_t> &ordering)
 {
-  if(triangles.size() != 0) {
+  if (!triangles.empty()) {
     if(triangles.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != triangles.size()) return false;
 
@@ -2071,7 +2070,7 @@ bool GFace::reorder(const int elementType, const std::vector<std::size_t> &order
     }
   }
 
-  if(quadrangles.size() != 0) {
+  if (!quadrangles.empty()) {
     if(quadrangles.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != quadrangles.size()) return false;
 
@@ -2094,7 +2093,7 @@ bool GFace::reorder(const int elementType, const std::vector<std::size_t> &order
     }
   }
 
-  if(polygons.size() != 0) {
+  if (!polygons.empty()) {
     if(polygons.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != polygons.size()) return false;
 

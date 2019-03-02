@@ -846,7 +846,7 @@ fillConnectedElements(std::vector<std::set<MElement *> > &connectedElements,
     elementStack.push(startElement);
     elements.insert(graph.element(startElement));
 
-    while(elementStack.size() != 0) {
+    while (!elementStack.empty()) {
       unsigned int top = elementStack.top();
       elementStack.pop();
       elements.insert(graph.element(top));
@@ -1021,7 +1021,7 @@ dividedNonConnectedEntities(GModel *const model, int dim,
               pedge->addElement((*itSet)->getType(), (*itSet));
             }
             // Move B-Rep
-            if(BRepFaces.size() > 0) {
+            if (!BRepFaces.empty()) {
               int i = 0;
               for(std::vector<GFace *>::iterator itBRep = BRepFaces.begin();
                   itBRep != BRepFaces.end(); ++itBRep) {
@@ -1095,7 +1095,7 @@ dividedNonConnectedEntities(GModel *const model, int dim,
           ret = true;
           std::list<GRegion *> BRepRegions = face->regions();
           std::vector<int> oldOrientations;
-          if(BRepRegions.size() > 0) {
+          if (!BRepRegions.empty()) {
             for(std::list<GRegion *>::iterator itBRep = BRepRegions.begin();
                 itBRep != BRepRegions.end(); ++itBRep) {
               oldOrientations.push_back((*itBRep)->delFace(face));
@@ -1117,7 +1117,7 @@ dividedNonConnectedEntities(GModel *const model, int dim,
               pface->addElement((*itSet)->getType(), (*itSet));
             }
             // Move B-Rep
-            if(BRepRegions.size() > 0) {
+            if (!BRepRegions.empty()) {
               int i = 0;
               for(std::list<GRegion *>::iterator itBRep = BRepRegions.begin();
                   itBRep != BRepRegions.end(); ++itBRep) {
@@ -1450,7 +1450,7 @@ static MElement *getReferenceElement(
     min = std::numeric_limits<unsigned int>::max();
     for(std::size_t i = 0; i < minSizeElementPairs.size(); i++) {
       // The partition vector is sorted thus we can check only the first element
-      if(minSizeElementPairs[i].second.size() == 0)
+      if (minSizeElementPairs[i].second.empty())
         return minSizeElementPairs[0].first;
       if(min > minSizeElementPairs[i].second[0]) {
         min = minSizeElementPairs[i].second[0];
@@ -2149,7 +2149,7 @@ static void addPhysical(GModel *const model, GEntity *entity,
     entity->addPhysicalEntity(number);
   }
 
-  if(physical.size() == 0) {
+  if (physical.empty()) {
     std::string name = "_part{";
 
     for(unsigned int i = 0; i < numPartitions; i++) {

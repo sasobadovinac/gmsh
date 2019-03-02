@@ -556,9 +556,10 @@ int SystemCallExe(const std::string &exe, const std::string &argsOrCommand,
   }
 
   std::string command;
-  if(exe.size()) {
+  if (!exe.empty()) {
     command.append("\"" + exe + "\""); // allows exe with white space
-    if(argsOrCommand.size()) command.append(" ");
+    if (!argsOrCommand.empty())
+      command.append(" ");
   }
   command.append(argsOrCommand);
 

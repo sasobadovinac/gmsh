@@ -398,7 +398,7 @@ BDS_Edge *BDS_Mesh::recover_edge(int num1, int num2, bool &_fatal,
 
     //    printf("%d intersected\n",intersected.size());
 
-    if(!intersected.size() || ix > 300) {
+    if (intersected.empty() || ix > 300) {
       BDS_Edge *eee = find_edge(num1, num2);
       if(!eee) {
         if(Msg::GetVerbosity() > 98) {

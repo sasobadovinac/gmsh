@@ -97,7 +97,8 @@ GModel::~GModel()
     for(std::size_t i = 0; i < list.size(); i++) {
       if(list[i]->getVisibility()) othervisible = true;
     }
-    if(!othervisible && list.size()) list.back()->setVisibility(1);
+    if (!othervisible && !list.empty())
+      list.back()->setVisibility(1);
   }
 
   destroy();
@@ -640,7 +641,8 @@ bool GModel::noPhysicalGroups()
   std::vector<GEntity *> entities;
   getEntities(entities);
   for(std::size_t i = 0; i < entities.size(); i++)
-    if(entities[i]->physicals.size()) return false;
+    if (!entities[i]->physicals.empty())
+      return false;
   return true;
 }
 
@@ -996,7 +998,7 @@ void GModel::setAllVolumesPositiveTopology()
   }
   std::vector<std::pair<MElement *, bool> > queue;
   std::set<MElement *> queued;
-  if((*regions.begin())->tetrahedra.size() == 0) {
+  if ((*regions.begin())->tetrahedra.empty()) {
     Msg::Error(
       "setAllVolumePositiveTopology needs at least one tetrahedron to start");
     return;
@@ -1122,7 +1124,8 @@ int GModel::adaptMesh(std::vector<int> technique,
 
       if(getDim() == 2) {
         for(fiter fit = firstFace(); fit != lastFace(); ++fit) {
-          if((*fit)->quadrangles.size()) return -1;
+          if (!(*fit)->quadrangles.empty())
+            return -1;
           for(unsigned i = 0; i < (*fit)->triangles.size(); i++) {
             elements.push_back((*fit)->triangles[i]);
           }
@@ -1130,14 +1133,16 @@ int GModel::adaptMesh(std::vector<int> technique,
       }
       else if(getDim() == 3) {
         for(riter rit = firstRegion(); rit != lastRegion(); ++rit) {
-          if((*rit)->hexahedra.size()) return -1;
+          if (!(*rit)->hexahedra.empty())
+            return -1;
           for(unsigned i = 0; i < (*rit)->tetrahedra.size(); i++) {
             elements.push_back((*rit)->tetrahedra[i]);
           }
         }
       }
 
-      if(elements.size() == 0) return -1;
+      if (elements.empty())
+        return -1;
 
       fields->reset();
       meshMetric *metric = new meshMetric(this);
@@ -1227,25 +1232,26 @@ int GModel::setOrderN(int order, int linear, int incomplete)
 int GModel::getMeshStatus(bool countDiscrete)
 {
   for(riter it = firstRegion(); it != lastRegion(); ++it)
-    if((countDiscrete || ((*it)->geomType() != GEntity::DiscreteVolume &&
-                          (*it)->meshAttributes.method != MESH_NONE)) &&
-       ((*it)->tetrahedra.size() || (*it)->hexahedra.size() ||
-        (*it)->prisms.size() || (*it)->pyramids.size() ||
-        (*it)->polyhedra.size() || (*it)->trihedra.size()))
+    if ((countDiscrete || ((*it)->geomType() != GEntity::DiscreteVolume &&
+                           (*it)->meshAttributes.method != MESH_NONE)) &&
+        (!(*it)->tetrahedra.empty() || !(*it)->hexahedra.empty() ||
+         !(*it)->prisms.empty() || !(*it)->pyramids.empty() ||
+         !(*it)->polyhedra.empty() || !(*it)->trihedra.empty()))
       return 3;
   for(fiter it = firstFace(); it != lastFace(); ++it)
-    if((countDiscrete || ((*it)->geomType() != GEntity::DiscreteSurface &&
-                          (*it)->meshAttributes.method != MESH_NONE)) &&
-       ((*it)->triangles.size() || (*it)->quadrangles.size() ||
-        (*it)->polygons.size()))
+    if ((countDiscrete || ((*it)->geomType() != GEntity::DiscreteSurface &&
+                           (*it)->meshAttributes.method != MESH_NONE)) &&
+        (!(*it)->triangles.empty() || !(*it)->quadrangles.empty() ||
+         !(*it)->polygons.empty()))
       return 2;
   for(eiter it = firstEdge(); it != lastEdge(); ++it)
-    if((countDiscrete || ((*it)->geomType() != GEntity::DiscreteCurve &&
-                          (*it)->meshAttributes.method != MESH_NONE)) &&
-       (*it)->lines.size())
+    if ((countDiscrete || ((*it)->geomType() != GEntity::DiscreteCurve &&
+                           (*it)->meshAttributes.method != MESH_NONE)) &&
+        !(*it)->lines.empty())
       return 1;
   for(viter it = firstVertex(); it != lastVertex(); ++it)
-    if((*it)->mesh_vertices.size()) return 0;
+    if (!(*it)->mesh_vertices.empty())
+      return 0;
   return -1;
 }
 
@@ -1293,7 +1299,7 @@ void GModel::renumberMeshVertices()
   bool potentiallySaveSubset = false;
   if(!CTX::instance()->mesh.saveAll) {
     for(std::size_t i = 0; i < entities.size(); i++) {
-      if(entities[i]->physicals.size()) {
+      if (!entities[i]->physicals.empty()) {
         potentiallySaveSubset = true;
         break;
       }
@@ -1319,7 +1325,7 @@ void GModel::renumberMeshVertices()
     }
     for(std::size_t i = 0; i < entities.size(); i++) {
       GEntity *ge = entities[i];
-      if(ge->physicals.size()) {
+      if (!ge->physicals.empty()) {
         for(std::size_t j = 0; j < ge->getNumMeshElements(); j++) {
           MElement *e = ge->getMeshElement(j);
           for(std::size_t k = 0; k < e->getNumVertices(); k++) {
@@ -1366,7 +1372,7 @@ void GModel::renumberMeshElements()
   bool potentiallySaveSubset = false;
   if(!CTX::instance()->mesh.saveAll) {
     for(std::size_t i = 0; i < entities.size(); i++) {
-      if(entities[i]->physicals.size()) {
+      if (!entities[i]->physicals.empty()) {
         potentiallySaveSubset = true;
         break;
       }
@@ -1377,7 +1383,7 @@ void GModel::renumberMeshElements()
   if(potentiallySaveSubset) {
     for(std::size_t i = 0; i < entities.size(); i++) {
       GEntity *ge = entities[i];
-      if(ge->physicals.size()) {
+      if (!ge->physicals.empty()) {
         for(std::size_t j = 0; j < ge->getNumMeshElements(); j++) {
           ge->getMeshElement(j)->forceNum(++n);
         }
@@ -1629,9 +1635,9 @@ std::size_t GModel::indexMeshVertices(bool all, int singlePartition,
   // not to be saved (because we save a single partition and they are not used
   // in that partition)
   for(std::size_t i = 0; i < entities.size(); i++) {
-    if(all || entities[i]->physicals.size() ||
-       (entities[i]->getParentEntity() &&
-        entities[i]->getParentEntity()->physicals.size())) {
+    if (all || !entities[i]->physicals.empty() ||
+        (entities[i]->getParentEntity() &&
+         !entities[i]->getParentEntity()->physicals.empty())) {
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++) {
         MElement *e = entities[i]->getMeshElement(j);
         for(std::size_t k = 0; k < e->getNumVertices(); k++) {
@@ -1750,7 +1756,8 @@ void GModel::_storeElementsInEntities(
 {
   std::map<int, std::vector<MElement *> >::const_iterator it = map.begin();
   for(; it != map.end(); ++it) {
-    if(!it->second.size()) continue;
+    if (it->second.empty())
+      continue;
     int type = it->second[0]->getType();
     switch(type) {
     case TYPE_PNT: {
@@ -2115,7 +2122,7 @@ int GModel::removeDuplicateMeshVertices(double tolerance)
     }
     // replace vertices in periodic copies
     std::map<MVertex *, MVertex *> &corrVtcs = ge->correspondingVertices;
-    if(corrVtcs.size()) {
+    if (!corrVtcs.empty()) {
       std::map<MVertex *, MVertex *>::iterator cIter;
       for(cIter = duplicates.begin(); cIter != duplicates.end(); ++cIter) {
         MVertex *oldTgt = cIter->first;
@@ -2781,7 +2788,7 @@ GModel *GModel::buildCutGModel(gLevelset *ls, bool cutElem, bool saveTri)
     for(; it != physicals[i].end(); it++) {
       std::map<int, std::string>::iterator it2 = it->second.begin();
       for(; it2 != it->second.end(); it2++)
-        if(it2->second != "")
+        if (!it2->second.empty())
           cutGM->setPhysicalName(it2->second, i, it2->first);
     }
   }
@@ -3188,7 +3195,7 @@ void GModel::classifyFaces(std::set<GFace *> &_faces)
         }
       }
     }
-    if((*fit)->triangles.size())
+    if (!(*fit)->triangles.empty())
       (*fit)->mesh_vertices.insert((*fit)->mesh_vertices.begin(),
                                    _verts.begin(), _verts.end());
     else

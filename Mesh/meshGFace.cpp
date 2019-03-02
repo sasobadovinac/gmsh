@@ -499,7 +499,7 @@ static void remeshUnrecoveredEdges(
     // un-mesh model faces adjacent to the model edge
     for(std::vector<GFace *>::iterator it = l_faces.begin();
         it != l_faces.end(); ++it) {
-      if((*it)->triangles.size() || (*it)->quadrangles.size()) {
+      if (!(*it)->triangles.empty() || !(*it)->quadrangles.empty()) {
         (*it)->meshStatistics.status = GFace::PENDING;
         dem(*it);
       }
@@ -617,7 +617,7 @@ remeshUnrecoveredEdges(std::map<MVertex *, BDS_Point *> &recoverMapInv,
     // un-mesh model faces adjacent to the model edge
     for(std::vector<GFace *>::iterator it = l_faces.begin();
         it != l_faces.end(); ++it) {
-      if((*it)->triangles.size() || (*it)->quadrangles.size()) {
+      if (!(*it)->triangles.empty() || !(*it)->quadrangles.empty()) {
         (*it)->meshStatistics.status = GFace::PENDING;
         dem(*it);
       }
@@ -1205,7 +1205,7 @@ bool meshGenerator(GFace *gf, int RECUR_ITER, bool repairSelfIntersecting1dMesh,
     fclose(fdeb);
   }
 
-  if(boundary.size()) {
+  if (!boundary.empty()) {
     Msg::Error("The 1D mesh seems not to be forming a closed loop (%d boundary "
                "nodes are considered once)",
                boundary.size());
@@ -1443,7 +1443,7 @@ bool meshGenerator(GFace *gf, int RECUR_ITER, bool repairSelfIntersecting1dMesh,
   Msg::Debug("Recovering %d mesh edges (%d not recovered)",
              edgesToRecover.size(), edgesNotRecovered.size());
 
-  if(edgesNotRecovered.size() || gf->meshStatistics.refineAllEdges) {
+  if (!edgesNotRecovered.empty() || gf->meshStatistics.refineAllEdges) {
     std::ostringstream sstream;
     for(std::set<EdgeToRecover>::iterator itr = edgesNotRecovered.begin();
         itr != edgesNotRecovered.end(); ++itr)
@@ -1857,7 +1857,7 @@ static bool buildConsecutiveListOfVertices(
   SPoint2 last_coord(0, 0);
   int counter = 0;
 
-  while(unordered.size()) {
+  while (!unordered.empty()) {
     if(MYDEBUG) printf("unordered.size() = %d\n", (int)unordered.size());
     std::list<GEdgeSigned>::iterator it = unordered.begin();
     std::vector<SPoint2> coords;
@@ -1947,7 +1947,7 @@ static bool buildConsecutiveListOfVertices(
     }
   Finalize:
     if(MYDEBUG) printf("Finalize, found %d points\n", (int)coords.size());
-    if(coords.size() == 0) {
+    if (coords.empty()) {
       // It has not worked : either tolerance is wrong or the first seam edge
       // has to be taken with the other parametric coordinates (because it is
       // only present once in the closure of the domain).
@@ -2488,7 +2488,7 @@ static bool meshGeneratorPeriodic(GFace *gf, int RECUR_ITER,
         std::vector<GEdge *> eds = gf->edges();
         edgesNotRecovered.clear();
         for(size_t i = 0; i < eds.size(); i++) {
-          const std::size_t NN = eds[i]->lines.size() ? 1 : 0;
+          const std::size_t NN = !eds[i]->lines.empty() ? 1 : 0;
           for(size_t j = 0; j < NN; j++) {
             MVertex *v1 = eds[i]->lines[j]->getVertex(0);
             MVertex *v2 = eds[i]->lines[j]->getVertex(1);

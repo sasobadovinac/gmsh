@@ -2558,7 +2558,7 @@ MElement *MElementFactory::create(int num, int type,
   // itself. This would remove the ugly switch in the routine above.
 
   int numVertices = MElement::getInfoMSH(type), startVertices = 0;
-  if(data.size() && !numVertices) {
+  if (!data.empty() && !numVertices) {
     startVertices = 1;
     numVertices = data[0];
   }

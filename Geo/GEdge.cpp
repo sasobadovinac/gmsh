@@ -337,7 +337,8 @@ std::string GEdge::getAdditionalInfoString(bool multline)
     if(meshAttributes.reverseMesh) sstream << " reversed";
   }
   std::string str = sstream.str();
-  if(str.size() && (str[str.size() - 1] == '\n' || str[str.size() - 1] == ' '))
+  if (!str.empty() &&
+      (str[str.size() - 1] == '\n' || str[str.size() - 1] == ' '))
     str.resize(str.size() - 1);
   return str;
 }
@@ -755,7 +756,7 @@ void GEdge::mesh(bool verbose)
 #if defined(HAVE_MESH)
   meshGEdge mesher;
   mesher(this);
-  if(_compound.size()) { // Some faces are meshed together
+  if (!_compound.empty()) {    // Some faces are meshed together
     if(_compound[0] == this) { // I'm the one that makes the compound job
       bool ok = true;
       for(std::size_t i = 0; i < _compound.size(); i++) {
@@ -775,7 +776,7 @@ void GEdge::mesh(bool verbose)
 
 bool GEdge::reorder(const int elementType, const std::vector<std::size_t> &ordering)
 {
-  if(lines.size() != 0) {
+  if (!lines.empty()) {
     if(lines.front()->getTypeForMSH() != elementType) { return false; }
 
     if(ordering.size() != lines.size()) return false;

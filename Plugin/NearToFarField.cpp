@@ -485,7 +485,7 @@ PView *GMSH_NearToFarFieldPlugin::execute(PView *v)
     }
   }
 
-  if(_outFile.size()) {
+  if (!_outFile.empty()) {
     FILE *fp = Fopen(_outFile.c_str(), "w");
     if(fp) {
       printVector(fp, "phi", phi);

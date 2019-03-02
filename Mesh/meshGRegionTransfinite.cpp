@@ -259,12 +259,11 @@ public:
 
 void findTransfiniteCorners(GRegion *gr, std::vector<MVertex *> &corners)
 {
-  if(gr->meshAttributes.corners.size()) {
+  if (!gr->meshAttributes.corners.empty()) {
     // corners have been specified explicitly
     for(std::size_t i = 0; i < gr->meshAttributes.corners.size(); i++)
       corners.push_back(gr->meshAttributes.corners[i]->mesh_vertices[0]);
-  }
-  else {
+  } else {
     // try to find the corners automatically
     std::vector<GFace *> faces = gr->faces();
     GFace *gf = 0;

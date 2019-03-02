@@ -399,7 +399,8 @@ void discreteFace::secondDer(const SPoint2 &param, SVector3 &dudu,
 void discreteFace::createGeometry()
 {
 #if defined(HAVE_HXT)
-  if(_parametrizations.size()) return;
+  if (!_parametrizations.empty())
+    return;
   if(!_checkAndFixOrientation()) return;
   HXTStatus s = _reparametrizeThroughHxt();
   if(s != HXT_STATUS_OK)
@@ -986,11 +987,10 @@ HXTStatus discreteFace::_reparametrizeThroughHxt()
                               le)) {
           GEdge *de = *it;
           if(des.find(de) == des.end()) {
-            if(de->_compound.size()) {
+            if (!de->_compound.empty()) {
               if(de->compound_edge)
                 des.insert((discreteEdge *)de->compound_edge);
-            }
-            else {
+            } else {
               des.insert(de);
             }
           }

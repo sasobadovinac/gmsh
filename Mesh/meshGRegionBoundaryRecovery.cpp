@@ -887,7 +887,7 @@ namespace tetgenBR {
       if(!_extras.empty())
         Msg::Info("Added %d steiner points", _extras.size());
 
-      if(l_edges.size() > 0) {
+      if (!l_edges.empty()) {
         // There are Steiner points on segments!
         face segloop;
         // Re-create the segment mesh in the corresponding GEdges.
@@ -934,7 +934,7 @@ namespace tetgenBR {
         } // it
       }
 
-      if(l_faces.size() > 0) {
+      if (!l_faces.empty()) {
         // There are Steiner points on facets!
         face subloop;
         // Re-create the surface mesh in the corresponding GFaces.
@@ -959,7 +959,7 @@ namespace tetgenBR {
           gf->triangles.clear();
           gf->deleteVertexArrays();
 
-          if(gf->quadrangles.size()){
+          if (!gf->quadrangles.empty()) {
             Msg::Warning("Steiner points not handled for quad surface mesh");
           }
 

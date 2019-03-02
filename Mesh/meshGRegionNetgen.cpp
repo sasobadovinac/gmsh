@@ -306,7 +306,7 @@ void meshGRegionNetgen(GRegion *gr)
   // sanity check for frontal algo
   std::vector<GFace *> faces = gr->faces();
   for(std::vector<GFace *>::iterator it = faces.begin(); it != faces.end(); it++) {
-    if((*it)->quadrangles.size()) {
+    if (!(*it)->quadrangles.empty()) {
       Msg::Error("Cannot use frontal 3D algorithm with quadrangles on boundary");
       return;
     }
@@ -335,7 +335,7 @@ void optimizeMeshGRegionNetgen::operator()(GRegion *gr, bool always)
   ExtrudeParams *ep = gr->meshAttributes.extrude;
   if(ep && ep->mesh.ExtrudeMesh && ep->geo.Mode == EXTRUDED_ENTITY) return;
 
-  if(gr->prisms.size() || gr->hexahedra.size() || gr->pyramids.size()){
+  if (!gr->prisms.empty() || !gr->hexahedra.empty() || !gr->pyramids.empty()) {
     Msg::Info("Skipping Netgen optimizer for hybrid mesh");
     return;
   }

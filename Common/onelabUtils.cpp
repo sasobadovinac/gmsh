@@ -40,7 +40,7 @@ namespace onelabUtils {
     std::string name(c->getName());
     std::vector<onelab::number> n;
     c->get(n, name + "/Use command line");
-    if(n.size() && n[0].getValue()) {
+    if (!n.empty() && n[0].getValue()) {
       std::vector<onelab::string> ps;
       c->get(ps, name + "/Action");
       std::string action = (ps.empty() ? "" : ps[0].getValue());
@@ -50,7 +50,8 @@ namespace onelabUtils {
       std::string checkCommand = (ps.empty() ? "" : ps[0].getValue());
       c->get(ps, name + "/9ComputeCommand");
       std::string computeCommand = (ps.empty() ? "" : ps[0].getValue());
-      if(modelName.size()) args.push_back(" \"" + modelName + "\"");
+      if (!modelName.empty())
+        args.push_back(" \"" + modelName + "\"");
       if(action == "check")
         args.push_back(" " + checkCommand);
       else if(action == "compute")
@@ -87,10 +88,9 @@ namespace onelabUtils {
     std::string name;
     std::vector<onelab::string> ps;
     c->get(ps, "Gmsh/MshFileName");
-    if(ps.size()) {
+    if (!ps.empty()) {
       name = ps[0].getValue();
-    }
-    else {
+    } else {
       name = CTX::instance()->outputFileName;
       if(name.empty()) {
         if(CTX::instance()->mesh.fileFormat == FORMAT_AUTO)
@@ -121,14 +121,15 @@ namespace onelabUtils {
     std::string geo = GModel::current()->getFileName();
     std::vector<onelab::number> n;
     c->get(n, c->getName() + "/Guess model name");
-    if(n.size() && n[0].getValue()) {
+    if (!n.empty() && n[0].getValue()) {
       std::vector<onelab::string> ps;
       c->get(ps, c->getName() + "/Model name");
       if(ps.empty()) {
         std::vector<std::string> split = SplitFileName(geo);
         std::string ext = "";
         onelab::server::instance()->get(ps, c->getName() + "/File extension");
-        if(ps.size()) ext = ps[0].getValue();
+        if (!ps.empty())
+          ext = ps[0].getValue();
         std::string name(split[0] + split[1] + ext);
         onelab::string o(c->getName() + "/Model name", name);
         o.setKind("file");
@@ -248,11 +249,10 @@ namespace onelabUtils {
   {
     const double eps = 1.e-15; // for roundoff
     std::vector<double> v;
-    if(p.getChoices().size()) {
+    if (!p.getChoices().empty()) {
       v = p.getChoices();
-    }
-    else if(p.getMin() != -onelab::parameter::maxNumber() &&
-            p.getMax() != onelab::parameter::maxNumber()) {
+    } else if (p.getMin() != -onelab::parameter::maxNumber() &&
+               p.getMax() != onelab::parameter::maxNumber()) {
       if(p.getStep() > 0) {
         for(double d = p.getMin(); d <= p.getMax() * (1 + eps);
             d += p.getStep())
@@ -305,7 +305,7 @@ namespace onelabUtils {
       xName.clear();
       for(std::size_t i = 0; i < y.size(); i++) x.push_back(i);
     }
-    if(x.size() && y.size()) {
+    if (!x.empty() && !y.empty()) {
       if(x.size() != y.size())
         Msg::Info("X-Y data series have different length (%d != %d)",
                   (int)x.size(), (int)y.size());
@@ -322,8 +322,7 @@ namespace onelabUtils {
         view->getOptions()->autoPosition = num / 2 + 2;
       }
       changed = true;
-    }
-    else if(view) {
+    } else if (view) {
       delete view;
       changed = true;
     }
@@ -344,9 +343,11 @@ namespace onelabUtils {
     // do nothing in case of a metamodel
     std::vector<onelab::number> pn;
     onelab::server::instance()->get(pn, "IsPyMetamodel");
-    if(pn.size() && pn[0].getValue()) return redraw;
+    if (!pn.empty() && pn[0].getValue())
+      return redraw;
     onelab::server::instance()->get(pn, "IsMetamodel");
-    if(pn.size() && pn[0].getValue()) return redraw;
+    if (!pn.empty() && pn[0].getValue())
+      return redraw;
 
     onelab::client *c = *it;
     std::string mshFileName = onelabUtils::getMshFileName(c);
@@ -428,7 +429,7 @@ namespace onelabUtils {
 
   void runClient(const std::string &name, const std::string &command)
   {
-    if(name.size()) {
+    if (!name.empty()) {
       // try to run as a subclient of Gmsh; or if not as a new client
       onelab::remoteNetworkClient *c =
         dynamic_cast<onelab::remoteNetworkClient *>(Msg::GetOnelabClient());
@@ -439,8 +440,7 @@ namespace onelabUtils {
         gmshLocalNetworkClient client(name, command, "", true);
         client.run();
       }
-    }
-    else {
+    } else {
       // try to run a client that might have been selected previously, e.g. by
       // opening a file with known client extension (like ".pro")
       int num = CTX::instance()->launchSolverAtStartup;
@@ -474,7 +474,7 @@ namespace onelabUtils {
       // create client
       onelab::localNetworkClient *c = 0;
       onelab::string o;
-      if(name.size()) {
+      if (!name.empty()) {
         c = new gmshLocalNetworkClient(name, exe, host);
         c->setIndex(num);
         o = c->getName() + "/Action";
@@ -552,11 +552,15 @@ namespace onelabUtils {
       if(x.getMin() != -onelab::parameter::maxNumber() ||
          x.getMax() != onelab::parameter::maxNumber() || x.getStep() != 0.)
         noRange = false;
-      if(x.getChoices().size()) noChoices = false;
+      if (!x.getChoices().empty())
+        noChoices = false;
     }
-    if(x.getAttribute("Loop").size()) noLoop = false;
-    if(x.getAttribute("Graph").size()) noGraph = false;
-    if(x.getAttribute("Closed").size()) noClosed = false;
+    if (!x.getAttribute("Loop").empty())
+      noLoop = false;
+    if (!x.getAttribute("Graph").empty())
+      noGraph = false;
+    if (!x.getAttribute("Closed").empty())
+      noClosed = false;
 
     if(noRange) {
       bool noRangeEither = true;
@@ -625,9 +629,12 @@ namespace onelabUtils {
     std::string val = x.getValue();
 
     // keep track of these attributes, which can be changed server-side
-    if(x.getChoices().size()) noChoices = false;
-    if(x.getAttribute("Closed").size()) noClosed = false;
-    if(x.getAttribute("MultipleSelection").size()) noMultipleSelection = false;
+    if (!x.getChoices().empty())
+      noChoices = false;
+    if (!x.getAttribute("Closed").empty())
+      noClosed = false;
+    if (!x.getAttribute("MultipleSelection").empty())
+      noMultipleSelection = false;
 
     // if(copt.count("Kind")) ps[0].setKind(copt["Kind"][0]);
     if(noChoices) x.setChoices(y.getChoices());
@@ -730,7 +737,7 @@ namespace onelabUtils {
     std::string stamp;
     std::vector<onelab::string> ps;
     onelab::server::instance()->get(ps, "0Metamodel/9Tag");
-    if(ps.size() && ps[0].getValue().size())
+    if (!ps.empty() && !ps[0].getValue().empty())
       stamp.assign(timeStamp() + "_" + ps[0].getValue());
     else
       stamp.assign(timeStamp());
@@ -786,9 +793,9 @@ namespace onelabUtils {
     // add tag to all solution files in the db, and rename them on disk
     std::vector<onelab::string> strings;
     onelab::server::instance()->get(strings, "0Metamodel/9Solution files");
-    if(strings.size()) {
+    if (!strings.empty()) {
       std::vector<std::string> names = strings[0].getChoices();
-      if(names.size()) {
+      if (!names.empty()) {
         for(std::size_t j = 0; j < names.size(); j++) {
           std::vector<std::string> split = SplitFileName(names[j]);
           std::string old = names[j];

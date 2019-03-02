@@ -53,7 +53,7 @@ int GModel::writeVTK(const std::string &name, bool binary, bool saveAll,
   // loop over all elements we need to save and count vertices
   int numElements = 0, totalNumInt = 0;
   for(std::size_t i = 0; i < entities.size(); i++) {
-    if(entities[i]->physicals.size() || saveAll) {
+    if (!entities[i]->physicals.empty() || saveAll) {
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++) {
         if(entities[i]->getMeshElement(j)->getTypeForVTK()) {
           numElements++;
@@ -66,7 +66,7 @@ int GModel::writeVTK(const std::string &name, bool binary, bool saveAll,
   // print vertex indices in ascii or binary
   fprintf(fp, "CELLS %d %d\n", numElements, totalNumInt);
   for(std::size_t i = 0; i < entities.size(); i++) {
-    if(entities[i]->physicals.size() || saveAll) {
+    if (!entities[i]->physicals.empty() || saveAll) {
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++) {
         if(entities[i]->getMeshElement(j)->getTypeForVTK())
           entities[i]->getMeshElement(j)->writeVTK(fp, binary, bigEndian);
@@ -78,7 +78,7 @@ int GModel::writeVTK(const std::string &name, bool binary, bool saveAll,
   // print element types in ascii or binary
   fprintf(fp, "CELL_TYPES %d\n", numElements);
   for(std::size_t i = 0; i < entities.size(); i++) {
-    if(entities[i]->physicals.size() || saveAll) {
+    if (!entities[i]->physicals.empty() || saveAll) {
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++) {
         int type = entities[i]->getMeshElement(j)->getTypeForVTK();
         if(type) {

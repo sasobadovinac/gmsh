@@ -32,52 +32,62 @@ static MElement *_getOneElementOfGivenType(GModel *m, int type)
   switch(type) {
   case TYPE_PNT:
     for(GModel::viter it = m->firstVertex(); it != m->lastVertex(); it++) {
-      if((*it)->points.size()) return (*it)->points[0];
+      if (!(*it)->points.empty())
+        return (*it)->points[0];
     }
     break;
   case TYPE_LIN:
     for(GModel::eiter it = m->firstEdge(); it != m->lastEdge(); it++) {
-      if((*it)->lines.size()) return (*it)->lines[0];
+      if (!(*it)->lines.empty())
+        return (*it)->lines[0];
     }
     break;
   case TYPE_TRI:
     for(GModel::fiter it = m->firstFace(); it != m->lastFace(); it++) {
-      if((*it)->triangles.size()) return (*it)->triangles[0];
+      if (!(*it)->triangles.empty())
+        return (*it)->triangles[0];
     }
     break;
   case TYPE_QUA:
     for(GModel::fiter it = m->firstFace(); it != m->lastFace(); it++) {
-      if((*it)->quadrangles.size()) return (*it)->quadrangles[0];
+      if (!(*it)->quadrangles.empty())
+        return (*it)->quadrangles[0];
     }
     break;
   case TYPE_POLYG:
     for(GModel::fiter it = m->firstFace(); it != m->lastFace(); it++) {
-      if((*it)->polygons.size()) return (*it)->polygons[0];
+      if (!(*it)->polygons.empty())
+        return (*it)->polygons[0];
     }
     break;
   case TYPE_TET:
     for(GModel::riter it = m->firstRegion(); it != m->lastRegion(); it++) {
-      if((*it)->tetrahedra.size()) return (*it)->tetrahedra[0];
+      if (!(*it)->tetrahedra.empty())
+        return (*it)->tetrahedra[0];
     }
     break;
   case TYPE_HEX:
     for(GModel::riter it = m->firstRegion(); it != m->lastRegion(); it++) {
-      if((*it)->hexahedra.size()) return (*it)->hexahedra[0];
+      if (!(*it)->hexahedra.empty())
+        return (*it)->hexahedra[0];
     }
     break;
   case TYPE_PRI:
     for(GModel::riter it = m->firstRegion(); it != m->lastRegion(); it++) {
-      if((*it)->prisms.size()) return (*it)->prisms[0];
+      if (!(*it)->prisms.empty())
+        return (*it)->prisms[0];
     }
     break;
   case TYPE_PYR:
     for(GModel::riter it = m->firstRegion(); it != m->lastRegion(); it++) {
-      if((*it)->pyramids.size()) return (*it)->pyramids[0];
+      if (!(*it)->pyramids.empty())
+        return (*it)->pyramids[0];
     }
     break;
   case TYPE_POLYH:
     for(GModel::riter it = m->firstRegion(); it != m->lastRegion(); it++) {
-      if((*it)->polyhedra.size()) return (*it)->polyhedra[0];
+      if (!(*it)->polyhedra.empty())
+        return (*it)->polyhedra[0];
     }
     break;
   }
@@ -133,9 +143,9 @@ bool PViewDataGModel::finalize(bool computeMinMax,
     setInterpolationSchemeName(interpolationScheme);
 
     // if an interpolation scheme is explicitly provided, use it
-    if(interpolationScheme.size()) {
+    if (!interpolationScheme.empty()) {
       interpolationMatrices m = _interpolationSchemes[interpolationScheme];
-      if(m.size())
+      if (!m.empty())
         Msg::Info("Setting interpolation matrices from scheme '%s'",
                   interpolationScheme.c_str());
       else

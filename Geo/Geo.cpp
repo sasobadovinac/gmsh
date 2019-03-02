@@ -2362,9 +2362,12 @@ static void ReplaceAllDuplicates(std::vector<std::map<int, int> > &report)
   std::map<int, int> *vertex_report = 0;
   std::map<int, int> *curve_report = 0;
   std::map<int, int> *surface_report = 0;
-  if(report.size() >= 1 && report[0].size()) vertex_report = &(report[0]);
-  if(report.size() >= 2 && report[1].size()) curve_report = &(report[1]);
-  if(report.size() >= 3 && report[2].size()) surface_report = &(report[2]);
+  if (!report.empty() && !report[0].empty())
+    vertex_report = &(report[0]);
+  if (report.size() >= 2 && !report[1].empty())
+    curve_report = &(report[1]);
+  if (report.size() >= 3 && !report[2].empty())
+    surface_report = &(report[2]);
 
   ReplaceDuplicatePoints(vertex_report);
   ReplaceDuplicateCurves(curve_report);

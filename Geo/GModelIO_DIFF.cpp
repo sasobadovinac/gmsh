@@ -332,14 +332,13 @@ int GModel::readDIFF(const std::string &name)
       mapping.clear();
       for(int j = 0; j < NoVertices; j++) indices[j] = ElementsNodes[i - 1][j];
       std::vector<MVertex *> vertices;
-      if(vertexVector.size()) {
+      if (!vertexVector.empty()) {
         if(!getMeshVertices(numVerticesPerElement, indices, vertexVector,
                             vertices)) {
           fclose(fp);
           return 0;
         }
-      }
-      else {
+      } else {
         if(!getMeshVertices(numVerticesPerElement, indices, vertexMap,
                             vertices)) {
           fclose(fp);
@@ -389,7 +388,7 @@ int GModel::readDIFF(const std::string &name)
   _associateEntityWithMeshVertices();
 
   // store the vertices in their associated geometrical entity
-  if(vertexVector.size())
+  if (!vertexVector.empty())
     _storeVerticesInEntities(vertexVector);
   else
     _storeVerticesInEntities(vertexMap);
@@ -458,14 +457,14 @@ int GModel::writeDIFF(const std::string &name, bool binary, bool saveAll,
   // find max dimension of mesh elements we need to save
   int dim = 0;
   for(std::size_t i = 0; i < entities.size(); i++)
-    if(entities[i]->physicals.size() || saveAll)
+    if (!entities[i]->physicals.empty() || saveAll)
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++)
         dim = std::max(dim, entities[i]->getMeshElement(j)->getDim());
 
   // loop over all elements we need to save
   std::size_t numElements = 0, maxNumNodesPerElement = 0;
   for(std::size_t i = 0; i < entities.size(); i++) {
-    if(entities[i]->physicals.size() || saveAll) {
+    if (!entities[i]->physicals.empty() || saveAll) {
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++) {
         MElement *e = entities[i]->getMeshElement(j);
         if(e->getStringForDIFF() && e->getDim() == dim) {
@@ -529,7 +528,7 @@ int GModel::writeDIFF(const std::string &name, bool binary, bool saveAll,
   // write mesh elements
   int num = 0;
   for(std::size_t i = 0; i < entities.size(); i++) {
-    if(entities[i]->physicals.size() || saveAll) {
+    if (!entities[i]->physicals.empty() || saveAll) {
       for(std::size_t j = 0; j < entities[i]->getNumMeshElements(); j++) {
         MElement *e = entities[i]->getMeshElement(j);
         if(e->getStringForDIFF() && e->getDim() == dim)

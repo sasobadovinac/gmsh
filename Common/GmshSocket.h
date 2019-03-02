@@ -410,12 +410,11 @@ class GmshServer : public GmshSocket{
       }
     }
 
-    if(exe.size() || args.size()){
+    if (!exe.empty() || !args.empty()) {
       char s[1024];
       sprintf(s, args.c_str(), _sockname.c_str());
       NonBlockingSystemCall(exe, s); // starts the solver
-    }
-    else{
+    } else {
       timeout = 0.; // no command launched: don't set a timeout
     }
 

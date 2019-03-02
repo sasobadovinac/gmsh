@@ -266,18 +266,18 @@ int GModel::writeMESH(const std::string &name, int elementTagType, bool saveAll,
   int numEdges = 0, numTriangles = 0, numQuadrangles = 0;
   int numTetrahedra = 0, numHexahedra = 0;
   for(eiter it = firstEdge(); it != lastEdge(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       numEdges += (*it)->lines.size();
     }
   }
   for(fiter it = firstFace(); it != lastFace(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       numTriangles += (*it)->triangles.size();
       numQuadrangles += (*it)->quadrangles.size();
     }
   }
   for(riter it = firstRegion(); it != lastRegion(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       numTetrahedra += (*it)->tetrahedra.size();
       numHexahedra += (*it)->hexahedra.size();
     }

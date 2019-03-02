@@ -1431,9 +1431,9 @@ public:
     case 3: fprintf(geo, "Physical Volume"); break;
     }
 
-    if(oldName.size())
+    if (!oldName.empty())
       fprintf(geo, "(%s) = {", oldName.c_str());
-    else if(newName.size())
+    else if (!newName.empty())
       fprintf(geo, "(\"%s\") = {", newName.c_str());
     else
       fprintf(geo, "(%d) = {", g.first);
@@ -1447,13 +1447,15 @@ public:
 
 static bool skipRegion(GRegion *gr)
 {
-  if(gr->physicals.size()) return false;
+  if (!gr->physicals.empty())
+    return false;
   return true;
 }
 
 static bool skipFace(GFace *gf)
 {
-  if(gf->physicals.size()) return false;
+  if (!gf->physicals.empty())
+    return false;
   std::list<GRegion *> regions(gf->regions());
   for(std::list<GRegion *>::iterator itr = regions.begin();
       itr != regions.end(); itr++) {
@@ -1464,7 +1466,8 @@ static bool skipFace(GFace *gf)
 
 static bool skipEdge(GEdge *ge)
 {
-  if(ge->physicals.size()) return false;
+  if (!ge->physicals.empty())
+    return false;
   std::vector<GFace *> faces(ge->faces());
   for(std::vector<GFace *>::iterator itf = faces.begin(); itf != faces.end();
       itf++) {
@@ -1475,7 +1478,8 @@ static bool skipEdge(GEdge *ge)
 
 static bool skipVertex(GVertex *gv)
 {
-  if(gv->physicals.size()) return false;
+  if (!gv->physicals.empty())
+    return false;
   std::vector<GEdge *> const &edges = gv->edges();
   for(std::vector<GEdge *>::const_iterator ite = edges.begin();
       ite != edges.end(); ite++) {

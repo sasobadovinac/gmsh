@@ -923,7 +923,7 @@ bool PViewDataList::combineTime(nameData &nd)
   // if all the time values are the same, it probably means that the
   // original views didn't have any time data: then we'll just use
   // time step values
-  if(Time.size()) {
+  if (!Time.empty()) {
     double t0 = Time[0], ti;
     bool allTheSame = true;
     for(std::size_t i = 1; i < Time.size(); i++) {

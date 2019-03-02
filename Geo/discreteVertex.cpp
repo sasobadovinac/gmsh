@@ -29,15 +29,15 @@ GPoint discreteVertex::point() const
 
 double discreteVertex::x() const
 {
-  return mesh_vertices.size() ? mesh_vertices[0]->x() : _x;
+  return !mesh_vertices.empty() ? mesh_vertices[0]->x() : _x;
 }
 
 double discreteVertex::y() const
 {
-  return mesh_vertices.size() ? mesh_vertices[0]->y() : _y;
+  return !mesh_vertices.empty() ? mesh_vertices[0]->y() : _y;
 }
 
 double discreteVertex::z() const
 {
-  return mesh_vertices.size() ? mesh_vertices[0]->z() : _z;
+  return !mesh_vertices.empty() ? mesh_vertices[0]->z() : _z;
 }

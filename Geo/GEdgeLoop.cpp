@@ -102,7 +102,7 @@ static void loopTheLoop(std::list<GEdge *> &wire, std::list<GEdgeSigned> &loop,
   GEdgeSigned *prevOne = 0;
   GEdgeSigned ges(0, 0);
 
-  while(wire.size()) {
+  while (!wire.empty()) {
     if(prevOne && (*degeneratedToInsert) &&
        (*degeneratedToInsert)->getBeginVertex() == prevOne->getEndVertex()) {
       ges = GEdgeSigned(1, *degeneratedToInsert);

@@ -194,7 +194,7 @@ void drawContext::drawImage(const std::string &name, double x, double y,
   }
   double w = 0., h = 0., wx = 1., wy = 0., wz = 0., hx = 0., hy = 1., hz = 0.;
   bool billboard = false;
-  if(format.size()) {
+  if (!format.empty()) {
     bool ok;
     if(format.find(',') != std::string::npos)
       ok = (sscanf(format.c_str(), "%lfx%lf,%lf,%lf,%lf,%lf,%lf,%lf", &w, &h,

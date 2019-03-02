@@ -212,7 +212,7 @@ PView *GMSH_AnalyseCurvedMeshPlugin::execute(PView *v)
               dataPV[el->getNum()].push_back(q);
             }
           }
-          if(dataPV.size()) {
+          if (!dataPV.empty()) {
             std::stringstream name;
             name << "minJ/maxJ " << dim << "D";
             new PView(name.str().c_str(), "ElementData", _m, dataPV);
@@ -226,7 +226,7 @@ PView *GMSH_AnalyseCurvedMeshPlugin::execute(PView *v)
             if(el->getDim() == dim)
               dataPV[el->getNum()].push_back(_data[i].minS());
           }
-          if(dataPV.size()) {
+          if (!dataPV.empty()) {
             std::stringstream name;
             name << "IGE " << dim << "D";
             new PView(name.str().c_str(), "ElementData", _m, dataPV);
@@ -240,7 +240,7 @@ PView *GMSH_AnalyseCurvedMeshPlugin::execute(PView *v)
             if(el->getDim() == dim)
               dataPV[el->getNum()].push_back(_data[i].minI());
           }
-          if(dataPV.size()) {
+          if (!dataPV.empty()) {
             std::stringstream name;
             name << "ICN " << dim << "D";
             new PView(name.str().c_str(), "ElementData", _m, dataPV);

@@ -169,7 +169,8 @@ int GModel::_readMSH2(const std::string &name)
           return 0;
         }
         std::string name = ExtractDoubleQuotedString(str, 256);
-        if(name.size()) setPhysicalName(name, dim, num);
+        if (!name.empty())
+          setPhysicalName(name, dim, num);
       }
     }
     else if(!strncmp(&str[1], "NO", 2) || !strncmp(&str[1], "Nodes", 5) ||
@@ -408,15 +409,14 @@ int GModel::_readMSH2(const std::string &name)
             }
           }
           std::vector<MVertex *> vertices;
-          if(vertexVector.size()) {
+          if (!vertexVector.empty()) {
             if(!getMeshVertices(numVertices, indices, vertexVector, vertices,
                                 minVertex)) {
               delete[] indices;
               fclose(fp);
               return 0;
             }
-          }
-          else {
+          } else {
             if(!getMeshVertices(numVertices, indices, vertexMap, vertices)) {
               delete[] indices;
               fclose(fp);
@@ -517,15 +517,14 @@ int GModel::_readMSH2(const std::string &name)
                            0;
             int *indices = &data[numTags + 1];
             std::vector<MVertex *> vertices;
-            if(vertexVector.size()) {
+            if (!vertexVector.empty()) {
               if(!getMeshVertices(numVertices, indices, vertexVector, vertices,
                                   minVertex)) {
                 delete[] data;
                 fclose(fp);
                 return 0;
               }
-            }
-            else {
+            } else {
               if(!getMeshVertices(numVertices, indices, vertexMap, vertices)) {
                 delete[] data;
                 fclose(fp);
@@ -605,7 +604,7 @@ int GModel::_readMSH2(const std::string &name)
     else if(!strncmp(&str[1], "NodeData", 8)) {
       // there's some nodal post-processing data to read later on, so
       // cache the vertex indexing data
-      if(vertexVector.size())
+      if (!vertexVector.empty())
         _vertexVectorCache = vertexVector;
       else
         _vertexMapCache = vertexMap;
@@ -633,7 +632,7 @@ int GModel::_readMSH2(const std::string &name)
   _associateEntityWithMeshVertices();
 
   // store the vertices in their associated geometrical entity
-  if(vertexVector.size())
+  if (!vertexVector.empty())
     _storeVerticesInEntities(vertexVector);
   else
     _storeVerticesInEntities(vertexMap);
@@ -681,7 +680,7 @@ static void writeElementMSH(FILE *fp, GModel *model, GEntity *ge, T *ele,
     return; // ignore partition boundaries
 
   std::vector<short> ghosts;
-  if(model->getGhostCells().size()) {
+  if (!model->getGhostCells().empty()) {
     std::pair<std::multimap<MElement *, short>::iterator,
               std::multimap<MElement *, short>::iterator>
       itp = model->getGhostCells().equal_range(ele);

@@ -1146,7 +1146,7 @@ GMSH_API void gmsh::model::mesh::setNodes(
     throw 2;
   }
   bool param = false;
-  if(parametricCoord.size()) {
+  if (!parametricCoord.empty()) {
     if((int)parametricCoord.size() != dim * numNodes) {
       Msg::Error("Wrong number of parametric coordinates");
       throw 2;
@@ -1227,33 +1227,33 @@ static void _getEntitiesForElementTypes(
     switch(ge->dim()) {
     case 0: {
       GVertex *v = static_cast<GVertex *>(ge);
-      if(v->points.size())
+      if (!v->points.empty())
         typeEnt[v->points.front()->getTypeForMSH()].push_back(ge);
       break;
     }
     case 1: {
       GEdge *e = static_cast<GEdge *>(ge);
-      if(e->lines.size())
+      if (!e->lines.empty())
         typeEnt[e->lines.front()->getTypeForMSH()].push_back(ge);
       break;
     }
     case 2: {
       GFace *f = static_cast<GFace *>(ge);
-      if(f->triangles.size())
+      if (!f->triangles.empty())
         typeEnt[f->triangles.front()->getTypeForMSH()].push_back(ge);
-      if(f->quadrangles.size())
+      if (!f->quadrangles.empty())
         typeEnt[f->quadrangles.front()->getTypeForMSH()].push_back(ge);
       break;
     }
     case 3: {
       GRegion *r = static_cast<GRegion *>(ge);
-      if(r->tetrahedra.size())
+      if (!r->tetrahedra.empty())
         typeEnt[r->tetrahedra.front()->getTypeForMSH()].push_back(ge);
-      if(r->hexahedra.size())
+      if (!r->hexahedra.empty())
         typeEnt[r->hexahedra.front()->getTypeForMSH()].push_back(ge);
-      if(r->prisms.size())
+      if (!r->prisms.empty())
         typeEnt[r->prisms.front()->getTypeForMSH()].push_back(ge);
-      if(r->pyramids.size())
+      if (!r->pyramids.empty())
         typeEnt[r->pyramids.front()->getTypeForMSH()].push_back(ge);
       break;
     }
@@ -1561,8 +1561,8 @@ gmsh::model::mesh::getElementsByType(const int elementType,
   const std::size_t begin = (task * numElements) / numTasks;
   const std::size_t end = ((task + 1) * numElements) / numTasks;
   // check arrays
-  bool haveElementTags = elementTags.size();
-  bool haveNodeTags = nodeTags.size();
+  bool haveElementTags = !elementTags.empty();
+  bool haveNodeTags = !nodeTags.empty();
   if(!haveElementTags && !haveNodeTags) {
     if(numTasks > 1)
       Msg::Error("ElementTags and nodeTags should be preallocated "
@@ -1694,9 +1694,9 @@ GMSH_API void gmsh::model::mesh::getJacobians(
   }
   int numIntPoints = weights.size();
   // check arrays
-  bool haveJacobians = jacobians.size();
-  bool haveDeterminants = determinants.size();
-  bool havePoints = points.size();
+  bool haveJacobians = !jacobians.empty();
+  bool haveDeterminants = !determinants.empty();
+  bool havePoints = !points.empty();
   if(!haveDeterminants && !haveJacobians && !havePoints) {
     if(numTasks > 1)
       Msg::Error("Jacobians, determinants and points should be preallocated "
@@ -1744,7 +1744,7 @@ GMSH_API void gmsh::model::mesh::getJacobians(
             j++) {
           if(o >= begin && o < end) {
             MElement *e = ge->getMeshElementByType(familyType, j);
-            if(gsf.size() == 0) {
+            if (gsf.empty()) {
               gsf.resize(numIntPoints);
               for(int k = 0; k < numIntPoints; k++) {
                 double value[1256][3];
@@ -1778,7 +1778,7 @@ GMSH_API void gmsh::model::mesh::getJacobians(
             j++) {
           if(o >= begin && o < end) {
             MElement *e = ge->getMeshElementByType(familyType, j);
-            if(gsf.size() == 0) {
+            if (gsf.empty()) {
               gsf.resize(numIntPoints);
               for(int k = 0; k < numIntPoints; k++) {
                 double value[1256][3];
@@ -1812,7 +1812,7 @@ GMSH_API void gmsh::model::mesh::getJacobians(
             j++) {
           if(o >= begin && o < end) {
             MElement *e = ge->getMeshElementByType(familyType, j);
-            if(gsf.size() == 0) {
+            if (gsf.empty()) {
               gsf.resize(numIntPoints);
               for(int k = 0; k < numIntPoints; k++) {
                 double value[1256][3];
@@ -1847,7 +1847,7 @@ GMSH_API void gmsh::model::mesh::getJacobians(
             j++) {
           if(o >= begin && o < end) {
             MElement *e = ge->getMeshElementByType(familyType, j);
-            if(gsf.size() == 0) {
+            if (gsf.empty()) {
               gsf.resize(numIntPoints);
               for(int k = 0; k < numIntPoints; k++) {
                 double value[1256][3];
@@ -3019,7 +3019,7 @@ static ExtrudeParams *_getExtrudeParams(const std::vector<int> &numElements,
                                         const bool recombine)
 {
   ExtrudeParams *e = 0;
-  if(numElements.size()) {
+  if (!numElements.empty()) {
     e = new ExtrudeParams();
     e->mesh.ExtrudeMesh = true;
     e->mesh.NbElmLayer = numElements;
@@ -4092,7 +4092,7 @@ GMSH_API void gmsh::view::addModelData(
     throw 2;
   }
   GModel *model = GModel::current();
-  if(modelName.size()) {
+  if (!modelName.empty()) {
     model = GModel::findByName(modelName);
     if(!model) {
       Msg::Error("Unknown model '%s'", modelName.c_str());
@@ -4384,9 +4384,9 @@ GMSH_API void gmsh::view::probe(const int tag, const double x, const double y,
   bool found = false;
   int qn = 0;
   double *qx = 0, *qy = 0, *qz = 0;
-  if(xElemCoord.size() && yElemCoord.size() && zElemCoord.size() &&
-     xElemCoord.size() == yElemCoord.size() &&
-     xElemCoord.size() == zElemCoord.size()) {
+  if (!xElemCoord.empty() && !yElemCoord.empty() && !zElemCoord.empty() &&
+      xElemCoord.size() == yElemCoord.size() &&
+      xElemCoord.size() == zElemCoord.size()) {
     qn = xElemCoord.size();
     qx = (double *)&xElemCoord[0];
     qy = (double *)&yElemCoord[0];
@@ -4737,16 +4737,15 @@ GMSH_API void gmsh::onelab::get(std::string &data,
   else{
     std::vector< ::onelab::number> ps;
     ::onelab::server::instance()->get(ps, name);
-    if(ps.size()){
+    if (!ps.empty()) {
       if(format == "json")
         data = ps[0].toJSON();
       else
         data = ps[0].toChar();
-    }
-    else{
+    } else {
       std::vector< ::onelab::string> ps2;
       ::onelab::server::instance()->get(ps2, name);
-      if(ps2.size()){
+      if (!ps2.empty()) {
         if(format == "json")
           data = ps2[0].toJSON();
         else
@@ -4770,7 +4769,8 @@ GMSH_API void gmsh::onelab::setNumber(const std::string &name,
   ::onelab::number p(name);
   std::vector< ::onelab::number> ps;
   ::onelab::server::instance()->get(ps, name);
-  if(ps.size()) p = ps[0];
+  if (!ps.empty())
+    p = ps[0];
   p.setValues(value);
   ::onelab::server::instance()->set(p);
 #else
@@ -4789,7 +4789,8 @@ GMSH_API void gmsh::onelab::getNumber(const std::string &name,
   value.clear();
   std::vector< ::onelab::number> ps;
   ::onelab::server::instance()->get(ps, name);
-  if(ps.size()) value = ps[0].getValues();
+  if (!ps.empty())
+    value = ps[0].getValues();
 #else
   Msg::Error("ONELAB not available");
   throw -1;
@@ -4806,7 +4807,8 @@ GMSH_API void gmsh::onelab::setString(const std::string &name,
   ::onelab::string p(name);
   std::vector< ::onelab::string> ps;
   ::onelab::server::instance()->get(ps, name);
-  if(ps.size()) p = ps[0];
+  if (!ps.empty())
+    p = ps[0];
   p.setValues(value);
   ::onelab::server::instance()->set(p);
 #else
@@ -4825,7 +4827,8 @@ GMSH_API void gmsh::onelab::getString(const std::string &name,
   value.clear();
   std::vector< ::onelab::string> ps;
   ::onelab::server::instance()->get(ps, name);
-  if(ps.size()) value = ps[0].getValues();
+  if (!ps.empty())
+    value = ps[0].getValues();
 #else
   Msg::Error("ONELAB not available");
   throw -1;

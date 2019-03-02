@@ -690,7 +690,7 @@ int CellComplex::combine(int dim)
     cell->getBoundary(bd_c);
     enqueueCells(bd_c, Q, Qset);
 
-    while(Q.size() != 0) {
+    while (!Q.empty()) {
       Cell *s = Q.front();
       Q.pop();
 
@@ -769,7 +769,7 @@ int CellComplex::cocombine(int dim)
     cell->getCoboundary(cbd_c);
     enqueueCells(cbd_c, Q, Qset);
 
-    while(Q.size() != 0) {
+    while (!Q.empty()) {
       Cell *s = Q.front();
       Q.pop();
       if(s->getBoundarySize() == 2) {

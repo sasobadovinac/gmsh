@@ -45,7 +45,7 @@ void add_infile(const std::string &text, const std::string &fileNameOrEmpty)
   // make sure we don't add stuff in a non-geo file
   static bool proceed = false;
   if(!CTX::instance()->expertMode && !proceed) {
-    if(ext.size() && ext != ".geo" && ext != ".GEO") {
+    if (!ext.empty() && ext != ".geo" && ext != ".GEO") {
       std::ostringstream sstream;
       sstream << "A scripting command is going to be appended to a non-`.geo' "
                  "file. Are\n"
@@ -212,7 +212,8 @@ void add_trsfline(std::vector<int> &l, const std::string &fileName,
     sstream << l[i];
   }
   sstream << "} = " << pts;
-  if(typearg.size()) sstream << " Using " << type << " " << typearg;
+  if (!typearg.empty())
+    sstream << " Using " << type << " " << typearg;
   sstream << ";";
   add_infile(sstream.str(), fileName);
 }
@@ -267,11 +268,11 @@ void add_param(const std::string &par, const std::string &value,
   std::ostringstream sstream;
   sstream << par << " = DefineNumber[ " << value;
   sstream << ", Name \"";
-  if(path.size() && label.size())
+  if (!path.empty() && !label.empty())
     sstream << path << "/" << label;
-  else if(path.size())
+  else if (!path.empty())
     sstream << path << "/" << par;
-  else if(label.size())
+  else if (!label.empty())
     sstream << label;
   else
     sstream << par;
@@ -286,7 +287,8 @@ void add_point(const std::string &fileName, const std::string &x,
   std::ostringstream sstream;
   sstream << "Point(" << GModel::current()->getMaxElementaryNumber(0) + 1
           << ") = {" << x << ", " << y << ", " << z;
-  if(lc.size()) sstream << ", " << lc;
+  if (!lc.empty())
+    sstream << ", " << lc;
   sstream << "};";
   add_infile(sstream.str(), fileName);
 }
@@ -402,11 +404,10 @@ void add_remove_physical(const std::string &fileName, const std::string &what,
 {
   std::ostringstream sstream;
   sstream << "Physical " << what << "(";
-  if(name.size()) {
+  if (!name.empty()) {
     sstream << "\"" << name << "\"";
     if(forceTag) sstream << ", " << forceTag;
-  }
-  else {
+  } else {
     sstream << (forceTag ?
                   forceTag :
                   GModel::current()->getGEOInternals()->getMaxPhysicalTag() +
@@ -438,8 +439,10 @@ void add_circle(const std::string &fileName, const std::string &x,
   check_occ(sstream);
   sstream << "Circle(" << GModel::current()->getMaxElementaryNumber(1) + 1
           << ") = {" << x << ", " << y << ", " << z << ", " << r;
-  if(alpha1.size()) sstream << ", " << alpha1;
-  if(alpha1.size() && alpha2.size()) sstream << ", " << alpha2;
+  if (!alpha1.empty())
+    sstream << ", " << alpha1;
+  if (!alpha1.empty() && !alpha2.empty())
+    sstream << ", " << alpha2;
   sstream << "};";
   add_infile(sstream.str(), fileName);
 }
@@ -453,8 +456,10 @@ void add_ellipse(const std::string &fileName, const std::string &x,
   check_occ(sstream);
   sstream << "Ellipse(" << GModel::current()->getMaxElementaryNumber(1) + 1
           << ") = {" << x << ", " << y << ", " << z << ", " << rx << ", " << ry;
-  if(alpha1.size()) sstream << ", " << alpha1;
-  if(alpha1.size() && alpha2.size()) sstream << ", " << alpha2;
+  if (!alpha1.empty())
+    sstream << ", " << alpha1;
+  if (!alpha1.empty() && !alpha2.empty())
+    sstream << ", " << alpha2;
   sstream << "};";
   add_infile(sstream.str(), fileName);
 }
@@ -480,7 +485,8 @@ void add_rectangle(const std::string &fileName, const std::string &x,
   check_occ(sstream);
   sstream << "Rectangle(" << GModel::current()->getMaxElementaryNumber(2) + 1
           << ") = {" << x << ", " << y << ", " << z << ", " << dx << ", " << dy;
-  if(roundedRadius.size()) sstream << ", " << roundedRadius;
+  if (!roundedRadius.empty())
+    sstream << ", " << roundedRadius;
   sstream << "};";
   add_infile(sstream.str(), fileName);
 }
@@ -494,9 +500,12 @@ void add_sphere(const std::string &fileName, const std::string &x,
   check_occ(sstream);
   sstream << "Sphere(" << GModel::current()->getMaxElementaryNumber(3) + 1
           << ") = {" << x << ", " << y << ", " << z << ", " << r;
-  if(alpha1.size()) sstream << ", " << alpha1;
-  if(alpha1.size() && alpha2.size()) sstream << ", " << alpha2;
-  if(alpha1.size() && alpha2.size() && alpha3.size()) sstream << ", " << alpha3;
+  if (!alpha1.empty())
+    sstream << ", " << alpha1;
+  if (!alpha1.empty() && !alpha2.empty())
+    sstream << ", " << alpha2;
+  if (!alpha1.empty() && !alpha2.empty() && !alpha3.empty())
+    sstream << ", " << alpha3;
   sstream << "};";
   add_infile(sstream.str(), fileName);
 }
@@ -512,7 +521,8 @@ void add_cylinder(const std::string &fileName, const std::string &x,
   sstream << "Cylinder(" << GModel::current()->getMaxElementaryNumber(3) + 1
           << ") = {" << x << ", " << y << ", " << z << ", " << dx << ", " << dy
           << ", " << dz << ", " << r;
-  if(alpha.size()) sstream << ", " << alpha;
+  if (!alpha.empty())
+    sstream << ", " << alpha;
   sstream << "};";
   add_infile(sstream.str(), fileName);
 }
@@ -538,7 +548,8 @@ void add_torus(const std::string &fileName, const std::string &x,
   check_occ(sstream);
   sstream << "Torus(" << GModel::current()->getMaxElementaryNumber(3) + 1
           << ") = {" << x << ", " << y << ", " << z << ", " << r1 << ", " << r2;
-  if(alpha.size()) sstream << ", " << alpha;
+  if (!alpha.empty())
+    sstream << ", " << alpha;
   sstream << "};";
   add_infile(sstream.str(), fileName);
 }
@@ -554,7 +565,8 @@ void add_cone(const std::string &fileName, const std::string &x,
   sstream << "Cone(" << GModel::current()->getMaxElementaryNumber(3) + 1
           << ") = {" << x << ", " << y << ", " << z << ", " << dx << ", " << dy
           << ", " << dz << ", " << r1 << ", " << r2;
-  if(alpha.size()) sstream << ", " << alpha;
+  if (!alpha.empty())
+    sstream << ", " << alpha;
   sstream << "};";
   add_infile(sstream.str(), fileName);
 }

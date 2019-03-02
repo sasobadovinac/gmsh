@@ -123,7 +123,7 @@ bool SortEdgeConsecutive(const std::vector<MEdge> &e,
     MVertex *current = start;
 
     do {
-      if(c.size() == 0) {
+      if (c.empty()) {
         Msg::Warning("Wrong topology in a wire");
         return false;
       }

@@ -604,7 +604,7 @@ template <>
 void fullMatrix<double>::print(const std::string &name,
                                const std::string &format) const
 {
-  std::string rformat = (format == "") ? "%12.5E " : format;
+  std::string rformat = (format.empty()) ? "%12.5E " : format;
   int ni = size1();
   int nj = size2();
   printf("double %s [ %d ][ %d ]= { \n", name.c_str(), ni, nj);
@@ -626,7 +626,7 @@ template <>
 void fullMatrix<int>::print(const std::string &name,
                             const std::string &format) const
 {
-  std::string rformat = (format == "") ? "%12d " : format;
+  std::string rformat = (format.empty()) ? "%12d " : format;
   int ni = size1();
   int nj = size2();
   printf("int %s [ %d ][ %d ]= { \n", name.c_str(), ni, nj);

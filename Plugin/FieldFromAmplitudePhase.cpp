@@ -67,7 +67,7 @@ PView *GMSH_FieldFromAmplitudePhasePlugin::execute(PView *v)
 
   std::string name_model("");
 
-  if(fileName == "") {
+  if (fileName.empty()) {
     Msg::Info("Could not find mesh file for interpolating U=A*exp(j*k*phi)."
               " Trying to use current model mesh, instead.");
     name_model = GModel::current()->getName();

@@ -366,13 +366,14 @@ bool gmshFace::buildSTLTriangulation(bool force)
 {
   return false;
 
-  if(stl_triangles.size() && !force) return true;
+  if (!stl_triangles.empty() && !force)
+    return true;
   stl_vertices_uv.clear();
   stl_vertices_xyz.clear();
   stl_triangles.clear();
 
 #if defined(HAVE_MESH)
-  if(!triangles.size()) {
+  if (triangles.empty()) {
     // FIXME: mesh only this surface...
     model()->mesh(2);
   }

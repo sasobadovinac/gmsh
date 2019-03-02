@@ -383,7 +383,8 @@ public:
   }
   virtual int getTypeForMSH() const
   {
-    if(_order == 1 && _vs.size() == 0) return MSH_TRI_3;
+    if (_order == 1 && _vs.empty())
+      return MSH_TRI_3;
     if(_order == 2 && _vs.size() == 3) return MSH_TRI_6;
     if(_order == 3 && _vs.size() == 7) return MSH_TRI_10;
     if(_order == 4 && _vs.size() == 12) return MSH_TRI_15;

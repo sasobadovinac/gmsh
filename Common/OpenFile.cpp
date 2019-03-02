@@ -344,12 +344,12 @@ int MergeFile(const std::string &fileName, bool warnIfMissing,
 
 #if defined(HAVE_ONELAB)
   std::string solver = getSolverForExtension(ext);
-  if(solver.size()) {
+  if (!solver.empty()) {
     int num = defineSolver(solver);
     Msg::SetOnelabString(solver + "/Model name", fileName, true, true, false, 3,
                          "file");
-    if(GModel::current()->getName() == "" ||
-       Msg::GetOnelabString("Gmsh/Model name").empty()) {
+    if (GModel::current()->getName().empty() ||
+        Msg::GetOnelabString("Gmsh/Model name").empty()) {
       GModel::current()->setFileName(split[0] + split[1] + ".geo");
       GModel::current()->setName(split[1] + ".geo");
       Msg::SetOnelabChanged(3);
@@ -357,9 +357,8 @@ int MergeFile(const std::string &fileName, bool warnIfMissing,
     CTX::instance()->launchSolverAtStartup = num;
     CTX::instance()->geom.draw = 1;
     return 1;
-  }
-  else if(ext == ".py" || ext == ".PY" || ext == ".m" || ext == ".M" ||
-          ext == ".exe" || ext == ".EXE") {
+  } else if (ext == ".py" || ext == ".PY" || ext == ".m" || ext == ".M" ||
+             ext == ".exe" || ext == ".EXE") {
     int num = defineSolver(split[1]);
     opt_solver_executable(num, GMSH_SET, fileName);
     CTX::instance()->launchSolverAtStartup = num;
@@ -368,7 +367,7 @@ int MergeFile(const std::string &fileName, bool warnIfMissing,
   }
 #endif
 
-  if(GModel::current()->getName() == "") {
+  if (GModel::current()->getName().empty()) {
     GModel::current()->setFileName(fileName);
     GModel::current()->setName(SplitFileName(fileName)[1]);
   }
@@ -677,7 +676,7 @@ void ClearProject()
   for(int i = GModel::list.size() - 1; i >= 0; i--) delete GModel::list[i];
 
   // close the files that might have been left open by ParseFile
-  if(openedFiles.size()) {
+  if (!openedFiles.empty()) {
     for(std::size_t i = 0; i < openedFiles.size(); i++) fclose(openedFiles[i]);
     openedFiles.clear();
   }
@@ -757,7 +756,7 @@ void OpenProject(const std::string &fileName)
 #endif
 
   // close the files that might have been left open by ParseFile
-  if(openedFiles.size()) {
+  if (!openedFiles.empty()) {
     for(std::size_t i = 0; i < openedFiles.size(); i++) fclose(openedFiles[i]);
     openedFiles.clear();
   }

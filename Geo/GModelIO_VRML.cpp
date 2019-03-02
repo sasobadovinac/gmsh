@@ -110,7 +110,7 @@ static int readElementsVRML(FILE *fp, std::vector<MVertex *> &vertexVector,
       }
     }
   }
-  if(idx.size()) {
+  if (!idx.empty()) {
     Msg::Error("Prematured end of VRML file");
     return 0;
   }
@@ -225,7 +225,7 @@ int GModel::writeVRML(const std::string &name, bool saveAll,
   fprintf(fp, "}\n");
 
   for(eiter it = firstEdge(); it != lastEdge(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       fprintf(fp, "DEF Curve%d IndexedLineSet {\n", (*it)->tag());
       fprintf(fp, "  coordIndex [\n");
       for(std::size_t i = 0; i < (*it)->lines.size(); i++)
@@ -236,7 +236,7 @@ int GModel::writeVRML(const std::string &name, bool saveAll,
   }
 
   for(fiter it = firstFace(); it != lastFace(); ++it) {
-    if(saveAll || (*it)->physicals.size()) {
+    if (saveAll || !(*it)->physicals.empty()) {
       fprintf(fp, "DEF Surface%d IndexedFaceSet {\n", (*it)->tag());
       fprintf(fp, "  coordIndex [\n");
       for(std::size_t i = 0; i < (*it)->triangles.size(); i++)

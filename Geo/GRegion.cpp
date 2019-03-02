@@ -304,7 +304,7 @@ int GRegion::delFace(GFace *face)
 std::string GRegion::getAdditionalInfoString(bool multline)
 {
   std::ostringstream sstream;
-  if(l_faces.size()) {
+  if (!l_faces.empty()) {
     sstream << "Boundary surfaces: ";
     for(std::vector<GFace *>::iterator it = l_faces.begin();
         it != l_faces.end(); ++it) {
@@ -316,7 +316,7 @@ std::string GRegion::getAdditionalInfoString(bool multline)
     else
       sstream << " ";
   }
-  if(embedded_faces.size()) {
+  if (!embedded_faces.empty()) {
     sstream << "Embedded surfaces: ";
     for(std::vector<GFace *>::iterator it = embedded_faces.begin();
         it != embedded_faces.end(); ++it) {
@@ -328,7 +328,7 @@ std::string GRegion::getAdditionalInfoString(bool multline)
     else
       sstream << " ";
   }
-  if(embedded_edges.size()) {
+  if (!embedded_edges.empty()) {
     sstream << "Embedded curves: ";
     for(std::vector<GEdge *>::iterator it = embedded_edges.begin();
         it != embedded_edges.end(); ++it) {
@@ -340,7 +340,7 @@ std::string GRegion::getAdditionalInfoString(bool multline)
     else
       sstream << " ";
   }
-  if(embedded_vertices.size()) {
+  if (!embedded_vertices.empty()) {
     sstream << "Embedded points: ";
     for(std::vector<GVertex *>::iterator it = embedded_vertices.begin();
         it != embedded_vertices.end(); ++it) {
@@ -359,7 +359,8 @@ std::string GRegion::getAdditionalInfoString(bool multline)
     if(meshAttributes.extrude) sstream << " extruded";
   }
   std::string str = sstream.str();
-  if(str.size() && (str[str.size() - 1] == '\n' || str[str.size() - 1] == ' '))
+  if (!str.empty() &&
+      (str[str.size() - 1] == '\n' || str[str.size() - 1] == ' '))
     str.resize(str.size() - 1);
   return str;
 }
@@ -368,7 +369,7 @@ void GRegion::writeGEO(FILE *fp)
 {
   if(geomType() == DiscreteVolume) return;
 
-  if(l_faces.size()) {
+  if (!l_faces.empty()) {
     fprintf(fp, "Surface Loop(%d) = ", tag());
     for(std::vector<GFace *>::iterator it = l_faces.begin();
         it != l_faces.end(); it++) {
@@ -395,7 +396,7 @@ void GRegion::writeGEO(FILE *fp)
 
   if(meshAttributes.method == MESH_TRANSFINITE) {
     fprintf(fp, "Transfinite Volume {%d}", tag());
-    if(meshAttributes.corners.size()) {
+    if (!meshAttributes.corners.empty()) {
       fprintf(fp, " = {");
       for(std::size_t i = 0; i < meshAttributes.corners.size(); i++) {
         if(i) fprintf(fp, ",");
@@ -593,7 +594,7 @@ void GRegion::removeElement(int type, MElement *e)
 
 bool GRegion::reorder(const int elementType, const std::vector<std::size_t> &ordering)
 {
-  if(tetrahedra.size() != 0) {
+  if (!tetrahedra.empty()) {
     if(tetrahedra.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != tetrahedra.size()) return false;
 
@@ -616,7 +617,7 @@ bool GRegion::reorder(const int elementType, const std::vector<std::size_t> &ord
     }
   }
 
-  if(hexahedra.size() != 0) {
+  if (!hexahedra.empty()) {
     if(hexahedra.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != hexahedra.size()) return false;
 
@@ -639,7 +640,7 @@ bool GRegion::reorder(const int elementType, const std::vector<std::size_t> &ord
     }
   }
 
-  if(prisms.size() != 0) {
+  if (!prisms.empty()) {
     if(prisms.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != prisms.size()) return false;
 
@@ -662,7 +663,7 @@ bool GRegion::reorder(const int elementType, const std::vector<std::size_t> &ord
     }
   }
 
-  if(pyramids.size() != 0) {
+  if (!pyramids.empty()) {
     if(pyramids.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != pyramids.size()) return false;
 
@@ -685,7 +686,7 @@ bool GRegion::reorder(const int elementType, const std::vector<std::size_t> &ord
     }
   }
 
-  if(polyhedra.size() != 0) {
+  if (!polyhedra.empty()) {
     if(polyhedra.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != polyhedra.size()) return false;
 
@@ -708,7 +709,7 @@ bool GRegion::reorder(const int elementType, const std::vector<std::size_t> &ord
     }
   }
 
-  if(trihedra.size() != 0) {
+  if (!trihedra.empty()) {
     if(trihedra.front()->getTypeForMSH() == elementType) {
       if(ordering.size() != trihedra.size()) return false;
 

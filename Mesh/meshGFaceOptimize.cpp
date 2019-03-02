@@ -129,7 +129,7 @@ bool buildMeshGenerationDataStructures(
     std::set<GVertex *, GEntityLessThan> emb_vertx = gf->embeddedVertices();
     std::set<GVertex *, GEntityLessThan>::iterator itvx = emb_vertx.begin();
     while(itvx != emb_vertx.end()) {
-      if((*itvx)->mesh_vertices.size()) {
+      if (!(*itvx)->mesh_vertices.empty()) {
         MVertex *v = *((*itvx)->mesh_vertices.begin());
         vSizesMap[v] =
           std::min(vSizesMap[v], (*itvx)->prescribedMeshSizeAtVertex());
@@ -269,7 +269,7 @@ bool computeEquivalentTriangles(GFace *gf,
     }
   }
 
-  if(WTF.size()) {
+  if (!WTF.empty()) {
     Msg::Info("%d triangles are equivalent", WTF.size());
     for(std::size_t i = 0; i < WTF.size(); i++) {
     }

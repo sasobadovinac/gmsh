@@ -51,12 +51,12 @@ int GModel::writeSU2(const std::string &name, bool saveAll,
   int nelem = 0;
   if(ndime == 2) {
     for(fiter it = firstFace(); it != lastFace(); it++)
-      if(saveAll || (*it)->physicals.size())
+      if (saveAll || !(*it)->physicals.empty())
         nelem += (*it)->getNumMeshElements();
   }
   else {
     for(riter it = firstRegion(); it != lastRegion(); it++)
-      if(saveAll || (*it)->physicals.size())
+      if (saveAll || !(*it)->physicals.empty())
         nelem += (*it)->getNumMeshElements();
   }
   int npoin = indexMeshVertices(saveAll);
@@ -68,13 +68,13 @@ int GModel::writeSU2(const std::string &name, bool saveAll,
   int num = 0;
   if(ndime == 2) {
     for(fiter it = firstFace(); it != lastFace(); it++)
-      if(saveAll || (*it)->physicals.size())
+      if (saveAll || !(*it)->physicals.empty())
         for(std::size_t i = 0; i < (*it)->getNumMeshElements(); i++)
           (*it)->getMeshElement(i)->writeSU2(fp, num++);
   }
   else {
     for(riter it = firstRegion(); it != lastRegion(); it++)
-      if(saveAll || (*it)->physicals.size())
+      if (saveAll || !(*it)->physicals.empty())
         for(std::size_t i = 0; i < (*it)->getNumMeshElements(); i++)
           (*it)->getMeshElement(i)->writeSU2(fp, num++);
   }

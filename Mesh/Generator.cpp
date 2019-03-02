@@ -97,7 +97,7 @@ public:
     if(edges.empty() && faces.empty()) {
       Msg::Info("All embedded edges and faces are present in the final mesh");
     }
-    if(edges.size()) {
+    if (!edges.empty()) {
       char name[256];
       sprintf(name, "missingEdgesOnRegion%d.pos", gr->tag());
       Msg::Error("Region %d : %d mesh edges that should be embedded are "
@@ -117,7 +117,7 @@ public:
       fprintf(f, "};\n");
       fclose(f);
     }
-    if(faces.size()) {
+    if (!faces.empty()) {
       char name[256];
       sprintf(name, "missingFacesOnRegion%d.pos", gr->tag());
       Msg::Error("Region %d : %d mesh faces that should be embedded are "
@@ -560,7 +560,7 @@ FindConnectedRegions(const std::vector<GRegion *> &del,
 
   const std::size_t nbVolumes = delaunay.size();
   if(!nbVolumes) return;
-  while(delaunay.size()) {
+  while (!delaunay.empty()) {
     std::set<GRegion *> oneDomain;
     std::stack<GRegion *> _stack;
     GRegion *r = delaunay[0];

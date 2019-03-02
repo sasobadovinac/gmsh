@@ -81,7 +81,7 @@ public:
             if(start - lastRefresh > 0.25) {
               std::vector<onelab::string> ps;
               onelab::server::instance()->get(ps, "Gmsh/Action");
-              if(ps.size() && ps[0].getValue() == "refresh") {
+              if (!ps.empty() && ps[0].getValue() == "refresh") {
                 ps[0].setVisible(false);
                 ps[0].setValue("");
                 onelab::server::instance()->set(ps[0]);
@@ -120,8 +120,8 @@ public:
     }
     else {
       // TCP/IP socket
-      if(CTX::instance()->solver.socketName.size() &&
-         CTX::instance()->solver.socketName[0] == ':')
+      if (!CTX::instance()->solver.socketName.empty() &&
+          CTX::instance()->solver.socketName[0] == ':')
         tmp
           << GetHostName(); // prepend hostname if only the port number is given
       tmp << CTX::instance()->solver.socketName;
@@ -132,7 +132,7 @@ public:
 
     std::string exe = FixWindowsPath(_client->getExecutable());
     std::string args;
-    if(exe.size()) {
+    if (!exe.empty()) {
       if(_client->treatExecutableAsFullCommandLine()) {
         args = exe;
         exe = "";
@@ -143,8 +143,7 @@ public:
       }
       args.append(" " + _client->getSocketSwitch() + " \"" +
                   _client->getName() + "\" %s");
-    }
-    else {
+    } else {
       Msg::Info("Listening on socket '%s'", sockname.c_str());
     }
 
@@ -272,14 +271,15 @@ bool gmshLocalNetworkClient::receiveMessage(gmshLocalNetworkClient *master)
           std::vector<onelab::number> par;
           get(par, name);
           std::vector<double> c;
-          if(par.size()) c = par[0].getChoices();
+          if (!par.empty())
+            c = par[0].getChoices();
           c.push_back(p.getValue());
           p.setChoices(c);
         }
         if(type == GmshSocket::GMSH_PARAMETER_UPDATE) {
           std::vector<onelab::number> par;
           get(par, name);
-          if(par.size()) {
+          if (!par.empty()) {
             onelab::number y = p;
             p = par[0];
             onelabUtils::updateNumber(p, y);
@@ -304,14 +304,15 @@ bool gmshLocalNetworkClient::receiveMessage(gmshLocalNetworkClient *master)
           std::vector<onelab::string> par;
           get(par, name);
           std::vector<std::string> c;
-          if(par.size()) c = par[0].getChoices();
+          if (!par.empty())
+            c = par[0].getChoices();
           c.push_back(p.getValue());
           p.setChoices(c);
         }
         else if(type == GmshSocket::GMSH_PARAMETER_UPDATE) {
           std::vector<onelab::string> par;
           get(par, name);
-          if(par.size()) {
+          if (!par.empty()) {
             onelab::string y = p;
             p = par[0];
             onelabUtils::updateString(p, y);
@@ -356,11 +357,10 @@ bool gmshLocalNetworkClient::receiveMessage(gmshLocalNetworkClient *master)
     else
       Msg::Error("Unknown ONELAB parameter type in query: %s", ptype.c_str());
 
-    if(reply.size()) {
+    if (!reply.empty()) {
       getGmshServer()->SendMessage(GmshSocket::GMSH_PARAMETER, reply.size(),
                                    &reply[0]);
-    }
-    else {
+    } else {
       reply = name;
       getGmshServer()->SendMessage(GmshSocket::GMSH_PARAMETER_NOT_FOUND,
                                    reply.size(), &reply[0]);

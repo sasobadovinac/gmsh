@@ -137,7 +137,7 @@ void VertexArray::add(double *x, double *y, double *z, SVector3 *n, unsigned cha
 
 void VertexArray::finalize()
 {
-  if(_data3.size()){
+  if (!_data3.empty()) {
     std::set<ElementData<3>, ElementDataLessThan<3> >::iterator it = _data3.begin();
     for(; it != _data3.end(); it++){
       for(int i = 0; i < 3; i++){

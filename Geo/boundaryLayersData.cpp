@@ -435,7 +435,8 @@ bool buildAdditionalPoints2D(GFace *gf)
 
     getEdgesData(gf, blf, _columns, _vertices, allEdges, tangents);
 
-    if(!_vertices.size()) continue;
+    if (_vertices.empty())
+      continue;
 
     getNormals(gf, blf, _columns, allEdges);
 

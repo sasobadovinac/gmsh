@@ -20,9 +20,11 @@ int GModel::writeIR3(const std::string &name, int elementTagType, bool saveAll,
 
   int numVertices = indexMeshVertices(saveAll), num2D = 0, num3D = 0;
   for(fiter it = firstFace(); it != lastFace(); ++it)
-    if(saveAll || (*it)->physicals.size()) num2D += (*it)->getNumMeshElements();
+    if (saveAll || !(*it)->physicals.empty())
+      num2D += (*it)->getNumMeshElements();
   for(riter it = firstRegion(); it != lastRegion(); ++it)
-    if(saveAll || (*it)->physicals.size()) num3D += (*it)->getNumMeshElements();
+    if (saveAll || !(*it)->physicals.empty())
+      num3D += (*it)->getNumMeshElements();
 
   fprintf(fp, "33\n");
   if(num2D && num3D)

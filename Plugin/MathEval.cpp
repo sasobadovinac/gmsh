@@ -132,18 +132,16 @@ PView *GMSH_MathEvalPlugin::execute(PView *view)
   }
 
   int numComp2;
-  if(expr[3].size() || expr[4].size() || expr[5].size() || expr[6].size() ||
-     expr[7].size() || expr[8].size()) {
+  if (!expr[3].empty() || !expr[4].empty() || !expr[5].empty() ||
+      !expr[6].empty() || !expr[7].empty() || !expr[8].empty()) {
     numComp2 = 9;
     for(int i = 0; i < 9; i++)
       if(expr[i].empty()) expr[i] = "0";
-  }
-  else if(expr[1].size() || expr[2].size()) {
+  } else if (!expr[1].empty() || !expr[2].empty()) {
     numComp2 = 3;
     for(int i = 0; i < 3; i++)
       if(expr[i].empty()) expr[i] = "0";
-  }
-  else {
+  } else {
     numComp2 = 1;
   }
   expr.resize(numComp2);

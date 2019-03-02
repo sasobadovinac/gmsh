@@ -108,7 +108,8 @@ void MZone<DIM>::add_elements_in_entity(EntPtr entity, const int partition)
 
 template <unsigned DIM> int MZone<DIM>::zoneData()
 {
-  if(elemVec.size() == 0) return 1;
+  if (elemVec.empty())
+    return 1;
 
   // Resize output arrays
   zoneVertVec.resize(vertMap.size());
@@ -1067,7 +1068,8 @@ int MZoneBoundary<DIM>::interiorBoundaryVertices(const int newZoneIndex,
                                                  const MZone<DIM> &mZone,
                                                  ZoneConnMap &zoneConnMap)
 {
-  if(mZone.boVertMap.size() == 0) return 1;
+  if (mZone.boVertMap.empty())
+    return 1;
   zoneConnMap.clear();
 
   // Loop over all the boundary vertices in 'mZone'
@@ -1256,7 +1258,8 @@ template <unsigned DIM>
 int MZoneBoundary<DIM>::exteriorBoundaryVertices(const int normalSource,
                                                  ZoneBoVec &zoneBoVec)
 {
-  if(globalBoVertMap.size() == 0) return 1;
+  if (globalBoVertMap.empty())
+    return 1;
 
   zoneBoVec.clear();
   zoneBoVec.reserve(3 * globalBoVertMap.size() / 2);

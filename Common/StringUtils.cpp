@@ -94,7 +94,7 @@ std::vector<std::string> SplitFileName(const std::string &fileName)
   // destructor si called
   std::vector<std::string> s;
   s.resize(3);
-  if(fileName.size()) {
+  if (!fileName.empty()) {
     // returns [path, baseName, extension]
     int idot = (int)fileName.find_last_of('.');
     int islash = (int)fileName.find_last_of("/\\");

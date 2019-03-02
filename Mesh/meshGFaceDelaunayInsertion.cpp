@@ -1335,7 +1335,8 @@ void bowyerWatsonFrontal(GFace *gf, std::map<MVertex *, MVertex *> *equivalence,
     // }
 
     // printf("%d active tris \n",ActiveTris.size());
-    if(!ActiveTris.size()) break;
+    if (ActiveTris.empty())
+      break;
     MTri3 *worst = (*ActiveTris.begin());
     ActiveTris.erase(ActiveTris.begin());
 
@@ -1560,7 +1561,8 @@ void bowyerWatsonFrontalLayers(
     // printf("%d active triangles\n",ActiveTris.size());
 
     while(1) {
-      if(!ActiveTris.size()) break;
+      if (ActiveTris.empty())
+        break;
 
       /* if (1 || gf->tag() == 1900){
            char name[245];
@@ -1622,7 +1624,8 @@ void bowyerWatsonFrontalLayers(
     }
     // Msg::Info("%d active tris %d front edges %d not in front",
     //           ActiveTris.size(),_front.size(),ActiveTrisNotInFront.size());
-    if(!ActiveTris.size()) break;
+    if (ActiveTris.empty())
+      break;
   }
 
   transferDataStructure(gf, AllTris, DATA);
