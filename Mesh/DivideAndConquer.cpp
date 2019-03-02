@@ -316,11 +316,7 @@ int DocRecord::BuildDelaunay()
 // respecting the clock-wise orientation
 int DocRecord::DListInsert(PointNumero centerPoint, PointNumero newPoint)
 {
-  DListRecord *p, *newp;
-  double alpha1, alpha, beta, xx, yy;
-  int first;
-
-  newp = new DListRecord;
+  DListRecord *newp = new DListRecord;
   newp->point_num = newPoint;
 
   DListRecord **dlist = &points[centerPoint].adjacent;
@@ -341,26 +337,26 @@ int DocRecord::DListInsert(PointNumero centerPoint, PointNumero newPoint)
   // If we are here, the double-linked circular list has 2 or more
   // elements, so we have to calculate where to put the new one
 
-  p = *dlist;
-  first = p->point_num;
+  DListRecord *p = *dlist;
+  int first = p->point_num;
 
   DPoint center = points[centerPoint].where;
 
   // first, compute polar coord. of the first point
-  yy = (double)(points[first].where.v - center.v);
-  xx = (double)(points[first].where.h - center.h);
-  alpha1 = atan2(yy, xx);
+  double yy = (double)(points[first].where.v - center.v);
+  double xx = (double)(points[first].where.h - center.h);
+  const double alpha1 = atan2(yy, xx);
 
   // compute polar coord of the point to insert
   yy = (double)(points[newPoint].where.v - center.v);
   xx = (double)(points[newPoint].where.h - center.h);
-  beta = atan2(yy, xx) - alpha1;
+  double beta = atan2(yy, xx) - alpha1;
   if(beta <= 0) beta += 2. * M_PI;
 
   do {
     yy = (double)(points[Succ(p)->point_num].where.v - center.v);
     xx = (double)(points[Succ(p)->point_num].where.h - center.h);
-    alpha = atan2(yy, xx) - alpha1;
+    double alpha = atan2(yy, xx) - alpha1;
     if(alpha <= -1.e-15 || Succ(p)->point_num == first)
       alpha += 2. * M_PI;
     else if(abs(alpha) <= 1e-15 &&
@@ -395,7 +391,8 @@ int DocRecord::DListInsert(PointNumero centerPoint, PointNumero newPoint)
     p = Succ(p);
   } while(p != *dlist);
 
-  // never here!
+  // never here, but just in-case
+  delete newp;
   return 0;
 }
 
@@ -427,9 +424,7 @@ int DocRecord::DListDelete(DListPeek *dlist, PointNumero oldPoint)
     if(p->point_num == oldPoint) {
       Succ(Pred(p)) = Succ(p);
       Pred(Succ(p)) = Pred(p);
-      if(p == *dlist) {
-        *dlist = Succ(p);
-      }
+      if(p == *dlist) { *dlist = Succ(p); }
       delete p;
       return 1;
     }
@@ -609,9 +604,7 @@ void DocRecord::makePosView(const std::string &fileName, GFace *gf)
     fprintf(f, "View \"scalar\" {\n");
     for(PointNumero iPoint = 0; iPoint < numPoints; iPoint++) {
       DListPeek p = points[iPoint].adjacent;
-      if(!p) {
-        continue;
-      }
+      if(!p) { continue; }
       std::vector<PointNumero> adjacentPoints;
       do {
         adjacentPoints.push_back(p->point_num);
@@ -859,9 +852,7 @@ void DocRecord::MakeMeshWithPoints()
   if(numPoints < 3) return;
   BuildDelaunay();
 
-  if(AdjacentNullptrExists()) {
-    ConvertDListToTriangles();
-  }
+  if(AdjacentNullptrExists()) { ConvertDListToTriangles(); }
   else {
     Msg::Error("Adjacent nullptrs found");
   }
@@ -979,9 +970,7 @@ void DocRecord::concave(double x, double y, GFace *gf)
     }
   }
 
-  for(int i = 0; i < numPoints; i++) {
-    points[i].vicinity.clear();
-  }
+  for(int i = 0; i < numPoints; i++) { points[i].vicinity.clear(); }
 
   try {
     MakeMeshWithPoints();
@@ -1031,9 +1020,7 @@ void DocRecord::add(int index1, int index2)
 
 void DocRecord::initialize()
 {
-  for(int i = 0; i < numPoints; i++) {
-    points[i].flag = 0;
-  }
+  for(int i = 0; i < numPoints; i++) { points[i].flag = 0; }
 }
 
 bool DocRecord::remove_point(int index)
@@ -1050,9 +1037,7 @@ void DocRecord::remove_all()
 {
   int numPoints2 = 0;
   for(int i = 0; i < numPoints; i++) {
-    if(points[i].flag == 0) {
-      numPoints2++;
-    }
+    if(points[i].flag == 0) { numPoints2++; }
   }
   PointRecord *points2 = new PointRecord[numPoints2];
   int index = 0;
