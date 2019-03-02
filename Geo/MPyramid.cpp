@@ -137,9 +137,9 @@ static void _myGetFaceRep(MPyramid *pyr, int num, double *x, double *y,
   int iVertex1, iVertex2, iVertex3, iVertex4;
 
   if(iFace < 4) {
-    iVertex1 = pyr->faces_pyramid(iFace, 0);
-    iVertex2 = pyr->faces_pyramid(iFace, 1);
-    iVertex3 = pyr->faces_pyramid(iFace, 2);
+    iVertex1 = MPyramid::faces_pyramid(iFace, 0);
+    iVertex2 = MPyramid::faces_pyramid(iFace, 1);
+    iVertex3 = MPyramid::faces_pyramid(iFace, 2);
   }
   else {
     iVertex1 = 0;

@@ -190,10 +190,10 @@ static void _myGetFaceRep(MPrism *pri, int num, double *x, double *y, double *z,
     iSubFace = num % (2 * numSubEdges * numSubEdges);
   }
 
-  int iVertex1 = pri->faces_prism(iFace, 0);
-  int iVertex2 = pri->faces_prism(iFace, 1);
-  int iVertex3 = pri->faces_prism(iFace, 2);
-  int iVertex4 = pri->faces_prism(iFace, 3);
+  int iVertex1 = MPrism::faces_prism(iFace, 0);
+  int iVertex2 = MPrism::faces_prism(iFace, 1);
+  int iVertex3 = MPrism::faces_prism(iFace, 2);
+  int iVertex4 = MPrism::faces_prism(iFace, 3);
 
   SPoint3 pnt1, pnt2, pnt3;
   // double J1[3][3], J2[3][3], J3[3][3];

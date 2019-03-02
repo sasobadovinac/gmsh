@@ -200,10 +200,10 @@ void _myGetFaceRep(MHexahedron *hex, int num, double *x, double *y, double *z,
   int iFace = num / (2 * numSubEdges * numSubEdges);
   int iSubFace = num % (2 * numSubEdges * numSubEdges);
 
-  int iVertex1 = hex->faces_hexa(iFace, 0);
-  int iVertex2 = hex->faces_hexa(iFace, 1);
-  int iVertex3 = hex->faces_hexa(iFace, 2);
-  int iVertex4 = hex->faces_hexa(iFace, 3);
+  int iVertex1 = MHexahedron::faces_hexa(iFace, 0);
+  int iVertex2 = MHexahedron::faces_hexa(iFace, 1);
+  int iVertex3 = MHexahedron::faces_hexa(iFace, 2);
+  int iVertex4 = MHexahedron::faces_hexa(iFace, 3);
 
   SPoint3 pnt1, pnt2, pnt3;
   // double J1[3][3], J2[3][3], J3[3][3];

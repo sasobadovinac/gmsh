@@ -84,7 +84,7 @@ void elasticityTerm::elementMatrix(SElement *se, fullMatrix<double> &m) const
     B.setAll(0.);
     BT.setAll(0.);
 
-    if(se->getShapeEnrichement() == se->getTestEnrichement()) {
+    if (SElement::getShapeEnrichement() == SElement::getTestEnrichement()) {
       for(int j = 0; j < nbSF; j++) {
         BT(j, 0) = B(0, j) = Grads[j][0];
         BT(j, 3) = B(3, j) = Grads[j][1];
@@ -98,8 +98,7 @@ void elasticityTerm::elementMatrix(SElement *se, fullMatrix<double> &m) const
         BT(j + 2 * nbSF, 4) = B(4, j + 2 * nbSF) = Grads[j][1];
         BT(j + 2 * nbSF, 5) = B(5, j + 2 * nbSF) = Grads[j][0];
       }
-    }
-    else {
+    } else {
       /*
       se->gradNodalTestFunctions (u, v, w, invjac,GradsT);
       for (int j = 0; j < nbSF; j++){
