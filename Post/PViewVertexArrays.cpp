@@ -294,8 +294,7 @@ bool isElementVisible(PViewOptions *opt, int dim, int numNodes, double **xyz)
   bool hidden = false;
   for(int clip = 0; clip < 6; clip++) {
     if(opt->clip & (1 << clip)) {
-      if(dim < 3 && CTX::instance()->clipOnlyVolume) {
-      }
+      if(dim < 3 && CTX::instance()->clipOnlyVolume) {}
       else {
         double d = intersectClipPlane(clip, numNodes, xyz);
         if(dim == 3 && CTX::instance()->clipOnlyDrawIntersectingVolume && d) {
@@ -910,9 +909,7 @@ static void addScalarPolyhedron(PView *p, double **xyz, double **val, bool pre,
 {
   PViewOptions *opt = p->getOptions();
 
-  if(opt->boundary > 0) {
-    return;
-  }
+  if(opt->boundary > 0) { return; }
 
   for(int i = 0; i < numNodes / 4; i++)
     addScalarTetrahedron(p, xyz, val, pre, 4 * i, 4 * i + 1, 4 * i + 2,
@@ -1201,9 +1198,7 @@ static void addTensorElement(PView *p, int iEnt, int iEle, int numNodes,
         tensor.eig(S, imS, V, rightV, false);
         for(int k = 0; k < 3; k++) {
           vval[k][0] = xyz[i][k];
-          for(int j = 0; j < 3; j++) {
-            vval[k][j + 1] = V(k, j) * S(j);
-          }
+          for(int j = 0; j < 3; j++) { vval[k][j + 1] = V(k, j) * S(j); }
         }
         double lmax = std::max(S(0), std::max(S(1), S(2)));
         unsigned int color = opt->getColor(
@@ -1586,12 +1581,14 @@ void PView::fillVertexArray(onelab::localNetworkClient *remote, int length,
   SBoundingBox3d bbox(xmin, ymin, zmin, xmax, ymax, zmax);
 
   PView *p = PView::getViewByTag(tag);
+  bool is_p_allocated = false;
   if(!p) {
     Msg::Info("View tag %d does not exist: creating new view", tag);
     PViewData *data =
       new PViewDataRemote(remote, min, max, numSteps, time, bbox);
     data->setName(name + " (remote)");
     p = new PView(data, tag);
+    is_p_allocated = true;
     SetBoundingBox();
   }
   else {
@@ -1632,7 +1629,10 @@ void PView::fillVertexArray(onelab::localNetworkClient *remote, int length,
     p->va_ellipses = new VertexArray(4, 100);
     p->va_ellipses->fromChar(length, bytes, swap);
     break;
-  default: Msg::Error("Cannot fill vertex array of type %d", type); return;
+  default:
+    Msg::Error("Cannot fill vertex array of type %d", type);
+    if(is_p_allocated) delete p;
+    return;
   }
 
   p->setChanged(false);
