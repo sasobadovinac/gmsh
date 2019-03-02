@@ -382,6 +382,7 @@ template <> bool fullMatrix<double>::invert(fullMatrix<double> &result) const
       result.resize(M, N, false);
     else {
       Msg::Error("FullMatrix: Bad dimension, I cannot write in proxy");
+      delete[] ipiv;
       return false;
     }
   }
