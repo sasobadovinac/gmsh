@@ -6,10 +6,11 @@
 #ifndef VERTEX_ARRAY_H
 #define VERTEX_ARRAY_H
 
-#include <vector>
-#include <set>
-#include "SVector3.h"
 #include "SBoundingBox3d.h"
+#include "SVector3.h"
+#include <cmath>
+#include <set>
+#include <vector>
 
 #if defined(HAVE_VISUDEV)
 typedef float normal_type;
@@ -140,9 +141,9 @@ class BarycenterEqual {
 public:
   bool operator()(const Barycenter &a, const Barycenter &b) const
   {
-    return (fabs(a.x() - b.x()) < BarycenterLessThan::tolerance &&
-            fabs(a.y() - b.y()) < BarycenterLessThan::tolerance &&
-            fabs(a.z() - b.z()) < BarycenterLessThan::tolerance);
+    return (std::fabs(a.x() - b.x()) < BarycenterLessThan::tolerance &&
+            std::fabs(a.y() - b.y()) < BarycenterLessThan::tolerance &&
+            std::fabs(a.z() - b.z()) < BarycenterLessThan::tolerance);
   }
 };
 
