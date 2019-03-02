@@ -7,9 +7,6 @@
 #include "GaussIntegration.h"
 #include "GaussLegendre1D.h"
 
-IntPt *getGQPriPts(int order);
-int getNGQPriPts(int order);
-
 IntPt *GQP[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

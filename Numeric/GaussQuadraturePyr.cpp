@@ -8,9 +8,6 @@
 #include "GaussLegendre1D.h"
 #include "GaussJacobi1D.h"
 
-IntPt *getGQPyrPts(int order);
-int getNGQPyrPts(int order);
-
 IntPt *GQPyr[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

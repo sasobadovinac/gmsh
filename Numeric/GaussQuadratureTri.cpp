@@ -886,9 +886,6 @@ IntPt *GQTSolin[21] = {
 int GQTnPtSolin[21] = {1,  1,  3,  4,  6,  7,  12, 13, 16, 19, 25,
                        27, 33, 37, 42, 48, 52, 61, 70, 73, 79};
 
-IntPt *getGQTPts(int order);
-int getNGQTPts(int order);
-
 IntPt *getGQTPts(int order)
 {
   if(order < 21) return GQTSolin[order];

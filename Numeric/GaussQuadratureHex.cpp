@@ -45,9 +45,6 @@ IntPt GQH8[8] = {
   {{xh8[4], yh8[4], zh8[4]}, ph8[4]}, {{xh8[5], yh8[5], zh8[5]}, ph8[5]},
   {{xh8[6], yh8[6], zh8[6]}, ph8[6]}, {{xh8[7], yh8[7], zh8[7]}, ph8[7]}};
 
-IntPt *getGQHPts(int order);
-int getNGQHPts(int order);
-
 IntPt *GQH[17] = {GQH1, GQH1, GQH6, GQH8, 0, 0, 0, 0, 0,
                   0,    0,    0,    0,    0, 0, 0, 0};
 int GQHnPt[4] = {1, 1, 6, 8};

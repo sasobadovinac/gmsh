@@ -3343,9 +3343,6 @@ int GQTetnPtSolin[22] = {1,   1,   4,   5,   11,   14,  24,  31,
                          43,  53,  126, 126, 210,  210, 330, 330,
                          495, 495, 715, 715, 1001, 1001};
 
-IntPt *getGQTetPts(int order);
-int getNGQTetPts(int order);
-
 IntPt *getGQTetPts(int order)
 {
   // if(order < 7)

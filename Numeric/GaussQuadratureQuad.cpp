@@ -93,9 +93,6 @@ IntPt GQQ16[16] = {
   {{xq16[12], yq16[12], 0}, pq16[12]}, {{xq16[13], yq16[13], 0}, pq16[13]},
   {{xq16[14], yq16[14], 0}, pq16[14]}, {{xq16[15], yq16[15], 0}, pq16[15]}};
 
-IntPt *getGQQPts(int order);
-int getNGQQPts(int order);
-
 IntPt *GQQ[27] = {GQQ1, GQQ1, GQQ3, GQQ4, GQQ7, GQQ9, GQQ16, 0, 0,
                   0,    0,    0,    0,    0,    0,    0,     0, 0,
                   0,    0,    0,    0,    0,    0,    0,     0, 0};
