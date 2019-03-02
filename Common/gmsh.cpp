@@ -209,6 +209,7 @@ GMSH_API void gmsh::model::add(const std::string &name)
   if(!_isInitialized()) { throw - 1; }
   GModel *m = new GModel(name);
   if(!m) { throw 1; }
+  delete m;
 }
 
 GMSH_API void gmsh::model::remove()
