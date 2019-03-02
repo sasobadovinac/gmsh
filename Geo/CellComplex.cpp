@@ -485,7 +485,7 @@ Cell *CellComplex::_omitCell(Cell *cell, bool dual)
   CombinedCell *newcell = new CombinedCell(omittedCells);
   _createCount++;
 
-  std::string domainstr = "";
+  std::string domainstr;
   int domain = getDomain(cell, domainstr);
 
   Msg::Debug("Cell complex %d-omit removed %dv, %df, %de, %dn", cell->getDim(),

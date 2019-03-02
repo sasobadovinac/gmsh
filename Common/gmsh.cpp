@@ -1677,7 +1677,7 @@ GMSH_API void gmsh::model::mesh::getJacobians(
   std::map<int, std::vector<GEntity *> > typeEnt;
   _getEntitiesForElementTypes(dim, tag, typeEnt);
   const std::vector<GEntity *> &entities(typeEnt[elementType]);
-  std::string intName = "";
+  std::string intName;
   int intOrder = 0;
   if(!_getIntegrationInfo(integrationType, intName, intOrder)) {
     Msg::Error("Unknown quadrature type '%s'", integrationType.c_str());
@@ -1891,7 +1891,7 @@ GMSH_API void gmsh::model::mesh::preallocateJacobians(
   std::size_t numElements = 0;
   for(std::size_t i = 0; i < entities.size(); i++)
     numElements += entities[i]->getNumMeshElementsByType(familyType);
-  std::string intName = "";
+  std::string intName;
   int intOrder = 0;
   if(!_getIntegrationInfo(integrationType, intName, intOrder)) {
     Msg::Error("Unknown quadrature type '%s'", integrationType.c_str());
@@ -1926,7 +1926,7 @@ GMSH_API void gmsh::model::mesh::getBasisFunctions(
   integrationPoints.clear();
   numComponents = 0;
   basisFunctions.clear();
-  std::string intName = "", fsName = "";
+  std::string intName, fsName;
   int intOrder = 0, fsOrder = 0;
   if(!_getIntegrationInfo(integrationType, intName, intOrder)) {
     Msg::Error("Unknown quadrature type '%s'", integrationType.c_str());

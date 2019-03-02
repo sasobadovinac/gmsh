@@ -215,7 +215,7 @@ namespace onelab {
     {
       if(first == std::string::npos) return "";
       std::string::size_type last = msg.find_first_of(separator, first);
-      std::string next("");
+      std::string next;
       if(last == std::string::npos) {
         next = msg.substr(first);
         first = last;
@@ -724,7 +724,7 @@ namespace onelab {
     std::string getType() const { return "string"; }
     const std::string &getValue() const
     {
-      static std::string n("");
+      static std::string n;
       if(_values.empty()) return n;
       return _values[0];
     }

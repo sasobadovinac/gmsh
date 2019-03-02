@@ -65,7 +65,7 @@ PView *GMSH_FieldFromAmplitudePhasePlugin::execute(PView *v)
   int phiView = (int)FieldFromAmplitudePhaseOptions_Number[2].def;
   std::string fileName = FieldFromAmplitudePhaseOptions_String[0].def;
 
-  std::string name_model("");
+  std::string name_model;
 
   if (fileName.empty()) {
     Msg::Info("Could not find mesh file for interpolating U=A*exp(j*k*phi)."

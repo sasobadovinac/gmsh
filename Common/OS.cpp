@@ -425,7 +425,7 @@ int GetProcessId()
 
 std::string GetExecutableFileName()
 {
-  std::string name = "";
+  std::string name;
 #if defined(WIN32) && !defined(__CYGWIN__)
   wchar_t src[MAX_PATH];
   unsigned long size = GetModuleFileNameW(NULL, src, MAX_PATH);

@@ -126,7 +126,7 @@ namespace onelabUtils {
       c->get(ps, c->getName() + "/Model name");
       if(ps.empty()) {
         std::vector<std::string> split = SplitFileName(geo);
-        std::string ext = "";
+        std::string ext;
         onelab::server::instance()->get(ps, c->getName() + "/File extension");
         if (!ps.empty())
           ext = ps[0].getValue();

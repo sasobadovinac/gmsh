@@ -412,7 +412,7 @@ std::string Msg::PrintResources(bool printDate, bool printWallTime,
 {
   long mem = GetMemoryUsage();
 
-  std::string pdate = "";
+  std::string pdate;
   if(printDate){
     time_t now;
     time(&now);
@@ -422,7 +422,7 @@ std::string Msg::PrintResources(bool printDate, bool printWallTime,
       pdate += ", ";
   }
 
-  std::string pwall = "";
+  std::string pwall;
   if(printWallTime){
     char tmp[128];
     sprintf(tmp, "Wall = %gs", TimeOfDay() - _startTime);
@@ -431,7 +431,7 @@ std::string Msg::PrintResources(bool printDate, bool printWallTime,
       pwall += ", ";
   }
 
-  std::string pcpu = "";
+  std::string pcpu;
   if(printCpu){
     char tmp[128];
     sprintf(tmp, "CPU = %gs", Cpu());
@@ -440,7 +440,7 @@ std::string Msg::PrintResources(bool printDate, bool printWallTime,
       pcpu += ", ";
   }
 
-  std::string pmem = "";
+  std::string pmem;
   if(mem && printMem){
     char tmp[128];
     sprintf(tmp, "Mem = %gMb", (double)mem / 1024. / 1024.);
