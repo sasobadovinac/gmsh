@@ -55,7 +55,7 @@ private:
   bool _computeTopologyOfPartition(int nbColors, int *colors, const int *nNodes,
                                    int *nodes, const double *uv,
                                    std::vector<MVertex *> &c2v,
-                                   std::vector<std::vector<MEdge>> &boundaries);
+                                   std::vector<std::vector<MEdge> > &boundaries);
 #endif
 public:
   discreteFace(GModel *model, int num);
