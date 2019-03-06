@@ -5,17 +5,16 @@
 
 #include "Numeric.h"
 
-static void affect(double *xi, double *yi, double *zi, int i, double *xp,
-                   double *yp, double *zp, int j)
-{
+static void affect(double *xi, double *yi, double *zi, int i, const double *xp,
+                   const double *yp, const double *zp, int j) {
   xi[i] = xp[j];
   yi[i] = yp[j];
   zi[i] = zp[j];
 }
 
-double InterpolateIso(double *X, double *Y, double *Z, double *Val, double V,
-                      int I1, int I2, double *XI, double *YI, double *ZI)
-{
+double InterpolateIso(const double *X, const double *Y, const double *Z,
+                      const double *Val, double V, int I1, int I2, double *XI,
+                      double *YI, double *ZI) {
   if(Val[I1] == Val[I2]) {
     *XI = X[I1];
     *YI = Y[I1];

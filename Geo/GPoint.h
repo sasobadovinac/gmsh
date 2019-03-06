@@ -39,9 +39,9 @@ public:
     par[0] = p;
     par[1] = -1.;
   }
-  GPoint(double _x, double _y, double _z, const GEntity *onwhat, double p[2])
-    : X(_x), Y(_y), Z(_z), e(onwhat), success(true)
-  {
+  GPoint(double _x, double _y, double _z, const GEntity *onwhat,
+         const double p[2])
+      : X(_x), Y(_y), Z(_z), e(onwhat), success(true) {
     par[0] = p[0];
     par[1] = p[1];
   }

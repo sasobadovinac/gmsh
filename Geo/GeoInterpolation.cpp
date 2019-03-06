@@ -356,8 +356,7 @@ static Vertex InterpolateUBS(Curve *Curve, double u, int derivee)
 }
 
 // Non Uniform BSplines
-int findSpan(double u, int deg, int n, float *U)
-{
+int findSpan(double u, int deg, int n, const float *U) {
   if(u >= U[n]) return n - 1;
   if(u <= U[0]) return deg;
 
@@ -375,8 +374,7 @@ int findSpan(double u, int deg, int n, float *U)
   return mid;
 }
 
-static void basisFuns(double u, int i, int deg, float *U, double *N)
-{
+static void basisFuns(double u, int i, int deg, const float *U, double *N) {
   double left[1000];
   double *right = &left[deg + 1];
 

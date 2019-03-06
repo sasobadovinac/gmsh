@@ -174,9 +174,8 @@ void drawContext::drawAxis(double xmin, double ymin, double zmin, double xmax,
 }
 
 void drawContext::drawAxes(int mode, double tics[3], std::string format[3],
-                           std::string label[3], double bb[6], int mikado,
-                           double value_bb[6])
-{
+                           std::string label[3], const double bb[6], int mikado,
+                           const double value_bb[6]) {
   // mode 0: nothing
   //      1: axes
   //      2: box

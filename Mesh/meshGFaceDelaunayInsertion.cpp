@@ -229,9 +229,9 @@ static void updateActiveEdges(MTri3 *t, double limit_,
   }
 }
 
-static void circumCenterMetric(double *pa, double *pb, double *pc,
-                               const double *metric, double *x, double &Radius2)
-{
+static void circumCenterMetric(const double *pa, const double *pb,
+                               const double *pc, const double *metric,
+                               double *x, double &Radius2) {
   // d = (u2-u1) M (u2-u1) = u2 M u2 + u1 M u1 - 2 u2 M u1
   double sys[2][2];
   double rhs[2];
@@ -332,8 +332,7 @@ static double computeTolerance(const double radius)
 }
 
 int inCircumCircleAniso(GFace *gf, double *p1, double *p2, double *p3,
-                        double *uv, double *metric)
-{
+                        const double *uv, double *metric) {
   double x[2], Radius2;
   circumCenterMetric(p1, p2, p3, metric, x, Radius2);
   const double a = metric[0];
@@ -605,9 +604,8 @@ static bool circUV(MTriangle *t, bidimMeshData &data, double *res, GFace *gf)
   return true;
 }
 
-static bool invMapUV(MTriangle *t, double *p, bidimMeshData &data,
-                     double *uv, double tol)
-{
+static bool invMapUV(MTriangle *t, const double *p, bidimMeshData &data,
+                     double *uv, double tol) {
   double mat[2][2];
   double b[2];
 

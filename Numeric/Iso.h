@@ -6,8 +6,9 @@
 #ifndef ISO_H
 #define ISO_H
 
-double InterpolateIso(double *X, double *Y, double *Z, double *Val, double V,
-                      int I1, int I2, double *XI, double *YI, double *ZI);
+double InterpolateIso(const double *X, const double *Y, const double *Z,
+                      const double *Val, double V, int I1, int I2, double *XI,
+                      double *YI, double *ZI);
 
 int IsoLine(double *X, double *Y, double *Z, double *Val, double V, double *Xp,
             double *Yp, double *Zp);

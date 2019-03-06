@@ -1196,9 +1196,8 @@ void MElement::movePointFromElementSpaceToParentSpace(double &u, double &v,
   w = uvwP[2];
 }
 
-double MElement::interpolate(double val[], double u, double v, double w,
-                             int stride, int order)
-{
+double MElement::interpolate(const double val[], double u, double v, double w,
+                             int stride, int order) {
   double sum = 0;
   int j = 0;
   double sf[1256];
@@ -1210,10 +1209,9 @@ double MElement::interpolate(double val[], double u, double v, double w,
   return sum;
 }
 
-void MElement::interpolateGrad(double val[], double u, double v, double w,
+void MElement::interpolateGrad(const double val[], double u, double v, double w,
                                double f[], int stride, double invjac[3][3],
-                               int order)
-{
+                               int order) {
   double dfdu[3] = {0., 0., 0.};
   int j = 0;
   double gsf[1256][3];

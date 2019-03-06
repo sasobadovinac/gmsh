@@ -86,8 +86,7 @@ static SVector3 getPointNormal(PView *p, double v)
 }
 
 static void getLineNormal(PView *p, double x[2], double y[2], double z[2],
-                          double *v, SVector3 n[2], bool computeNormal)
-{
+                          const double *v, SVector3 n[2], bool computeNormal) {
   PViewOptions *opt = p->getOptions();
 
   if(opt->lineType > 0) {

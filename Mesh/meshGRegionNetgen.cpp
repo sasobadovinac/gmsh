@@ -143,10 +143,9 @@ static void TransferVolumeMesh(GRegion *gr, Ng_Mesh *ngmesh,
 // Y_1 (1-u-v) + Y_2 u + Y_3 v = P_y + t N_y
 // Z_1 (1-u-v) + Z_2 u + Z_3 v = P_z + t N_z
 
-static int intersectLineTriangle(double X[3], double Y[3], double Z[3],
-                                 double P[3], double N[3],
-                                 const double eps_prec)
-{
+static int intersectLineTriangle(const double X[3], const double Y[3],
+                                 const double Z[3], const double P[3],
+                                 const double N[3], const double eps_prec) {
   double mat[3][3], det;
   double b[3], res[3];
 

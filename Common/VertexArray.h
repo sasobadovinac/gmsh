@@ -27,10 +27,9 @@ private:
   MElement *_ele;
 
 public:
-  ElementData(double *x, double *y, double *z, SVector3 *n, unsigned char *r,
-              unsigned char *g, unsigned char *b, unsigned char *a,
-              MElement *ele)
-  {
+  ElementData(const double *x, const double *y, const double *z, SVector3 *n,
+              const unsigned char *r, const unsigned char *g,
+              const unsigned char *b, const unsigned char *a, MElement *ele) {
     for(int i = 0; i < N; i++) {
       _x[i] = (float)x[i];
       _y[i] = (float)y[i];

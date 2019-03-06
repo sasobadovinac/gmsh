@@ -34,7 +34,7 @@ struct xyzv {
   // won't allocate *vals
   xyzv(const xyzv &other);
   xyzv &operator=(const xyzv &other);
-  void update(int n, double *v);
+  void update(int n, const double *v);
   void scale_update(double scale_val);
 };
 

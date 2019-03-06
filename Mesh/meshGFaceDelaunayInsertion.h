@@ -72,7 +72,7 @@ struct bidimMeshData {
 
 void buildMetric(GFace *gf, double *uv, double *metric);
 int inCircumCircleAniso(GFace *gf, double *p1, double *p2, double *p3,
-                        double *p4, double *metric);
+                        const double *p4, double *metric);
 int inCircumCircleAniso(GFace *gf, MTriangle *base, const double *uv,
                         const double *metric, bidimMeshData &data);
 

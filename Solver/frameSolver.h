@@ -23,9 +23,8 @@ struct gmshBeam2d {
   double _displacement[6];
   int _rotationTags[2];
   fullMatrix<double> _stiffness;
-  gmshBeam2d(MLine *l, double E, double I, double A, int r[2])
-    : _element(l), _i(I), _a(A), _e(E)
-  {
+  gmshBeam2d(MLine *l, double E, double I, double A, const int r[2])
+      : _element(l), _i(I), _a(A), _e(E) {
     _l = distance(_element->getVertex(0), _element->getVertex(1));
     _rotationTags[0] = _rotationTags[1] = 0;
     _rigidNodes[0] = r[0];

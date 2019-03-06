@@ -410,10 +410,11 @@ public:
 
   // interpolate the given nodal data (resp. its gradient, curl and divergence)
   // at point (u,v,w) in parametric coordinates
-  double interpolate(double val[], double u, double v, double w, int stride = 1,
-                     int order = -1);
-  void interpolateGrad(double val[], double u, double v, double w, double f[],
-                       int stride = 1, double invjac[3][3] = 0, int order = -1);
+  double interpolate(const double val[], double u, double v, double w,
+                     int stride = 1, int order = -1);
+  void interpolateGrad(const double val[], double u, double v, double w,
+                       double f[], int stride = 1, double invjac[3][3] = 0,
+                       int order = -1);
   void interpolateCurl(double val[], double u, double v, double w, double f[],
                        int stride = 3, int order = -1);
   double interpolateDiv(double val[], double u, double v, double w,

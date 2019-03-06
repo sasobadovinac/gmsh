@@ -52,10 +52,10 @@ private:
   int _currentParametrization;
   std::vector<hxt_reparam_surf> _parametrizations;
   HXTStatus _reparametrizeThroughHxt();
-  bool _computeTopologyOfPartition(int nbColors, int *colors, int *nNodes,
-                                   int *nodes, double *uv,
+  bool _computeTopologyOfPartition(int nbColors, int *colors, const int *nNodes,
+                                   int *nodes, const double *uv,
                                    std::vector<MVertex *> &c2v,
-                                   std::vector<std::vector<MEdge> > &boundaries);
+                                   std::vector<std::vector<MEdge>> &boundaries);
 #endif
 public:
   discreteFace(GModel *model, int num);

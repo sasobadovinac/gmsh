@@ -3097,8 +3097,7 @@ bool tetgenmesh::lu_decmp(REAL lu[4][4], int n, int* ps, REAL* d, int N)
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-void tetgenmesh::lu_solve(REAL lu[4][4], int n, int* ps, REAL* b, int N)
-{
+void tetgenmesh::lu_solve(REAL lu[4][4], int n, const int *ps, REAL *b, int N) {
   int i, j;
   REAL X[4], dot;
 
@@ -3186,9 +3185,8 @@ REAL tetgenmesh::incircle3d(point pa, point pb, point pc, point pd)
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-void tetgenmesh::facenormal(point pa, point pb, point pc, REAL *n, int pivot,
-                            REAL* lav)
-{
+void tetgenmesh::facenormal(const point pa, const point pb, const point pc,
+                            REAL *n, int pivot, REAL *lav) {
   REAL v1[3], v2[3], v3[3], *pv1, *pv2;
   REAL L1, L2, L3;
 
@@ -3252,8 +3250,7 @@ void tetgenmesh::facenormal(point pa, point pb, point pc, REAL *n, int pivot,
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-REAL tetgenmesh::shortdistance(REAL* p, REAL* e1, REAL* e2)
-{
+REAL tetgenmesh::shortdistance(const REAL *p, const REAL *e1, const REAL *e2) {
   REAL v1[3], v2[3];
   REAL len, l_p;
 
@@ -3280,8 +3277,7 @@ REAL tetgenmesh::shortdistance(REAL* p, REAL* e1, REAL* e2)
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-REAL tetgenmesh::triarea(REAL* pa, REAL* pb, REAL* pc)
-{
+REAL tetgenmesh::triarea(const REAL *pa, const REAL *pb, const REAL *pc) {
   REAL A[4][4];
 
   // Compute the coefficient matrix A (3x3).
@@ -3297,8 +3293,8 @@ REAL tetgenmesh::triarea(REAL* pa, REAL* pb, REAL* pc)
   return 0.5 * sqrt(dot(A[2], A[2])); // The area of [a,b,c].
 }
 
-REAL tetgenmesh::orient3dfast(REAL *pa, REAL *pb, REAL *pc, REAL *pd)
-{
+REAL tetgenmesh::orient3dfast(const REAL *pa, const REAL *pb, const REAL *pc,
+                              const REAL *pd) {
   REAL adx, bdx, cdx;
   REAL ady, bdy, cdy;
   REAL adz, bdz, cdz;
@@ -3331,8 +3327,7 @@ REAL tetgenmesh::orient3dfast(REAL *pa, REAL *pb, REAL *pc, REAL *pd)
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-REAL tetgenmesh::interiorangle(REAL* o, REAL* p1, REAL* p2, REAL* n)
-{
+REAL tetgenmesh::interiorangle(REAL *o, REAL *p1, REAL *p2, const REAL *n) {
   REAL v1[3], v2[3], np[3];
   REAL theta, costheta, lenlen;
   REAL ori, len1, len2;
@@ -3376,8 +3371,8 @@ REAL tetgenmesh::interiorangle(REAL* o, REAL* p1, REAL* p2, REAL* n)
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-void tetgenmesh::projpt2edge(REAL* p, REAL* e1, REAL* e2, REAL* prj)
-{
+void tetgenmesh::projpt2edge(const REAL *p, const REAL *e1, const REAL *e2,
+                             REAL *prj) {
   REAL v1[3], v2[3];
   REAL len, l_p;
 
@@ -3405,8 +3400,8 @@ void tetgenmesh::projpt2edge(REAL* p, REAL* e1, REAL* e2, REAL* prj)
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-void tetgenmesh::projpt2face(REAL* p, REAL* f1, REAL* f2, REAL* f3, REAL* prj)
-{
+void tetgenmesh::projpt2face(const REAL *p, REAL *f1, REAL *f2, REAL *f3,
+                             REAL *prj) {
   REAL fnormal[3], v1[3];
   REAL len, dist;
 
@@ -3539,9 +3534,8 @@ bool tetgenmesh::tetalldihedral(point pa, point pb, point pc, point pd,
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-void tetgenmesh::tetallnormal(point pa, point pb, point pc, point pd,
-                              REAL N[4][3], REAL* volume)
-{
+void tetgenmesh::tetallnormal(const point pa, const point pb, const point pc,
+                              const point pd, REAL N[4][3], REAL *volume) {
   REAL A[4][4], rhs[4], D;
   int indx[4];
   int i, j;
@@ -3582,8 +3576,8 @@ void tetgenmesh::tetallnormal(point pa, point pb, point pc, point pd,
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-REAL tetgenmesh::tetaspectratio(point pa, point pb, point pc, point pd)
-{
+REAL tetgenmesh::tetaspectratio(const point pa, const point pb, const point pc,
+                                const point pd) {
   REAL V[6][3], edgelength[6], longlen;
   REAL vda[3], vdb[3], vdc[3];
   REAL N[4][3], A[4][4], rhs[4], D;
@@ -3662,9 +3656,8 @@ REAL tetgenmesh::tetaspectratio(point pa, point pb, point pc, point pd)
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-bool tetgenmesh::circumsphere(REAL* pa, REAL* pb, REAL* pc, REAL* pd,
-                              REAL* cent, REAL* radius)
-{
+bool tetgenmesh::circumsphere(const REAL *pa, const REAL *pb, const REAL *pc,
+                              const REAL *pd, REAL *cent, REAL *radius) {
   REAL A[4][4], rhs[4], D;
   int indx[4];
 
@@ -3720,10 +3713,10 @@ bool tetgenmesh::circumsphere(REAL* pa, REAL* pb, REAL* pc, REAL* pd,
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-bool tetgenmesh::orthosphere(REAL* pa, REAL* pb, REAL* pc, REAL* pd,
-                             REAL  aheight, REAL bheight, REAL cheight,
-                             REAL  dheight, REAL* orthocent, REAL* radius)
-{
+bool tetgenmesh::orthosphere(const REAL *pa, const REAL *pb, const REAL *pc,
+                             const REAL *pd, REAL aheight, REAL bheight,
+                             REAL cheight, REAL dheight, REAL *orthocent,
+                             REAL *radius) {
   REAL A[4][4], rhs[4], D;
   int indx[4];
 
@@ -3787,9 +3780,8 @@ bool tetgenmesh::orthosphere(REAL* pa, REAL* pb, REAL* pc, REAL* pd,
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-void tetgenmesh::planelineint(REAL* pa, REAL* pb, REAL* pc, REAL* e1, REAL* e2,
-                              REAL* ip, REAL* u)
-{
+void tetgenmesh::planelineint(REAL *pa, REAL *pb, REAL *pc, const REAL *e1,
+                              const REAL *e2, REAL *ip, REAL *u) {
   REAL n[3], det, det1;
 
   // Calculate N.
@@ -3822,9 +3814,9 @@ void tetgenmesh::planelineint(REAL* pa, REAL* pb, REAL* pc, REAL* e1, REAL* e2,
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-int tetgenmesh::linelineint(REAL* A, REAL* B, REAL* C, REAL* D, REAL* P,
-		            REAL* Q, REAL* tp, REAL* tq)
-{
+int tetgenmesh::linelineint(const REAL *A, const REAL *B, const REAL *C,
+                            const REAL *D, REAL *P, REAL *Q, REAL *tp,
+                            REAL *tq) {
   REAL vab[3], vcd[3], vca[3];
   REAL vab_vab, vcd_vcd, vab_vcd;
   REAL vca_vab, vca_vcd;
@@ -4501,9 +4493,9 @@ int tetgenmesh::report_selfint_edge(point e1, point e2, face *iedge,
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-int tetgenmesh::report_selfint_face(point p1, point p2, point p3, face* sface,
-  triface* iedge, int intflag, int* types, int* poss)
-{
+int tetgenmesh::report_selfint_face(point p1, point p2, point p3, face *sface,
+                                    triface *iedge, int intflag,
+                                    const int *types, const int *poss) {
   face iface;
   point e1 = NULL, e2 = NULL, e3 = NULL;
   int etype = 0, geomtag = 0, facemark = 0;
@@ -16376,9 +16368,8 @@ void tetgenmesh::recoverdelaunay()
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-int tetgenmesh::gettetrahedron(point pa, point pb, point pc, point pd,
-                               triface *searchtet)
-{
+int tetgenmesh::gettetrahedron(point pa, point pb, const point pc,
+                               const point pd, triface *searchtet) {
   triface spintet;
   int t1ver;
 

@@ -170,7 +170,7 @@ public:
   // eigenvalue (if tensorRep == 2) for tensors
   void getScalarValue(int step, int ent, int ele, int nod, double &val,
                       int tensorRep = 0, int forceNumComponents = 0,
-                      int componentMap[9] = 0);
+                      const int componentMap[9] = 0);
 
   // return the number of edges of the ele-th element in the ent-th
   // entity

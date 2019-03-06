@@ -59,17 +59,17 @@ public:
 
 void refineOctants(octantBucket *buckets, globalInfo *globalPara);
 
-int addElement2Bucket(octantBucket *bucket, void *element, double *minBB,
-                      double *maxBB, double *ele_centroid,
+int addElement2Bucket(octantBucket *bucket, void *element, const double *minBB,
+                      const double *maxBB, const double *ele_centroid,
                       globalInfo *globalPara);
 int subdivideOctantBucket(octantBucket *bucket, globalInfo *globalPara);
-int initializeOctantBuckets(double *orig, double *size, int maxElem,
+int initializeOctantBuckets(const double *orig, const double *size, int maxElem,
                             octantBucket **buckets, globalInfo **globalPara);
 int checkElementInBucket(octantBucket *bucket, void *element);
-octantBucket *findElementBucket(octantBucket *buckets, double *pt);
+octantBucket *findElementBucket(octantBucket *buckets, const double *pt);
 void *searchElement(octantBucket *buckets, double *pt, globalInfo *globalPara,
                     BBFunction BBElement, InEleFunction xyzInElement);
-int xyzInElementBB(double *xyz, void *region, BBFunction BBElement);
+int xyzInElementBB(const double *xyz, void *region, BBFunction BBElement);
 void insertOneBB(void *, double *, double *, octantBucket *);
 void *searchAllElements(octantBucket *_buckets_head, double *_pt,
                         globalInfo *_globalPara, BBFunction BBElement,

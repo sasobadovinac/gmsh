@@ -19,8 +19,7 @@ public:
     P[0] = x;
     P[1] = y;
   }
-  SPoint2(double *p)
-  {
+  SPoint2(const double *p) {
     P[0] = p[0];
     P[1] = p[1];
   }

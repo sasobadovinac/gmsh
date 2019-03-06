@@ -43,8 +43,7 @@ double norm2(double a[3][3])
   return std::sqrt(norm2sq);
 }
 
-void matvec(double mat[3][3], double vec[3], double res[3])
-{
+void matvec(double mat[3][3], const double vec[3], double res[3]) {
   res[0] = mat[0][0] * vec[0] + mat[0][1] * vec[1] + mat[0][2] * vec[2];
   res[1] = mat[1][0] * vec[0] + mat[1][1] * vec[1] + mat[1][2] * vec[2];
   res[2] = mat[2][0] * vec[0] + mat[2][1] * vec[1] + mat[2][2] * vec[2];
@@ -97,8 +96,7 @@ void normal2points(double x0, double y0, double z0, double x1, double y1,
   norme(n);
 }
 
-int sys2x2(double mat[2][2], double b[2], double res[2])
-{
+int sys2x2(double mat[2][2], const double b[2], double res[2]) {
   double const norm = std::pow(mat[0][0], 2) + std::pow(mat[1][1], 2) +
                       std::pow(mat[0][1], 2) + std::pow(mat[1][0], 2);
 
@@ -143,8 +141,7 @@ double trace2(double mat[3][3])
   return a00 + a11 + a22;
 }
 
-int sys3x3(double mat[3][3], double b[3], double res[3], double *det)
-{
+int sys3x3(double mat[3][3], const double b[3], double res[3], double *det) {
   double ud;
   int i;
 
@@ -263,8 +260,8 @@ double angle_02pi(double A3)
   return A3;
 }
 
-double angle_plan(double v[3], double p1[3], double p2[3], double n[3])
-{
+double angle_plan(const double v[3], const double p1[3], const double p2[3],
+                  double n[3]) {
   double PA[3], PB[3], angplan;
 
   PA[0] = p1[0] - v[0];
@@ -289,8 +286,8 @@ double angle_plan(double v[3], double p1[3], double p2[3], double n[3])
   return angplan;
 }
 
-double triangle_area(double p0[3], double p1[3], double p2[3])
-{
+double triangle_area(const double p0[3], const double p1[3],
+                     const double p2[3]) {
   double a[3], b[3], c[3];
 
   a[0] = p2[0] - p1[0];
@@ -305,16 +302,16 @@ double triangle_area(double p0[3], double p1[3], double p2[3])
   return 0.5 * std::sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
 }
 
-double triangle_area2d(double p0[2], double p1[2], double p2[2])
-{
+double triangle_area2d(const double p0[2], const double p1[2],
+                       const double p2[2]) {
   const double c =
     (p2[0] - p1[0]) * (p0[1] - p1[1]) - (p2[1] - p1[1]) * (p0[0] - p1[0]);
 
   return 0.5 * std::sqrt(c * c);
 }
 
-void circumCenterXY(double *p1, double *p2, double *p3, double *res)
-{
+void circumCenterXY(const double *p1, const double *p2, const double *p3,
+                    double *res) {
   double d, a1, a2, a3;
 
   const double x1 = p1[0];
@@ -403,8 +400,7 @@ void planarQuad_xyz2xy(double *x, double *y, double *z, double *xn, double *yn)
   yn[3] = p4P[1];
 }
 
-double computeInnerRadiusForQuad(double *x, double *y, int i)
-{
+double computeInnerRadiusForQuad(const double *x, const double *y, int i) {
   // parameters of the equations of the 3 edges
   double a1 = y[(4 + i) % 4] - y[(5 + i) % 4];
   double a2 = y[(5 + i) % 4] - y[(6 + i) % 4];
@@ -473,8 +469,8 @@ float char2float(char c)
     return f / 127.;
 }
 
-void gradSimplex(double *x, double *y, double *z, double *v, double *grad)
-{
+void gradSimplex(const double *x, const double *y, const double *z,
+                 const double *v, double *grad) {
   // p = p1 * (1-u-v-w) + p2 u + p3 v + p4 w
 
   double mat[3][3];
@@ -494,8 +490,7 @@ void gradSimplex(double *x, double *y, double *z, double *v, double *grad)
   sys3x3(mat, b, grad, &det);
 }
 
-double ComputeVonMises(double *V)
-{
+double ComputeVonMises(const double *V) {
   double tr = (V[0] + V[4] + V[8]) / 3.;
   double v11 = V[0] - tr, v12 = V[1], v13 = V[2];
   double v21 = V[3], v22 = V[4] - tr, v23 = V[5];
@@ -1432,9 +1427,8 @@ int intersection_segments(const SPoint3 &p1, const SPoint3 &p2,
   return false;
 }
 
-void fillMeanPlane(double res[4], double t1[3], double t2[3],
-                   mean_plane &meanPlane)
-{
+void fillMeanPlane(const double res[4], const double t1[3], const double t2[3],
+                   mean_plane &meanPlane) {
   for(int i = 0; i < 3; i++) meanPlane.plan[0][i] = t1[i];
   for(int i = 0; i < 3; i++) meanPlane.plan[1][i] = t2[i];
   for(int i = 0; i < 3; i++) meanPlane.plan[2][i] = res[i];

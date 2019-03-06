@@ -117,8 +117,7 @@ static int readVertexBDF(FILE *fp, char *buffer, int keySize, int *num,
   return 1;
 }
 
-static bool emptyFieldBDF(char *field, int length)
-{
+static bool emptyFieldBDF(const char *field, int length) {
   for(int i = 0; i < length; i++)
     if(field[i] != '\0' && field[i] != ' ' && field[i] != '\n' &&
        field[i] != '\r')

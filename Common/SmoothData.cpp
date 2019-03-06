@@ -47,8 +47,7 @@ xyzv &xyzv::operator=(const xyzv &other)
   return *this;
 }
 
-void xyzv::update(int n, double *v)
-{
+void xyzv::update(int n, const double *v) {
   if(!vals) {
     vals = new double[n];
     for(int i = 0; i < n; i++) vals[i] = 0.0;

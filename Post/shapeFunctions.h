@@ -154,8 +154,8 @@ public:
     default: jac[0][0] = jac[1][1] = jac[2][2] = 1.; return 1.;
     }
   }
-  double interpolate(double val[], double u, double v, double w, int stride = 1)
-  {
+  double interpolate(const double val[], double u, double v, double w,
+                     int stride = 1) {
     double sum = 0;
     int j = 0;
     for(int i = 0; i < getNumNodes(); i++) {
@@ -166,9 +166,9 @@ public:
     }
     return sum;
   }
-  void interpolateGrad(double val[], double u, double v, double w, double f[3],
-                       int stride = 1, double invjac[3][3] = NULL)
-  {
+  void interpolateGrad(const double val[], double u, double v, double w,
+                       double f[3], int stride = 1,
+                       double invjac[3][3] = NULL) {
     double dfdu[3] = {0., 0., 0.};
     int j = 0;
     for(int i = 0; i < getNumNodes(); i++) {

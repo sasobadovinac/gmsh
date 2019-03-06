@@ -1167,8 +1167,7 @@ int RecognizeSurfaceLoop(List_T *liste, int *loop)
   return res;
 }
 
-void SetTranslationMatrix(double matrix[4][4], double T[3])
-{
+void SetTranslationMatrix(double matrix[4][4], const double T[3]) {
   for(int i = 0; i < 4; i++) {
     for(int j = 0; j < 4; j++) {
       matrix[i][j] = (i == j) ? 1.0 : 0.0;
@@ -1201,9 +1200,8 @@ void SetSymmetryMatrix(double matrix[4][4], double A, double B, double C,
   matrix[3][3] = 1.0;
 }
 
-void SetDilatationMatrix(double matrix[4][4], double T[3], double A,
-                         double B, double C)
-{
+void SetDilatationMatrix(double matrix[4][4], const double T[3], double A,
+                         double B, double C) {
   matrix[0][0] = A;
   matrix[0][1] = 0.0;
   matrix[0][2] = 0.0;
@@ -1300,8 +1298,7 @@ void SetRotationMatrix(double matrix[4][4], double Axe[3], double alpha)
   matrix[3][3] = 1.0;
 }
 
-static void vecmat4x4(double mat[4][4], double vec[4], double res[4])
-{
+static void vecmat4x4(double mat[4][4], const double vec[4], double res[4]) {
   for(int i = 0; i < 4; i++) {
     res[i] = 0.0;
     for(int j = 0; j < 4; j++) {

@@ -135,10 +135,9 @@ int MakeSimplex::numSimplexNodes()
     return 4; // all others -> tets
 }
 
-void MakeSimplex::reorder(int map[4], int n, double *x, double *y, double *z,
-                          double *val, double *xn, double *yn, double *zn,
-                          double *valn)
-{
+void MakeSimplex::reorder(int map[4], int n, const double *x, const double *y,
+                          const double *z, const double *val, double *xn,
+                          double *yn, double *zn, double *valn) {
   for(int i = 0; i < n; i++) {
     xn[i] = x[map[i]];
     yn[i] = y[map[i]];

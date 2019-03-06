@@ -41,8 +41,7 @@ static double mylength(GEdge *ge, int i, double *u)
 }
 
 static void myresid(int N, GEdge *ge, double *u, fullVector<double> &r,
-                    double *weight = NULL)
-{
+                    const double *weight = NULL) {
   double L[100];
   for(int i = 0; i < N - 1; i++) L[i] = mylength(ge, i, u);
   if(weight)

@@ -93,8 +93,7 @@ bool PViewData::skipElement(int step, int ent, int ele, bool checkVisibility,
 
 void PViewData::getScalarValue(int step, int ent, int ele, int nod, double &val,
                                int tensorRep, int forceNumComponents,
-                               int componentMap[9])
-{
+                               const int componentMap[9]) {
   int numComp = getNumComponents(step, ent, ele);
   if(forceNumComponents && componentMap) {
     std::vector<double> d(forceNumComponents);

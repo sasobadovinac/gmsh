@@ -65,8 +65,7 @@ add_quats(double *q1, double *q2, double *dest);
  * A useful function, builds a rotation matrix in Matrix based on
  * given quaternion.
  */
-void
-build_rotmatrix(double m[16], double q[4]);
+void build_rotmatrix(double m[16], const double q[4]);
 
 /*
  * This function computes a quaternion based on an axis (defined by

@@ -274,8 +274,7 @@ void Camera::zoom(double &factor)
   position = target - distance * front;
 }
 
-void Camera::rotate(double *q)
-{
+void Camera::rotate(const double *q) {
   this->update();
   // rotation projection in global coordinates
   Quaternion omega;

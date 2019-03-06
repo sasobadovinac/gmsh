@@ -202,11 +202,12 @@ extern "C" {
 #endif
 
 GL2PSDLL_API GLint gl2psBeginPage(const char *title, const char *producer,
-                                  GLint viewport[4], GLint format, GLint sort,
-                                  GLint options, GLint colormode,
+                                  const GLint viewport[4], GLint format,
+                                  GLint sort, GLint options, GLint colormode,
                                   GLint colorsize, GL2PSrgba *colormap,
-                                  GLint nr, GLint ng, GLint nb, GLint buffersize,
-                                  FILE *stream, const char *filename);
+                                  GLint nr, GLint ng, GLint nb,
+                                  GLint buffersize, FILE *stream,
+                                  const char *filename);
 GL2PSDLL_API GLint gl2psEndPage(void);
 GL2PSDLL_API GLint gl2psSetOptions(GLint options);
 GL2PSDLL_API GLint gl2psGetOptions(GLint *options);

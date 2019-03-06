@@ -66,7 +66,7 @@ public:
   void giveViewportDimension(const int &W, const int &H);
   void lookAtCg();
   void init();
-  void rotate(double *q);
+  void rotate(const double *q);
   //
   void move_and_look(double _movfront, double _movright, double _movup,
                      double _rotfront, double _rotright, double _rotup,

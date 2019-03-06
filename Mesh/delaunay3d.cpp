@@ -75,9 +75,8 @@ public:
   SPoint3 point() const { return SPoint3(x(), y(), z()); }
 };
 
-static double orientationTestFast(double *pa, double *pb, double *pc,
-                                  double *pd)
-{
+static double orientationTestFast(const double *pa, const double *pb,
+                                  const double *pc, const double *pd) {
   const double adx = pa[0] - pd[0];
   const double bdx = pb[0] - pd[0];
   const double cdx = pc[0] - pd[0];

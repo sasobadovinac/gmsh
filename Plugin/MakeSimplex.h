@@ -35,8 +35,9 @@ private:
   // how many time steps
   int _numTimeSteps;
   // create a simplex
-  void reorder(int map[4], int n, double *x, double *y, double *z, double *val,
-               double *xn, double *yn, double *zn, double *valn);
+  void reorder(int map[4], int n, const double *x, const double *y,
+               const double *z, const double *val, double *xn, double *yn,
+               double *zn, double *valn);
 
 public:
   // default constructor

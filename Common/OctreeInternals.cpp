@@ -10,8 +10,8 @@
 #include "GmshMessage.h"
 #include "OctreeInternals.h"
 
-int initializeOctantBuckets(double *_orig, double *_size, int _maxElem,
-                            octantBucket **buckets_head,
+int initializeOctantBuckets(const double *_orig, const double *_size,
+                            int _maxElem, octantBucket **buckets_head,
                             globalInfo **globalPara)
 // Initialize the buckets
 // Given by user: orig and size -- information about the domain
@@ -108,9 +108,9 @@ int initializeOctantBuckets(double *_orig, double *_size, int _maxElem,
   return (1);
 }
 
-int addElement2Bucket(octantBucket *_bucket, void *_element, double *_minBB,
-                      double *_maxBB, double *_ele_centroid,
-                      globalInfo *_globalPara)
+int addElement2Bucket(octantBucket *_bucket, void *_element,
+                      const double *_minBB, const double *_maxBB,
+                      const double *_ele_centroid, globalInfo *_globalPara)
 // Add another element to the octant bucket's list.
 // If the bucket contains too many elements after adding this element,
 // refine this bucket and reallocate the elements of this bucket
@@ -201,7 +201,7 @@ int checkElementInBucket(octantBucket *_bucket, void *_element)
   return 0;
 }
 
-octantBucket *findElementBucket(octantBucket *_buckets_head, double *_pt)
+octantBucket *findElementBucket(octantBucket *_buckets_head, const double *_pt)
 // Find the leaf bucket which contains the point _pt
 // given parameter: _buckets --- the point to buckets head
 //                  _pt --- the point to find
@@ -346,7 +346,7 @@ void *searchElement(octantBucket *_buckets_head, double *_pt,
   return NULL;
 }
 
-int xyzInElementBB(double *_xyz, void *_region, BBFunction _bbElement)
+int xyzInElementBB(const double *_xyz, void *_region, BBFunction _bbElement)
 // Check if xyz is in the region's bounding box, return 1 if true, 0 otherwise
 // BBElement is the function given by user to find the bounding box
 {

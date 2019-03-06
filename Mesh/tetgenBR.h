@@ -978,7 +978,7 @@ public:
   // Primitives for points.
   inline int pointmark(point pt);
   inline void setpointmark(point pt, int value);
-  inline enum verttype pointtype(point pt);
+  inline enum verttype pointtype(const point pt);
   inline void setpointtype(point pt, enum verttype value);
   inline int pointgeomtag(point pt);
   inline void setpointgeomtag(point pt, int value);
@@ -986,16 +986,16 @@ public:
   inline void setpointgeomuv(point pt, int i, REAL value);
   inline void pinfect(point pt);
   inline void puninfect(point pt);
-  inline bool pinfected(point pt);
+  inline bool pinfected(const point pt);
   inline void pmarktest(point pt);
   inline void punmarktest(point pt);
-  inline bool pmarktested(point pt);
+  inline bool pmarktested(const point pt);
   inline void pmarktest2(point pt);
   inline void punmarktest2(point pt);
-  inline bool pmarktest2ed(point pt);
+  inline bool pmarktest2ed(const point pt);
   inline void pmarktest3(point pt);
   inline void punmarktest3(point pt);
-  inline bool pmarktest3ed(point pt);
+  inline bool pmarktest3ed(const point pt);
   inline tetrahedron point2tet(point pt);
   inline void setpoint2tet(point pt, tetrahedron value);
   inline shellface point2sh(point pt);
@@ -1079,33 +1079,38 @@ public:
   int tri_tri_inter(point, point, point, point, point, point);
 
   // Linear algebra functions
-  inline REAL dot(REAL *v1, REAL *v2);
-  inline void cross(REAL *v1, REAL *v2, REAL *n);
+  inline REAL dot(const REAL *v1, const REAL *v2);
+  inline void cross(const REAL *v1, const REAL *v2, REAL *n);
   bool lu_decmp(REAL lu[4][4], int n, int *ps, REAL *d, int N);
-  void lu_solve(REAL lu[4][4], int n, int *ps, REAL *b, int N);
+  void lu_solve(REAL lu[4][4], int n, const int *ps, REAL *b, int N);
 
   // An embedded 2-dimensional geometric predicate (non-robust)
   REAL incircle3d(point pa, point pb, point pc, point pd);
 
   // Geometric calculations (non-robust)
-  REAL orient3dfast(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
+  REAL orient3dfast(const REAL *pa, const REAL *pb, const REAL *pc,
+                    const REAL *pd);
   inline REAL norm2(REAL x, REAL y, REAL z);
-  inline REAL distance(REAL *p1, REAL *p2);
-  void facenormal(point pa, point pb, point pc, REAL *n, int pivot, REAL *lav);
-  REAL shortdistance(REAL *p, REAL *e1, REAL *e2);
-  REAL triarea(REAL *pa, REAL *pb, REAL *pc);
-  REAL interiorangle(REAL *o, REAL *p1, REAL *p2, REAL *n);
-  void projpt2edge(REAL *p, REAL *e1, REAL *e2, REAL *prj);
-  void projpt2face(REAL *p, REAL *f1, REAL *f2, REAL *f3, REAL *prj);
+  inline REAL distance(const REAL *p1, const REAL *p2);
+  void facenormal(const point pa, const point pb, const point pc, REAL *n,
+                  int pivot, REAL *lav);
+  REAL shortdistance(const REAL *p, const REAL *e1, const REAL *e2);
+  REAL triarea(const REAL *pa, const REAL *pb, const REAL *pc);
+  REAL interiorangle(REAL *o, REAL *p1, REAL *p2, const REAL *n);
+  void projpt2edge(const REAL *p, const REAL *e1, const REAL *e2, REAL *prj);
+  void projpt2face(const REAL *p, REAL *f1, REAL *f2, REAL *f3, REAL *prj);
   bool tetalldihedral(point, point, point, point, REAL *, REAL *, REAL *);
-  void tetallnormal(point, point, point, point, REAL N[4][3], REAL *volume);
-  REAL tetaspectratio(point, point, point, point);
-  bool circumsphere(REAL *, REAL *, REAL *, REAL *, REAL *cent, REAL *radius);
-  bool orthosphere(REAL *, REAL *, REAL *, REAL *, REAL, REAL, REAL, REAL,
-                   REAL *, REAL *);
-  void planelineint(REAL *, REAL *, REAL *, REAL *, REAL *, REAL *, REAL *);
-  int linelineint(REAL *, REAL *, REAL *, REAL *, REAL *, REAL *, REAL *,
-                  REAL *);
+  void tetallnormal(const point, const point, const point, const point,
+                    REAL N[4][3], REAL *volume);
+  REAL tetaspectratio(const point, const point, const point, const point);
+  bool circumsphere(const REAL *, const REAL *, const REAL *, const REAL *,
+                    REAL *cent, REAL *radius);
+  bool orthosphere(const REAL *, const REAL *, const REAL *, const REAL *, REAL,
+                   REAL, REAL, REAL, REAL *, REAL *);
+  void planelineint(REAL *, REAL *, REAL *, const REAL *, const REAL *, REAL *,
+                    REAL *);
+  int linelineint(const REAL *, const REAL *, const REAL *, const REAL *,
+                  REAL *, REAL *, REAL *, REAL *);
   REAL tetprismvol(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
   bool calculateabovepoint(arraypool *, point *, point *, point *);
   void calculateabovepoint4(point, point, point, point);
@@ -1115,7 +1120,7 @@ public:
   int report_selfint_edge(point, point, face *sedge, triface *searchtet,
                           enum interresult);
   int report_selfint_face(point, point, point, face *sface, triface *iedge,
-                          int intflag, int *types, int *poss);
+                          int intflag, const int *types, const int *poss);
 
   ///////////////////////////////////////////////////////////////////////////////
   //                                                                           //
@@ -1339,7 +1344,7 @@ public:
   long lawsonflip3d(flipconstraints *fc);
   void recoverdelaunay();
 
-  int gettetrahedron(point, point, point, point, triface *);
+  int gettetrahedron(point, point, const point, const point, triface *);
   long improvequalitybyflips();
 
   int smoothpoint(point smtpt, arraypool *, int ccw, optparameters *opm);
@@ -2431,8 +2436,7 @@ inline void tetgenmesh::setpointmark(point pt, int value)
 
 // These two primitives set and read the type of the point.
 
-inline enum tetgenmesh::verttype tetgenmesh::pointtype(point pt)
-{
+inline enum tetgenmesh::verttype tetgenmesh::pointtype(const point pt) {
   return (enum verttype)(((int *)(pt))[pointmarkindex + 1] >> (int)8);
 }
 
@@ -2479,8 +2483,7 @@ inline void tetgenmesh::puninfect(point pt)
   ((int *)(pt))[pointmarkindex + 1] &= ~(int)1;
 }
 
-inline bool tetgenmesh::pinfected(point pt)
-{
+inline bool tetgenmesh::pinfected(const point pt) {
   return (((int *)(pt))[pointmarkindex + 1] & (int)1) != 0;
 }
 
@@ -2497,8 +2500,7 @@ inline void tetgenmesh::punmarktest(point pt)
   ((int *)(pt))[pointmarkindex + 1] &= ~(int)2;
 }
 
-inline bool tetgenmesh::pmarktested(point pt)
-{
+inline bool tetgenmesh::pmarktested(const point pt) {
   return (((int *)(pt))[pointmarkindex + 1] & (int)2) != 0;
 }
 
@@ -2512,8 +2514,7 @@ inline void tetgenmesh::punmarktest2(point pt)
   ((int *)(pt))[pointmarkindex + 1] &= ~(int)4;
 }
 
-inline bool tetgenmesh::pmarktest2ed(point pt)
-{
+inline bool tetgenmesh::pmarktest2ed(const point pt) {
   return (((int *)(pt))[pointmarkindex + 1] & (int)4) != 0;
 }
 
@@ -2527,8 +2528,7 @@ inline void tetgenmesh::punmarktest3(point pt)
   ((int *)(pt))[pointmarkindex + 1] &= ~(int)8;
 }
 
-inline bool tetgenmesh::pmarktest3ed(point pt)
-{
+inline bool tetgenmesh::pmarktest3ed(const point pt) {
   return (((int *)(pt))[pointmarkindex + 1] & (int)8) != 0;
 }
 
@@ -2667,22 +2667,19 @@ inline tetgenmesh::point tetgenmesh::farsdest(face &s)
 ///////////////////////////////////////////////////////////////////////////////
 
 // dot() returns the dot product: v1 dot v2.
-inline REAL tetgenmesh::dot(REAL *v1, REAL *v2)
-{
+inline REAL tetgenmesh::dot(const REAL *v1, const REAL *v2) {
   return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 }
 
 // cross() computes the cross product: n = v1 cross v2.
-inline void tetgenmesh::cross(REAL *v1, REAL *v2, REAL *n)
-{
+inline void tetgenmesh::cross(const REAL *v1, const REAL *v2, REAL *n) {
   n[0] = v1[1] * v2[2] - v2[1] * v1[2];
   n[1] = -(v1[0] * v2[2] - v2[0] * v1[2]);
   n[2] = v1[0] * v2[1] - v2[0] * v1[1];
 }
 
 // distance() computes the Euclidean distance between two points.
-inline REAL tetgenmesh::distance(REAL *p1, REAL *p2)
-{
+inline REAL tetgenmesh::distance(const REAL *p1, const REAL *p2) {
   return sqrt((p2[0] - p1[0]) * (p2[0] - p1[0]) +
               (p2[1] - p1[1]) * (p2[1] - p1[1]) +
               (p2[2] - p1[2]) * (p2[2] - p1[2]));

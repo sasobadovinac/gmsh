@@ -18,9 +18,8 @@
 
 // helper routines for list-based views
 
-static void minmax(int n, double *X, double *Y, double *Z, double *min,
-                   double *max)
-{
+static void minmax(int n, const double *X, const double *Y, const double *Z,
+                   double *min, double *max) {
   min[0] = X[0];
   min[1] = Y[0];
   min[2] = Z[0];
@@ -44,8 +43,8 @@ static void minmax(int n, double *X, double *Y, double *Z, double *min,
   }
 }
 
-static void centroid(int n, double *X, double *Y, double *Z, double *c)
-{
+static void centroid(int n, const double *X, const double *Y, const double *Z,
+                     double *c) {
   const double oc = 1. / (double)n;
   c[0] = X[0];
   c[1] = Y[0];

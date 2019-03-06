@@ -234,7 +234,7 @@ typedef struct {
 typedef struct {
   void  (*printHeader)(void);
   void  (*printFooter)(void);
-  void  (*beginViewport)(GLint viewport[4]);
+  void  (*beginViewport)(const GLint viewport[4]);
   GLint (*endViewport)(void);
   void  (*printPrimitive)(void *data);
   void  (*printFinalPrimitive)(void);
@@ -636,8 +636,8 @@ static void gl2psListRead(GL2PSlist *list, int index, void *data)
   memcpy(data, &list->array[index * list->size], list->size);
 }
 
-static void gl2psEncodeBase64Block(unsigned char in[3], unsigned char out[4], int len)
-{
+static void gl2psEncodeBase64Block(const unsigned char in[3],
+                                   unsigned char out[4], int len) {
   static const char cb64[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -705,8 +705,7 @@ static GLboolean gl2psVertsSameColor(const GL2PSprimitive *prim)
 }
 
 static GLboolean gl2psSameColorThreshold(int n, GL2PSrgba rgba[],
-                                         GL2PSrgba threshold)
-{
+                                         const GL2PSrgba threshold) {
   int i;
 
   if(n < 2) return GL_TRUE;
@@ -721,8 +720,7 @@ static GLboolean gl2psSameColorThreshold(int n, GL2PSrgba rgba[],
   return GL_TRUE;
 }
 
-static void gl2psSetLastColor(GL2PSrgba rgba)
-{
+static void gl2psSetLastColor(const GL2PSrgba rgba) {
   int i;
   for(i = 0; i < 3; ++i){
     gl2ps->lastrgba[i] = rgba[i];
@@ -1121,28 +1119,24 @@ static GLboolean gl2psSamePosition(GL2PSxyz p1, GL2PSxyz p2)
  *
  *********************************************************************/
 
-static GLfloat gl2psComparePointPlane(GL2PSxyz point, GL2PSplane plane)
-{
+static GLfloat gl2psComparePointPlane(const GL2PSxyz point, GL2PSplane plane) {
   return (plane[0] * point[0] +
           plane[1] * point[1] +
           plane[2] * point[2] +
           plane[3]);
 }
 
-static GLfloat gl2psPsca(GLfloat *a, GLfloat *b)
-{
+static GLfloat gl2psPsca(const GLfloat *a, const GLfloat *b) {
   return (a[0]*b[0] + a[1]*b[1] + a[2]*b[2]);
 }
 
-static void gl2psPvec(GLfloat *a, GLfloat *b, GLfloat *c)
-{
+static void gl2psPvec(const GLfloat *a, const GLfloat *b, GLfloat *c) {
   c[0] = a[1]*b[2] - a[2]*b[1];
   c[1] = a[2]*b[0] - a[0]*b[2];
   c[2] = a[0]*b[1] - a[1]*b[0];
 }
 
-static GLfloat gl2psNorm(GLfloat *a)
-{
+static GLfloat gl2psNorm(const GLfloat *a) {
   return (GLfloat)sqrt(a[0]*a[0] + a[1]*a[1] + a[2]*a[2]);
 }
 
@@ -1256,8 +1250,8 @@ static void gl2psCutEdge(GL2PSvertex *a, GL2PSvertex *b, GL2PSplane plane,
 
 static void gl2psCreateSplitPrimitive(GL2PSprimitive *parent, GL2PSplane plane,
                                       GL2PSprimitive *child, GLshort numverts,
-                                      GLshort *index0, GLshort *index1)
-{
+                                      const GLshort *index0,
+                                      const GLshort *index1) {
   GLshort i;
 
   if(parent->type == GL2PS_IMAGEMAP){
@@ -1781,8 +1775,8 @@ static void gl2psRescaleAndOffset(void)
  *
  *********************************************************************/
 
-static GLint gl2psGetPlaneFromPoints(GL2PSxyz a, GL2PSxyz b, GL2PSplane plane)
-{
+static GLint gl2psGetPlaneFromPoints(const GL2PSxyz a, const GL2PSxyz b,
+                                     GL2PSplane plane) {
   GLfloat n;
 
   plane[0] = b[1] - a[1];
@@ -2261,8 +2255,7 @@ GL2PSDLL_API void gl2psAddPolyPrimitive(GLshort type, GLshort numverts,
   gl2psListAdd(gl2ps->primitives, &prim);
 }
 
-static GLint gl2psGetVertex(GL2PSvertex *v, GLfloat *p)
-{
+static GLint gl2psGetVertex(GL2PSvertex *v, const GLfloat *p) {
   GLint i;
 
   v->xyz[0] = p[0];
@@ -3240,8 +3233,7 @@ static void gl2psPrintPostScriptFooter(void)
   gl2psPrintGzipFooter();
 }
 
-static void gl2psPrintPostScriptBeginViewport(GLint viewport[4])
-{
+static void gl2psPrintPostScriptBeginViewport(const GLint viewport[4]) {
   GLint idx;
   GLfloat rgba[4];
   int x = viewport[0], y = viewport[1], w = viewport[2], h = viewport[3];
@@ -3280,7 +3272,6 @@ static void gl2psPrintPostScriptBeginViewport(GLint viewport[4])
   gl2psPrintf("newpath %d %d moveto %d %d lineto %d %d lineto %d %d lineto\n"
               "closepath clip\n",
               x, y, x+w, y, x+w, y+h, x, y+h);
-
 }
 
 static GLint gl2psPrintPostScriptEndViewport(void)
@@ -3438,8 +3429,7 @@ static void gl2psPrintTeXFooter(void)
           (gl2ps->options & GL2PS_LANDSCAPE) ? "}" : "");
 }
 
-static void gl2psPrintTeXBeginViewport(GLint viewport[4])
-{
+static void gl2psPrintTeXBeginViewport(const GLint viewport[4]) {
   (void) viewport;  /* not used */
   glRenderMode(GL_FEEDBACK);
 
@@ -4979,8 +4969,7 @@ static void gl2psPrintPDFFooter(void)
 
 /* PDF begin viewport */
 
-static void gl2psPrintPDFBeginViewport(GLint viewport[4])
-{
+static void gl2psPrintPDFBeginViewport(const GLint viewport[4]) {
   int offs = 0;
   GLint idx;
   GLfloat rgba[4];
@@ -5070,8 +5059,7 @@ static void gl2psSVGGetCoordsAndColors(int n, GL2PSvertex *verts,
   }
 }
 
-static void gl2psSVGGetColorString(GL2PSrgba rgba, char str[32])
-{
+static void gl2psSVGGetColorString(const GL2PSrgba rgba, char str[32]) {
   int r = (int)(255. * rgba[0]);
   int g = (int)(255. * rgba[1]);
   int b = (int)(255. * rgba[2]);
@@ -5453,8 +5441,7 @@ static void gl2psPrintSVGFooter(void)
   gl2psPrintGzipFooter();
 }
 
-static void gl2psPrintSVGBeginViewport(GLint viewport[4])
-{
+static void gl2psPrintSVGBeginViewport(const GLint viewport[4]) {
   GLint idx;
   char col[32];
   GLfloat rgba[4];
@@ -5747,8 +5734,7 @@ static void gl2psPrintPGFFooter(void)
   fprintf(gl2ps->stream, "\\end{pgfpicture}\n");
 }
 
-static void gl2psPrintPGFBeginViewport(GLint viewport[4])
-{
+static void gl2psPrintPGFBeginViewport(const GLint viewport[4]) {
   GLint idx;
   GLfloat rgba[4];
   int x = viewport[0], y = viewport[1], w = viewport[2], h = viewport[3];
@@ -5963,12 +5949,12 @@ static GLboolean gl2psCheckOptions(GLint options, GLint colormode)
  *********************************************************************/
 
 GL2PSDLL_API GLint gl2psBeginPage(const char *title, const char *producer,
-                                  GLint viewport[4], GLint format, GLint sort,
-                                  GLint options, GLint colormode,
+                                  const GLint viewport[4], GLint format,
+                                  GLint sort, GLint options, GLint colormode,
                                   GLint colorsize, GL2PSrgba *colormap,
-                                  GLint nr, GLint ng, GLint nb, GLint buffersize,
-                                  FILE *stream, const char *filename)
-{
+                                  GLint nr, GLint ng, GLint nb,
+                                  GLint buffersize, FILE *stream,
+                                  const char *filename) {
   GLint idx;
   int i;
 

@@ -11,8 +11,7 @@
 #ifndef PVIEWX3D_H
 #define PVIEWX3D_H
 
-static inline void UnsignedChar2rgba(unsigned char *glc, double *rgba)
-{
+static inline void UnsignedChar2rgba(const unsigned char *glc, double *rgba) {
   rgba[0] = glc[0] / 255.;
   rgba[1] = glc[1] / 255.;
   rgba[2] = glc[2] / 255.;

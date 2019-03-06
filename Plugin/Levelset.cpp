@@ -109,9 +109,9 @@ static void getSimplexDec(int numNodes, int numEdges, int type, int i, int &n0,
 }
 
 static void affect(double *xpi, double *ypi, double *zpi, double valpi[12][9],
-                   int epi[12], int i, double *xp, double *yp, double *zp,
-                   double valp[12][9], int ep[12], int j, int nb)
-{
+                   int epi[12], int i, const double *xp, const double *yp,
+                   const double *zp, double valp[12][9], const int ep[12],
+                   int j, int nb) {
   xpi[i] = xp[j];
   ypi[i] = yp[j];
   zpi[i] = zp[j];

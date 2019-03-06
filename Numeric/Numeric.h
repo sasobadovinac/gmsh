@@ -87,20 +87,17 @@ double myatan2(double a, double b);
 double myasin(double a);
 double myacos(double a);
 
-inline double crossProd(double a[3], double b[3], int i)
-{
+inline double crossProd(const double a[3], const double b[3], int i) {
   int i1 = (i + 1) % 3;
   int i2 = (i + 2) % 3;
   return a[i1] * b[i2] - a[i2] * b[i1];
 }
 
-inline double scalProd(double a[3], double b[3])
-{
+inline double scalProd(const double a[3], const double b[3]) {
   return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 }
 
-inline void prodve(double a[3], double b[3], double c[3])
-{
+inline void prodve(const double a[3], const double b[3], double c[3]) {
   c[2] = a[0] * b[1] - a[1] * b[0];
   c[1] = -a[0] * b[2] + a[2] * b[0];
   c[0] = a[1] * b[2] - a[2] * b[1];
@@ -111,10 +108,9 @@ inline double prosca(double const a[3], double const b[3])
   return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 }
 
-void matvec(double mat[3][3], double vec[3], double res[3]);
+void matvec(double mat[3][3], const double vec[3], double res[3]);
 void matmat(double mat1[3][3], double mat2[3][3], double res[3][3]);
-inline double norm3(double a[3])
-{
+inline double norm3(const double a[3]) {
   return sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
 }
 inline double norme(double a[3])
@@ -134,8 +130,8 @@ void normal3points(double x0, double y0, double z0, double x1, double y1,
                    double z1, double x2, double y2, double z2, double n[3]);
 void normal2points(double x0, double y0, double z0, double x1, double y1,
                    double z1, double n[3]);
-int sys2x2(double mat[2][2], double b[2], double res[2]);
-int sys3x3(double mat[3][3], double b[3], double res[3], double *det);
+int sys2x2(double mat[2][2], const double b[2], double res[2]);
+int sys3x3(double mat[3][3], const double b[3], double res[3], double *det);
 int sys3x3_with_tol(double mat[3][3], double b[3], double res[3], double *det);
 double det2x2(double mat[2][2]);
 double det2x3(double mat[2][3]);
@@ -145,10 +141,14 @@ double trace2(double mat[3][3]);
 double inv3x3(double mat[3][3], double inv[3][3]);
 double inv2x2(double mat[2][2], double inv[2][2]);
 double angle_02pi(double A3);
-double angle_plan(double v[3], double p1[3], double p2[3], double n[3]);
-double triangle_area(double p0[3], double p1[3], double p2[3]);
-double triangle_area2d(double p0[2], double p1[2], double p2[2]);
-void circumCenterXY(double *p1, double *p2, double *p3, double *res);
+double angle_plan(const double v[3], const double p1[3], const double p2[3],
+                  double n[3]);
+double triangle_area(const double p0[3], const double p1[3],
+                     const double p2[3]);
+double triangle_area2d(const double p0[2], const double p1[2],
+                       const double p2[2]);
+void circumCenterXY(const double *p1, const double *p2, const double *p3,
+                    double *res);
 void circumCenterXYZ(double *p1, double *p2, double *p3, double *res,
                      double *uv = 0);
 // operate a transformation on the 4 points of a Quad in 3D, to have an
@@ -157,15 +157,16 @@ void planarQuad_xyz2xy(double *x, double *y, double *z, double *xn, double *yn);
 // compute the radius of the circle that is tangent to the 3 edges defined by 4
 // points edge_1=(x0,y0)->(x1,y1); edge_2=(x1,y1)->(x2,y2);
 // edge_3=(x2,y2)->(x3,y3)
-double computeInnerRadiusForQuad(double *x, double *y, int i);
+double computeInnerRadiusForQuad(const double *x, const double *y, int i);
 char float2char(float f);
 float char2float(char c);
 void eigenvalue2x2(double mat[2][2], double v[2]);
 void eigenvalue(double mat[3][3], double re[3]);
 void FindCubicRoots(const double coeff[4], double re[3], double im[3]);
 void eigsort(double d[3]);
-void gradSimplex(double *x, double *y, double *z, double *v, double *grad);
-double ComputeVonMises(double *val);
+void gradSimplex(const double *x, const double *y, const double *z,
+                 const double *v, double *grad);
+double ComputeVonMises(const double *val);
 double ComputeScalarRep(int numComp, double *val, int tensorRep = 0);
 void invert_singular_matrix3x3(double MM[3][3], double II[3][3]);
 bool newton_fd(bool (*func)(fullVector<double> &, fullVector<double> &, void *),
@@ -219,7 +220,7 @@ int intersection_segments(const SPoint2 &p1, const SPoint2 &p2,
                           const SPoint2 &q1, const SPoint2 &q2, double x[2]);
 
 // tools for projection onto plane
-void fillMeanPlane(double res[4], double t1[3], double t2[3],
+void fillMeanPlane(const double res[4], const double t1[3], const double t2[3],
                    mean_plane &meanPlane);
 void computeMeanPlaneSimple(const std::vector<SPoint3> &points,
                             mean_plane &meanPlane);
