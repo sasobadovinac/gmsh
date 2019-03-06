@@ -716,7 +716,7 @@ GPoint discreteFace::intersectionWithCircle(const SVector3 &n1,
 
 bool discreteFace::_computeTopologyOfPartition(
     int nbColors, int *colors, const int *nNodes, int *nodes, const double *uv,
-    std::vector<MVertex *> &c2v, std::vector<std::vector<MEdge>> &boundaries) {
+    std::vector<MVertex *> &c2v, std::vector<std::vector<MEdge> > &boundaries) {
   GModel *gm = model();
 
   int TAG = gm->getMaxElementNumber() + 1;
