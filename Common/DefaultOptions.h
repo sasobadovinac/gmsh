@@ -1115,6 +1115,8 @@ StringXNumber MeshOptions_Number[] = {
     "Minimum number of points used to mesh a (non-straight) curve" },
   { F|O, "MshFileVersion" , opt_mesh_msh_file_version , 4.1 ,
     "Version of the MSH file format to use" },
+  { F|O, "MedFileMajorVersion" , opt_mesh_med_file_major_version , -1. ,
+    "Major version of the MED file format to use (-1: use major version of the MED library)" },
   { F|O, "MedFileMinorVersion" , opt_mesh_med_file_minor_version , -1. ,
     "Minor version of the MED file format to use (-1: use minor version of the MED library)" },
   { F|O, "MedImportGroupsOfNodes" , opt_mesh_med_import_groups_of_nodes , 0. ,

@@ -281,6 +281,11 @@ Version of the MSH file format to use@*
 Default value: @code{4.1}@*
 Saved in: @code{General.OptionsFileName}
 
+@item Mesh.MedFileMajorVersion
+Major version of the MED file format to use (-1: use major version of the MED library)@*
+Default value: @code{-1}@*
+Saved in: @code{General.OptionsFileName}
+
 @item Mesh.MedFileMinorVersion
 Minor version of the MED file format to use (-1: use minor version of the MED library)@*
 Default value: @code{-1}@*

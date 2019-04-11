@@ -577,13 +577,16 @@ static void writeElementsMED(med_idt &fid, char *meshName,
 int GModel::writeMED(const std::string &name, bool saveAll,
                      double scalingFactor)
 {
-#if(MED_MAJOR_NUM >= 3) && (MED_MINOR_NUM >= 3)
+#if(MED_MAJOR_NUM >= 4) || ((MED_MAJOR_NUM >= 3) && (MED_MINOR_NUM >= 3))
   // MEDfileVersionOpen actually appeared in MED 3.2.1
   med_int major = MED_MAJOR_NUM, minor = MED_MINOR_NUM, release = MED_RELEASE_NUM;
-  if(CTX::instance()->mesh.medFileMinorVersion >= 0){
+  if(CTX::instance()->mesh.medFileMinorVersion >= 0)
     minor = (int)CTX::instance()->mesh.medFileMinorVersion;
+  if(CTX::instance()->mesh.medFileMajorVersion >= 0)
+    major = (int)CTX::instance()->mesh.medFileMajorVersion;
+  if(CTX::instance()->mesh.medFileMinorVersion >= 0 ||
+     CTX::instance()->mesh.medFileMajorVersion >= 0)
     Msg::Info("Forcing MED file version to %d.%d", major, minor);
-  }
   med_idt fid = MEDfileVersionOpen((char *)name.c_str(), MED_ACC_CREAT,
                                    major, minor, release);
 #else

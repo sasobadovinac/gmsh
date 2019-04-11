@@ -43,7 +43,7 @@ struct contextMeshOptions {
   int renumber;
   // mesh IO
   int fileFormat;
-  double mshFileVersion, medFileMinorVersion, scalingFactor;
+  double mshFileVersion, medFileMinorVersion, medFileMajorVersion, scalingFactor;
   int medImportGroupsOfNodes, medSingleModel;
   int saveAll, saveTri, saveGroupsOfNodes, binary, bdfFieldFormat;
   int unvStrictFormat, stlRemoveDuplicateTriangles, stlOneSolidPerSurface;
