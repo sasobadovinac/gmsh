@@ -73,7 +73,7 @@ windows64_msvc_ci:
   script:
     - md build
     - cd build
-    - cmake -DENABLE_BLAS_LAPACK=0 -DENABLE_HXT=0 ${EXTRA_OPTION} ..
+    - cmake -DENABLE_BLAS_LAPACK=0 -DENABLE_HXT=1 ${EXTRA_OPTION} ..
     - msbuild package.vcxproj
   tags:
     - windows64

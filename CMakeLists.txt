@@ -1163,9 +1163,10 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/contrib/hxt AND
     set_config_option(HAVE_HXT3D "Hxt3D")
   endif()
   if(MSVC)
-    # Visual C++ does not support C99 - force compilation as C++ code
     file(GLOB_RECURSE HXT_SRC contrib/hxt/*.c)
-    set_compile_flags(HXT_SRC "/TP")
+    # force compilation as C++ code
+    #set_compile_flags(HXT_SRC "/TP")
+    set_compile_flags(HXT_SRC "/TC /Za")
   endif()
   check_include_file("immintrin.h" HAVE_IMMINTRIN_H)
   if(NOT HAVE_IMMINTRIN_H)
